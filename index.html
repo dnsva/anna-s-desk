@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Work+Sans:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  input,textarea,select,button{font-family:'Work Sans',sans-serif;}
+  ::placeholder{color:#B6A88F;}
+  textarea{resize:none;}
+  ::-webkit-scrollbar{width:8px;height:8px;}
+  ::-webkit-scrollbar-thumb{background:#D8CCB4;border-radius:8px;}
+  @keyframes scfade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  [contenteditable]:empty:before{content:attr(placeholder);color:#B6A88F;pointer-events:none;}
+  [contenteditable] ul{margin:4px 0;padding-left:22px;} [contenteditable] ol{margin:4px 0;padding-left:22px;}
+  [contenteditable] li{margin:2px 0;}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- PWA -->
+<link rel="manifest" href="/anna-s-desk/manifest.json">
+<meta name="theme-color" content="#F0E6D3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Anna's Desk">
+<link rel="apple-touch-icon" href="/anna-s-desk/icon-192.png">
+</helmet>
+
+<!-- ===== MAIN APP ===== -->
+<div style="min-height:100vh;display:flex;background:#F0E6D3;font-family:'Work Sans',sans-serif;color:#3B322A;">
+
+  <!-- ============ SIDEBAR (wide screens) ============ -->
+  <sc-if value="{{ showSidebar }}" hint-placeholder-val="{{ false }}">
+    <div style="width:248px;flex:none;background:#EBE0CC;border-right:1px solid #DFD2B9;padding:28px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;">
+      <div style="padding:0 8px 4px;">
+        <div style="font-family:'Newsreader',serif;font-size:24px;color:#3B322A;line-height:1;">Anna's Desk</div>
+        <div style="font-family:'Caveat',cursive;font-size:17px;color:#C06A45;margin-top:2px;">1A · fall 2026 ✦</div>
+      </div>
+      <div style="margin-top:22px;display:flex;flex-direction:column;gap:2px;">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="9">
+          <div onClick="{{ n.go }}" style="{{ n.style }}">
+            <div style="{{ n.dot }}"></div>
+            <div style="flex:1;">{{ n.name }}</div>
+            <div style="font-size:12px;color:#A99B86;">{{ n.badge }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:auto;padding:16px 10px 4px;border-top:1px solid #DFD2B9;">
+        <div style=”font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:#6E6253;line-height:1.45;”>”Small steps, every day.”</div>
+        <div style=”margin-top:8px;font-size:11px;color:#B6A88F;”>{{ syncStatus }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ MAIN ============ -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;padding:0;">
+    <div style="width:100%;max-width:{{ contentMax }};padding:{{ contentPad }};">
+
+      <!-- ===== HOME / TODAY ===== -->
+      <sc-if value="{{ homeVisible }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .4s ease both;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+            <div style="min-width:0;">
+              <div style="font-family:'Caveat',cursive;font-size:21px;color:#C06A45;white-space:nowrap;">{{ todayLabel }}</div>
+              <div style="font-family:'Newsreader',serif;font-size:34px;line-height:1.05;color:#3B322A;margin-top:2px;">{{ greeting }}</div>
+            </div>
+            <div style="width:46px;height:46px;flex:none;border-radius:50%;background:#C98E7E;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;color:#F7EFE0;font-size:20px;">A</div>
+          </div>
+
+          <!-- hero today card -->
+          <div style="background:#C06A45;border-radius:24px;padding:24px;color:#F7EFE0;box-shadow:0 12px 30px rgba(140,74,46,.22);">
+            <div style="font-size:11px;letter-spacing:.16em;opacity:.82;font-weight:600;">{{ nextLabel }}</div>
+            <div style="font-family:'Newsreader',serif;font-size:27px;margin-top:5px;">{{ nextTitle }}</div>
+            <div style="font-size:13px;opacity:.85;margin-top:3px;">{{ nextSub }}</div>
+            <div style="display:flex;gap:10px;margin-top:18px;">
+              <div onClick="{{ goHabits }}" style="flex:1;background:rgba(255,253,248,.16);border-radius:15px;padding:13px 14px;cursor:pointer;">
+                <div style="font-size:11px;opacity:.85;">Habits today</div>
+                <div style="font-family:'Newsreader',serif;font-size:22px;margin-top:2px;">{{ habitStat }}</div>
+              </div>
+              <div onClick="{{ goWorkout }}" style="flex:1;background:rgba(255,253,248,.16);border-radius:15px;padding:13px 14px;cursor:pointer;">
+                <div style="font-size:11px;opacity:.85;">Today's workout</div>
+                <div style="font-family:'Newsreader',serif;font-size:22px;margin-top:2px;">{{ workoutStat }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- all category tiles -->
+          <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;margin-top:18px;">
+
+            <div onClick="{{ goChecklist }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#C06A45;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:15px;height:17px;border:2px solid #F7EFE0;border-radius:3px;"></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Move-in Checklist</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subChecklist }}</div>
+            </div>
+
+            <div onClick="{{ goSchedule }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#7B8A66;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:18px;height:16px;border:2px solid #F7EFE0;border-top-width:6px;border-radius:3px;"></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Class Schedule</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subSchedule }}</div>
+            </div>
+
+            <div onClick="{{ goDates }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#CA9A3E;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:17px;height:17px;border:2px solid #F7EFE0;border-radius:50%;"></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Key Dates</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subDates }}</div>
+            </div>
+
+            <div onClick="{{ goRecipes }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#C98E7E;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:17px;height:17px;border:2px solid #F7EFE0;border-radius:50%;border-top-color:transparent;"></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Recipes</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subRecipes }}</div>
+            </div>
+
+            <div onClick="{{ goWorkout }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#6E8499;display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:10px;"><div style="width:7px;height:7px;border-radius:50%;border:2px solid #F7EFE0;"></div><div style="width:9px;height:2px;background:#F7EFE0;"></div><div style="width:7px;height:7px;border-radius:50%;border:2px solid #F7EFE0;"></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Workout Planner</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subWorkout }}</div>
+            </div>
+
+            <div onClick="{{ goHabits }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#B5754F;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:18px;height:18px;border-radius:50%;border:2px solid #F7EFE0;display:flex;align-items:center;justify-content:center;"><div style="width:7px;height:4px;border-left:2px solid #F7EFE0;border-bottom:2px solid #F7EFE0;transform:rotate(-45deg) translate(0px,-1px);"></div></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Habits</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subHabits }}</div>
+            </div>
+
+            <div onClick="{{ goPhotos }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#8C7B62;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:18px;height:15px;border:2px solid #F7EFE0;border-radius:3px;position:relative;"><div style="position:absolute;right:2px;top:2px;width:4px;height:4px;border-radius:50%;background:#F7EFE0;"></div></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Photo Board</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subPhotos }}</div>
+            </div>
+
+            <div onClick="{{ goNotes }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#5C6B57;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:15px;height:18px;border:2px solid #F7EFE0;border-radius:3px;display:flex;flex-direction:column;justify-content:center;gap:3px;padding:0 3px;"><div style="height:2px;background:#F7EFE0;"></div><div style="height:2px;background:#F7EFE0;"></div></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Notes</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subNotes }}</div>
+            </div>
+
+            <div onClick="{{ goTrash }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#9A8C78;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><div style="width:16px;height:18px;border:2px solid #F7EFE0;border-radius:2px;border-top:none;position:relative;"><div style="position:absolute;top:-5px;left:-3px;right:-3px;height:3px;background:#F7EFE0;border-radius:2px;"></div></div></div>
+              <div style="font-family:'Newsreader',serif;font-size:18px;">Trash</div>
+              <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ subTrash }}</div>
+            </div>
+
+          </div>
+          <div style="height:40px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== screen header (non-home) ===== -->
+      <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:14px;padding:6px 0 18px;position:sticky;top:0;background:#F0E6D3;z-index:5;">
+          <div onClick="{{ goHome }}" style="width:40px;height:40px;border-radius:50%;background:#FBF5EA;border:1px solid #E7DCC7;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:#6E6253;">‹</div>
+          <div style="flex:1;">
+            <div style="font-family:'Caveat',cursive;font-size:16px;color:{{ accent }};line-height:1;">{{ headerKicker }}</div>
+            <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.1;">{{ headerTitle }}</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== CHECKLIST ===== -->
+      <sc-if value="{{ isChecklist }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:18px;margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <div style="font-family:'Newsreader',serif;font-size:18px;">{{ packText }}</div>
+              <div style="font-size:13px;color:#9A8C78;">{{ packPct }}%</div>
+            </div>
+            <div style="height:9px;border-radius:6px;background:#EADFC9;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ packPct }}%;background:#C06A45;border-radius:6px;transition:width .35s;"></div></div>
+          </div>
+          <sc-for list="{{ checklistGroups }}" as="g" hint-placeholder-count="4">
+            <div style="margin-bottom:20px;">
+              <div style="font-size:11px;letter-spacing:.14em;color:#A99B86;font-weight:600;margin:0 2px 9px;">{{ g.catUpper }}</div>
+              <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;overflow:hidden;">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:13px;padding:13px 16px;border-top:1px solid #EFE6D5;">
+                    <div onClick="{{ it.toggle }}" style="{{ it.boxStyle }}">
+                      <sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><div style="width:9px;height:5px;border-left:2px solid #F7EFE0;border-bottom:2px solid #F7EFE0;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                    </div>
+                    <div style="{{ it.labelStyle }}">{{ it.label }}</div>
+                    <div onClick="{{ it.del }}" style="color:#CBBDA4;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+          <div style="display:flex;gap:8px;align-items:center;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:10px;flex-wrap:wrap;">
+            <select ref="{{ refClCat }}" name="cl-category" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px;outline:none;">
+              <sc-for list="{{ catOptions }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for>
+            </select>
+            <input ref="{{ refClText }}" name="cl-item" placeholder="Add an item…" onKeyDown="{{ onAddCLKey }}" style="flex:1;min-width:130px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+            <div onClick="{{ addCLnow }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#C06A45;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== SCHEDULE ===== -->
+      <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
+            <div onClick="{{ toggleAddClass }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#7B8A66;border-radius:11px;padding:10px 18px;cursor:pointer;">{{ addClassLabel }}</div>
+          </div>
+          <sc-if value="{{ addingClass }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px;">
+              <input ref="{{ refCName }}" name="class-name" placeholder="Class name" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <select ref="{{ refCDay }}" name="class-day" style="flex:1;min-width:90px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px;outline:none;">
+                  <sc-for list="{{ dayOptions }}" as="dy" hint-placeholder-count="7"><option value="{{ dy }}">{{ dy }}</option></sc-for>
+                </select>
+                <input ref="{{ refCStart }}" name="class-start" type="time" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:9px 10px;outline:none;">
+                <input ref="{{ refCEnd }}" name="class-end" type="time" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:9px 10px;outline:none;">
+              </div>
+              <input ref="{{ refCLoc }}" name="class-location" placeholder="Location" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+              <div onClick="{{ addClassNow }}" style="align-self:flex-start;font-weight:600;font-size:14px;color:#F7EFE0;background:#7B8A66;border-radius:11px;padding:10px 20px;cursor:pointer;">Save class</div>
+            </div>
+          </sc-if>
+          <sc-for list="{{ week }}" as="day" hint-placeholder-count="7">
+            <div style="margin-bottom:18px;">
+              <div style="display:flex;align-items:center;gap:9px;margin:0 2px 9px;">
+                <div style="{{ day.nameStyle }}">{{ day.name }}</div>
+                <sc-if value="{{ day.isToday }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;letter-spacing:.1em;font-weight:700;color:#7B8A66;background:#E3E7D6;border-radius:20px;padding:3px 9px;">TODAY</div></sc-if>
+              </div>
+              <sc-if value="{{ day.hasClasses }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;flex-direction:column;gap:9px;">
+                  <sc-for list="{{ day.classes }}" as="c" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:center;gap:14px;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:15px;padding:14px 16px;">
+                      <div style="width:4px;align-self:stretch;border-radius:4px;background:{{ c.color }};"></div>
+                      <div style="font-size:13px;color:#8A7E6F;font-variant-numeric:tabular-nums;width:104px;flex:none;">{{ c.range }}</div>
+                      <div style="flex:1;min-width:0;"><div style="font-family:'Newsreader',serif;font-size:18px;">{{ c.name }}</div><div style="font-size:12px;color:#9A8C78;">{{ c.loc }}</div></div>
+                      <div onClick="{{ c.del }}" style="color:#CBBDA4;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ day.empty }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#B6A88F;padding:4px 6px;">No classes</div></sc-if>
+            </div>
+          </sc-for>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== KEY DATES ===== -->
+      <sc-if value="{{ isDates }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="display:flex;gap:8px;align-items:center;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:10px;margin-bottom:20px;flex-wrap:wrap;">
+            <input ref="{{ refDateTitle }}" name="date-title" placeholder="What's happening…" onKeyDown="{{ onAddDateKey }}" style="flex:1;min-width:140px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+            <input ref="{{ refDateWhen }}" name="date-when" type="date" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:9px 10px;outline:none;">
+            <div onClick="{{ addDateNow }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#CA9A3E;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ datesList }}" as="x" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:14px;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:15px;padding:13px 16px;">
+                <div style="{{ x.badgeStyle }}">{{ x.count }}</div>
+                <div style="{{ x.titleStyle }}">{{ x.title }}</div>
+                <div style="font-size:13px;color:#9A8C78;">{{ x.dateLabel }}</div>
+                <div onClick="{{ x.del }}" style="color:#CBBDA4;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== RECIPES (list) ===== -->
+      <sc-if value="{{ showRecipeList }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+            <div style="display:flex;gap:4px;background:#EFE6D5;border-radius:13px;padding:4px;">
+              <div onClick="{{ recTabFood }}" style="{{ tabFoodStyle }}">Food</div>
+              <div onClick="{{ recTabDrink }}" style="{{ tabDrinkStyle }}">Drinks</div>
+            </div>
+            <div style="flex:1;"></div>
+            <div onClick="{{ showAddRecipe }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#C98E7E;border-radius:11px;padding:10px 16px;cursor:pointer;">+ New</div>
+          </div>
+          <sc-if value="{{ addingRecipe }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <select ref="{{ refRType }}" name="recipe-type" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px;outline:none;"><option value="food">Food</option><option value="drink">Drink</option></select>
+                <input ref="{{ refRName }}" name="recipe-name" placeholder="Recipe name" style="flex:1;min-width:140px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+                <input ref="{{ refRTime }}" name="recipe-time" placeholder="Time (e.g. 5 min)" style="width:140px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+              </div>
+              <textarea ref="{{ refRIng }}" name="recipe-ingredients" placeholder="Ingredients — one per line" rows="4" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+              <textarea ref="{{ refRSteps }}" name="recipe-steps" placeholder="Steps — one per line" rows="4" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#8A7E6F;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:9px 14px;cursor:pointer;">
+                  <span style="font-size:16px;">📷</span> Add photo
+                  <input type="file" accept="image/*" onChange="{{ onRecipeImgChange }}" style="display:none;">
+                </label>
+                <sc-if value="{{ hasRecipeImgDraft }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;display:inline-block;">
+                    <img src="{{ recipeImgDraft }}" loading="lazy" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #E0D4BE;">
+                    <div onClick="{{ clearRecipeImg }}" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#C06A45;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">×</div>
+                  </div>
+                </sc-if>
+              </div>
+              <div style="display:flex;gap:10px;">
+                <div onClick="{{ addRecipeNow }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#C98E7E;border-radius:11px;padding:10px 20px;cursor:pointer;">Save</div>
+                <div onClick="{{ hideAddRecipe }}" style="font-weight:600;font-size:14px;color:#8A7E6F;background:#EFE6D5;border-radius:11px;padding:10px 20px;cursor:pointer;">Cancel</div>
+              </div>
+            </div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;">
+            <sc-for list="{{ recipesList }}" as="r" hint-placeholder-count="4">
+              <div onClick="{{ r.open }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:18px;cursor:pointer;">
+                <div style="font-family:'Newsreader',serif;font-size:20px;line-height:1.15;">{{ r.name }}</div>
+                <div style="display:flex;gap:12px;margin-top:10px;font-size:12px;color:#9A8C78;"><div>{{ r.time }}</div><div>·</div><div>{{ r.ingCount }}</div></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== RECIPE DETAIL ===== -->
+      <sc-if value="{{ recipeDetailShown }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .3s ease both;">
+          <div onClick="{{ openRecipe.close }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#8A7E6F;font-size:14px;margin-bottom:16px;">‹ All recipes</div>
+          <sc-if value="{{ openRecipe.hasImg }}" hint-placeholder-val="{{ false }}">
+            <img src="{{ openRecipe.img }}" loading="lazy" style="width:100%;max-height:260px;object-fit:cover;border-radius:18px;margin-bottom:16px;display:block;">
+          </sc-if>
+          <div style="font-family:'Newsreader',serif;font-size:30px;line-height:1.1;">{{ openRecipe.name }}</div>
+          <div style="font-size:13px;color:#C98E7E;font-weight:600;margin-top:4px;">{{ openRecipe.time }}</div>
+          <div style="display:grid;grid-template-columns:{{ tileCols }};gap:16px;margin-top:22px;align-items:start;">
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:18px;">
+              <div style="font-size:11px;letter-spacing:.14em;color:#A99B86;font-weight:600;margin-bottom:12px;">INGREDIENTS</div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <sc-for list="{{ openRecipe.ingredients }}" as="ing" hint-placeholder-count="4">
+                  <div style="display:flex;gap:10px;align-items:flex-start;font-size:15px;"><div style="width:6px;height:6px;border-radius:50%;background:#C98E7E;margin-top:7px;flex:none;"></div><div>{{ ing }}</div></div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:18px;">
+              <div style="font-size:11px;letter-spacing:.14em;color:#A99B86;font-weight:600;margin-bottom:12px;">METHOD</div>
+              <div style="display:flex;flex-direction:column;gap:13px;">
+                <sc-for list="{{ openRecipe.steps }}" as="st" hint-placeholder-count="4">
+                  <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;flex:none;border-radius:50%;background:#C98E7E;color:#F7EFE0;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ st.num }}</div><div style="font-size:15px;line-height:1.45;padding-top:1px;">{{ st.text }}</div></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;margin-top:20px;">
+            <div onClick="{{ openRecipe.edit }}" style="font-size:13px;font-weight:600;color:#C98E7E;cursor:pointer;">Edit recipe</div>
+            <div onClick="{{ openRecipe.del }}" style="font-size:13px;color:#B98A78;cursor:pointer;">Delete recipe</div>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== RECIPE EDIT ===== -->
+      <sc-if value="{{ editingRecipeShown }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .3s ease both;">
+          <div onClick="{{ editRecipeData.cancel }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#8A7E6F;font-size:14px;margin-bottom:16px;">‹ Cancel</div>
+          <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <select name="edit-recipe-type" value="{{ editRecipeData.type }}" onChange="{{ editRecipeData.setType }}" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px;outline:none;"><option value="food">Food</option><option value="drink">Drink</option></select>
+              <input name="edit-recipe-name" value="{{ editRecipeData.name }}" onChange="{{ editRecipeData.setName }}" placeholder="Recipe name" style="flex:1;min-width:140px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+              <input name="edit-recipe-time" value="{{ editRecipeData.time }}" onChange="{{ editRecipeData.setTime }}" placeholder="Time (e.g. 5 min)" style="width:140px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+            </div>
+            <textarea name="edit-recipe-ingredients" value="{{ editRecipeData.ingredients }}" onChange="{{ editRecipeData.setIngredients }}" placeholder="Ingredients — one per line" rows="5" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+            <textarea name="edit-recipe-steps" value="{{ editRecipeData.steps }}" onChange="{{ editRecipeData.setSteps }}" placeholder="Steps — one per line" rows="5" style="font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#8A7E6F;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:9px 14px;cursor:pointer;">
+                <span style="font-size:16px;">📷</span> Change photo
+                <input type="file" accept="image/*" onChange="{{ editRecipeData.onImgChange }}" style="display:none;">
+              </label>
+              <sc-if value="{{ editRecipeData.hasImg }}" hint-placeholder-val="{{ false }}">
+                <div style="position:relative;display:inline-block;">
+                  <img src="{{ editRecipeData.img }}" loading="lazy" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #E0D4BE;">
+                  <div onClick="{{ editRecipeData.clearImg }}" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#C06A45;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">×</div>
+                </div>
+              </sc-if>
+            </div>
+            <div style="display:flex;gap:10px;">
+              <div onClick="{{ editRecipeData.save }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#C98E7E;border-radius:11px;padding:10px 20px;cursor:pointer;">Save changes</div>
+              <div onClick="{{ editRecipeData.cancel }}" style="font-weight:600;font-size:14px;color:#8A7E6F;background:#EFE6D5;border-radius:11px;padding:10px 20px;cursor:pointer;">Cancel</div>
+            </div>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== WORKOUT ===== -->
+      <sc-if value="{{ isWorkout }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px;">
+            <sc-for list="{{ workoutTabs }}" as="t" hint-placeholder-count="7">
+              <div onClick="{{ t.go }}" style="{{ t.style }}">{{ t.label }}<sc-if value="{{ t.dotShow }}" hint-placeholder-val="{{ false }}"><div style="{{ t.dotStyle }}"></div></sc-if></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;">
+            <div style="font-family:'Newsreader',serif;font-size:22px;">{{ workoutDayLabel }} · {{ workoutLabel }}</div>
+            <div style="font-size:13px;color:#9A8C78;">{{ workoutDoneText }}</div>
+          </div>
+          <sc-if value="{{ workoutHasItems }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:9px;">
+              <sc-for list="{{ workoutItems }}" as="ex" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:13px;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:15px;padding:13px 15px;">
+                  <div onClick="{{ ex.toggle }}" style="{{ ex.boxStyle }}">
+                    <sc-if value="{{ ex.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #F7EFE0;border-bottom:2px solid #F7EFE0;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                  </div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="{{ ex.nameStyle }}">{{ ex.name }}</div>
+                    <div style="font-size:12px;color:#9A8C78;margin-top:1px;">{{ ex.scheme }}<sc-if value="{{ ex.hasPrev }}" hint-placeholder-val="{{ false }}"> · {{ ex.prevLabel }}</sc-if></div>
+                  </div>
+                  <sc-if value="{{ ex.editing }}" hint-placeholder-val="{{ false }}">
+                    <input name="weight" value="{{ weightDraft }}" onChange="{{ onWDraft }}" onKeyDown="{{ ex.onKey }}" onBlur="{{ ex.commitW }}" autofocus="true" placeholder="lb" style="width:74px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #6E8499;border-radius:9px;padding:7px 9px;outline:none;">
+                  </sc-if>
+                  <sc-if value="{{ ex.notEditing }}" hint-placeholder-val="{{ true }}">
+                    <div onClick="{{ ex.startW }}" style="{{ ex.chipStyle }}">{{ ex.weightLabel }}</div>
+                  </sc-if>
+                  <div onClick="{{ ex.del }}" style="color:#CBBDA4;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ workoutEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:30px;text-align:center;color:#9A8C78;font-family:'Newsreader',serif;font-size:18px;font-style:italic;">Rest day. Stretch, hydrate, sleep.</div>
+          </sc-if>
+          <div style="display:flex;gap:8px;align-items:center;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:10px;margin-top:14px;flex-wrap:wrap;">
+            <input ref="{{ refExName }}" name="exercise-name" placeholder="Exercise" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:130px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+            <input ref="{{ refExSets }}" name="exercise-sets" type="number" placeholder="sets" style="width:64px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px;outline:none;">
+            <input ref="{{ refExReps }}" name="exercise-reps" type="number" placeholder="reps" style="width:64px;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px;outline:none;">
+            <div onClick="{{ addExNow }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#6E8499;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== HABITS ===== -->
+      <sc-if value="{{ isHabits }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:18px;margin-bottom:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <div style="font-family:'Newsreader',serif;font-size:18px;">{{ habitDoneText }}</div>
+              <div style="font-size:13px;color:#9A8C78;">{{ habitPct }}%</div>
+            </div>
+            <div style="height:9px;border-radius:6px;background:#EADFC9;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ habitPct }}%;background:#B5754F;border-radius:6px;transition:width .35s;"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <sc-for list="{{ habitsList }}" as="h" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:14px;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:15px;padding:14px 16px;">
+                <div onClick="{{ h.toggle }}" style="{{ h.boxStyle }}">
+                  <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #F7EFE0;border-bottom:2px solid #F7EFE0;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                </div>
+                <div style="{{ h.nameStyle }}">{{ h.name }}</div>
+                <div style="font-size:12px;color:#B5754F;font-weight:600;white-space:nowrap;">{{ h.streakLabel }}</div>
+                <div onClick="{{ h.del }}" style="color:#CBBDA4;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:10px;margin-top:14px;">
+            <input ref="{{ refHabit }}" name="habit-name" placeholder="Add a habit…" onKeyDown="{{ onAddHabitKey }}" style="flex:1;font-size:14px;color:#3B322A;background:#FFFDF8;border:1px solid #E0D4BE;border-radius:11px;padding:10px 12px;outline:none;">
+            <div onClick="{{ addHabitNow }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#B5754F;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== PHOTOS ===== -->
+      <sc-if value="{{ isPhotos }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+            <label style="font-weight:600;font-size:14px;color:#F7EFE0;background:#8C7B62;border-radius:11px;padding:10px 18px;cursor:pointer;">+ Add photos<input type="file" accept="image/*" multiple onChange="{{ addPhotosNow }}" style="display:none;"></label>
+          </div>
+          <sc-if value="{{ photosEmpty }}" hint-placeholder-val="{{ true }}">
+            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#FBF5EA;border:2px dashed #D2C6AE;border-radius:20px;padding:60px 20px;cursor:pointer;text-align:center;">
+              <div style="width:48px;height:48px;border-radius:14px;background:#8C7B62;display:flex;align-items:center;justify-content:center;color:#F7EFE0;font-size:26px;font-weight:300;">+</div>
+              <div style="font-family:'Newsreader',serif;font-size:20px;color:#3B322A;">Pin your inspiration</div>
+              <div style="font-size:13px;color:#9A8C78;max-width:260px;">Quotes, dorm ideas, people who keep you going. Tap to add a few photos.</div>
+              <input type="file" accept="image/*" multiple onChange="{{ addPhotosNow }}" style="display:none;">
+            </label>
+          </sc-if>
+          <sc-if value="{{ photosHas }}" hint-placeholder-val="{{ false }}">
+            <div style="{{ photoColStyle }}">
+              <sc-for list="{{ photosList }}" as="p" hint-placeholder-count="0">
+                <div style="break-inside:avoid;margin-bottom:14px;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:8px;position:relative;">
+                  <sc-if value="{{ p.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ p.src }}" loading="lazy" style="width:100%;display:block;border-radius:11px;"></sc-if>
+                  <div onClick="{{ p.del }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(33,27,20,.55);color:#F7EFE0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;">×</div>
+                  <input name="photo-caption" value="{{ p.caption }}" onChange="{{ p.setCap }}" placeholder="Add a caption…" style="width:100%;margin-top:8px;font-size:13px;color:#3B322A;background:transparent;border:none;outline:none;font-family:'Caveat',cursive;font-size:17px;">
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== NOTES (list) ===== -->
+      <sc-if value="{{ notesListShown }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+            <div onClick="{{ goNewNote }}" style="font-weight:600;font-size:14px;color:#F7EFE0;background:#5C6B57;border-radius:11px;padding:10px 18px;cursor:pointer;">+ New note</div>
+          </div>
+          <sc-if value="{{ notesEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:50px 20px;text-align:center;color:#9A8C78;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Nothing on your mind yet. Start a note.</div>
+          </sc-if>
+          <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;">
+            <sc-for list="{{ notesList }}" as="n" hint-placeholder-count="2">
+              <div onClick="{{ n.open }}" style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:18px;cursor:pointer;position:relative;">
+                <div style="font-family:'Newsreader',serif;font-size:19px;line-height:1.2;padding-right:18px;">{{ n.title }}</div>
+                <div style="font-size:13px;color:#9A8C78;margin-top:7px;line-height:1.5;white-space:pre-wrap;">{{ n.snippet }}</div>
+                <div onClick="{{ n.del }}" style="position:absolute;top:14px;right:14px;color:#CBBDA4;cursor:pointer;font-size:18px;line-height:1;">×</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== TRASH ===== -->
+      <sc-if value="{{ isTrash }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .35s ease both;">
+          <sc-if value="{{ trashEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:18px;padding:50px 20px;text-align:center;color:#9A8C78;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Your trash is empty. Items deleted from Notes, Recipes, Checklist, Key Dates, and Habits land here.</div>
+          </sc-if>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ trashList }}" as="t" hint-placeholder-count="0">
+              <div style="background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
+                <div style="flex:1;min-width:0;">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+                    <span style="{{ t.typeStyle }}">{{ t.typeLabel }}</span>
+                    <span style="font-size:12px;color:#B6A88F;">{{ t.expiry }}</span>
+                  </div>
+                  <div style="font-family:'Newsreader',serif;font-size:17px;color:#3B322A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.name }}</div>
+                </div>
+                <div style="display:flex;gap:8px;flex:none;">
+                  <div onClick="{{ t.restore }}" style="font-size:13px;font-weight:600;color:#5C6B57;background:#EBF0E6;border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;">Restore</div>
+                  <div onClick="{{ t.perm }}" style="font-size:13px;color:#B98A78;background:#F4ECE5;border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;">Delete</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+      <!-- ===== NOTE EDITOR ===== -->
+      <sc-if value="{{ noteEditorShown }}" hint-placeholder-val="{{ false }}">
+        <div style="animation:scfade .3s ease both;">
+          <div onClick="{{ openNote.close }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#8A7E6F;font-size:14px;margin-bottom:16px;">‹ All notes</div>
+          <input name="note-title" value="{{ openNote.title }}" onChange="{{ openNote.setTitle }}" placeholder="Title" style="width:100%;font-family:'Newsreader',serif;font-size:28px;color:#3B322A;background:transparent;border:none;outline:none;margin-bottom:10px;">
+          <!-- rich text toolbar -->
+          <div style="display:flex;align-items:center;gap:3px;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:12px;padding:7px 10px;margin-bottom:8px;flex-wrap:wrap;">
+            <div onMouseDown="{{ noteCmd.bold }}" title="Bold (⌘B)" style="{{ noteFmtBoldStyle }}">B</div>
+            <div onMouseDown="{{ noteCmd.italic }}" title="Italic (⌘I)" style="{{ noteFmtItalicStyle }}">I</div>
+            <div onMouseDown="{{ noteCmd.underline }}" title="Underline (⌘U)" style="{{ noteFmtUnderlineStyle }}">U</div>
+            <div onMouseDown="{{ noteCmd.strike }}" title="Strikethrough" style="{{ noteFmtStrikeStyle }}">S</div>
+            <div style="width:1px;height:20px;background:#E0D4BE;margin:0 4px;flex:none;"></div>
+            <div onMouseDown="{{ noteCmd.ul }}" title="Bullet list" style="{{ noteFmtUlStyle }}">•</div>
+            <div onMouseDown="{{ noteCmd.ol }}" title="Numbered list" style="{{ noteFmtOlStyle }}">1.</div>
+            <div style="width:1px;height:20px;background:#E0D4BE;margin:0 4px;flex:none;"></div>
+            <div onMouseDown="{{ noteCmd.hlYellow }}" title="Highlight yellow" style="width:22px;height:22px;border-radius:5px;background:#FFF59D;cursor:pointer;border:1px solid #E0D4BE;"></div>
+            <div onMouseDown="{{ noteCmd.hlGreen }}" title="Highlight green" style="width:22px;height:22px;border-radius:5px;background:#C8E6C9;cursor:pointer;border:1px solid #E0D4BE;"></div>
+            <div onMouseDown="{{ noteCmd.hlBlue }}" title="Highlight blue" style="width:22px;height:22px;border-radius:5px;background:#BBDEFB;cursor:pointer;border:1px solid #E0D4BE;"></div>
+            <div onMouseDown="{{ noteCmd.hlPink }}" title="Highlight pink" style="width:22px;height:22px;border-radius:5px;background:#F8BBD9;cursor:pointer;border:1px solid #E0D4BE;"></div>
+            <div onMouseDown="{{ noteCmd.hlOrange }}" title="Highlight orange" style="width:22px;height:22px;border-radius:5px;background:#FFE0B2;cursor:pointer;border:1px solid #E0D4BE;"></div>
+            <div style="width:1px;height:20px;background:#E0D4BE;margin:0 4px;flex:none;"></div>
+            <div onMouseDown="{{ noteCmd.removeFormat }}" title="Clear formatting" style="height:30px;padding:0 10px;display:flex;align-items:center;border-radius:7px;cursor:pointer;font-size:12px;color:#9A8C78;">✕ clear</div>
+          </div>
+          <!-- contenteditable body -->
+          <div data-note-editor contenteditable="true" onKeyDown="{{ noteCmd.keyDown }}" onBlur="{{ noteCmd.blur }}" placeholder="Write it all down…" style="min-height:280px;font-size:16px;line-height:1.65;color:#3B322A;background:#FBF5EA;border:1px solid #E7DCC7;border-radius:16px;padding:18px;outline:none;white-space:pre-wrap;word-break:break-word;"></div>
+          <div onClick="{{ openNote.del }}" style="margin-top:16px;display:inline-block;font-size:13px;color:#B98A78;cursor:pointer;">Delete note</div>
+          <div style="height:30px;"></div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:860}}">
+class Component extends DCLogic {
+  SUPA_URL = 'https://jpiuorpprqqrvaismmso.supabase.co';
+  SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwaXVvcnBwcnFxcnZhaXNtbXNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIwNzAyMjYsImV4cCI6MjA5NzY0NjIyNn0.wpPZzcqOpOAJ-gGG0pretlg1wyYSrNJbCaNTxCm0UVk';
+  _supa = null;
+  state = this.initState();
+
+  initState(){
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem('collegeApp_v4')); } catch(e){}
+    if(!data) data = this.seed();
+    return {
+      screen: 'home',
+      width: typeof window!=='undefined' ? window.innerWidth : 1200,
+      data,
+      recipeTab: 'food',
+      recipeOpen: null,
+      addingRecipe: false,
+      recipeImgDraft: null,
+      editRecipe: null,
+      editRecipeImgDraft: null,
+      noteOpen: null,
+      addingClass: false,
+      editingWeight: null,
+      weightDraft: '',
+      workoutDay: null,
+      syncStatus: 'Syncing…',
+      noteActiveFmt: {bold:false,italic:false,underline:false,strike:false,ul:false,ol:false}
+    };
+  }
+
+  seed(){
+    const id=()=>Math.random().toString(36).slice(2,8);
+    return {
+      checklist: [
+        // Admin & Accounts
+        {id:id(),cat:'Admin & Accounts',label:'Activate WatIAM account',done:true},
+        {id:id(),cat:'Admin & Accounts',label:'Log in to Quest (fees, grades, enrollment)',done:true},
+        {id:id(),cat:'Admin & Accounts',label:'Set up LEARN (online course platform)',done:false},
+        {id:id(),cat:'Admin & Accounts',label:'Register on WaterlooWorks (co-op portal)',done:false},
+        {id:id(),cat:'Admin & Accounts',label:'Pick up WatCard (student ID + access card)',done:false},
+        {id:id(),cat:'Admin & Accounts',label:'Enroll in or opt out of student health plan',done:false},
+        {id:id(),cat:'Admin & Accounts',label:'Set up Duo two-factor authentication',done:false},
+        {id:id(),cat:'Admin & Accounts',label:'Confirm OSAP / financial aid disbursement',done:false},
+        // Residence
+        {id:id(),cat:'Residence',label:'Twin XL sheets × 2 sets',done:true},
+        {id:id(),cat:'Residence',label:'Comforter + pillows × 2',done:true},
+        {id:id(),cat:'Residence',label:'Mattress topper',done:false},
+        {id:id(),cat:'Residence',label:'Bath towels × 3 + washcloths × 3',done:false},
+        {id:id(),cat:'Residence',label:'Shower caddy + flip flops (shared showers)',done:false},
+        {id:id(),cat:'Residence',label:'Ethernet cable — REZ rooms have wired internet',done:false},
+        {id:id(),cat:'Residence',label:'Laundry bag + detergent pods (card-operated machines)',done:false},
+        {id:id(),cat:'Residence',label:'Command strips + hooks (no nails allowed)',done:false},
+        // Clothing — Tops
+        {id:id(),cat:'Clothing — Tops',label:'T-shirts × 8',done:false},
+        {id:id(),cat:'Clothing — Tops',label:'Long-sleeve shirts × 4',done:false},
+        {id:id(),cat:'Clothing — Tops',label:'Hoodies / sweatshirts × 3',done:false},
+        {id:id(),cat:'Clothing — Tops',label:'Sweaters × 2',done:false},
+        {id:id(),cat:'Clothing — Tops',label:'Athletic / workout tops × 5',done:false},
+        {id:id(),cat:'Clothing — Tops',label:'Smart-casual tops × 2 (ECE events, presentations)',done:false},
+        // Clothing — Bottoms & Undergarments
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Underwear × 14 (2 full weeks)',done:false},
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Regular socks × 14 pairs',done:false},
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Warm / wool socks × 5 pairs',done:false},
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Jeans × 2',done:false},
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Joggers / casual pants × 2',done:false},
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Athletic shorts × 2',done:false},
+        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Dress pants × 1 (co-op interviews)',done:false},
+        // Clothing — Outerwear & Footwear
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Heavy winter coat (Waterloo gets cold in Oct)',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Rain jacket (Waterloo has 150+ rain days/yr)',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Light fall jacket / fleece',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Toque × 2 + gloves × 2 pairs + scarf',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Waterproof winter boots',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Everyday sneakers',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Gym / running shoes',done:false},
+        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Dress shoes (co-op interviews, formals)',done:false},
+        // Sleepwear
+        {id:id(),cat:'Sleepwear',label:'Pajama sets × 3',done:false},
+        {id:id(),cat:'Sleepwear',label:'Bathrobe (optional but great in REZ)',done:false},
+        // Class Supplies
+        {id:id(),cat:'Class Supplies',label:'Lined notebooks × 3 (ECE 105, ECE 140, MATH 117)',done:false},
+        {id:id(),cat:'Class Supplies',label:'Graph / engineering paper pad',done:false},
+        {id:id(),cat:'Class Supplies',label:'CASIO fx-991 calculator (non-programmable, exam-approved)',done:true},
+        {id:id(),cat:'Class Supplies',label:'Backpack',done:true},
+        {id:id(),cat:'Class Supplies',label:'Highlighters + pens + pencils',done:true},
+        {id:id(),cat:'Class Supplies',label:'USB drive',done:false},
+        {id:id(),cat:'Class Supplies',label:'Binder + dividers (for MATH 117 / ECE 105 notes)',done:false},
+        // Electronics & Tech
+        {id:id(),cat:'Electronics & Tech',label:'Laptop + charger',done:true},
+        {id:id(),cat:'Electronics & Tech',label:'Power bar + extension cord',done:false},
+        {id:id(),cat:'Electronics & Tech',label:'Desk lamp',done:false},
+        {id:id(),cat:'Electronics & Tech',label:'USB-C hub / dongles',done:false},
+        {id:id(),cat:'Electronics & Tech',label:'Wired earbuds (library / exam quiet)',done:false},
+        {id:id(),cat:'Electronics & Tech',label:'Wireless earbuds (between buildings)',done:false},
+        {id:id(),cat:'Electronics & Tech',label:'Portable power bank',done:false},
+        // Kitchen
+        {id:id(),cat:'Kitchen',label:'Electric kettle (allowed in REZ rooms)',done:false},
+        {id:id(),cat:'Kitchen',label:'Mugs × 2',done:false},
+        {id:id(),cat:'Kitchen',label:'Reusable water bottle',done:true},
+        {id:id(),cat:'Kitchen',label:'Reusable utensil set (fork, knife, spoon, chopsticks)',done:false},
+        {id:id(),cat:'Kitchen',label:'Snack bin / pantry box',done:false},
+        // Personal & Health
+        {id:id(),cat:'Personal & Health',label:'OHIP card + vaccination records',done:false},
+        {id:id(),cat:'Personal & Health',label:'Prescription meds + OTC basics (ibuprofen, antihistamine)',done:false},
+        {id:id(),cat:'Personal & Health',label:'First aid kit (bandaids, thermometer)',done:false},
+        {id:id(),cat:'Personal & Health',label:'Shampoo + conditioner + body wash + loofah',done:false},
+        {id:id(),cat:'Personal & Health',label:'Deodorant (stock up)',done:false},
+        {id:id(),cat:'Personal & Health',label:'Skincare routine products',done:false},
+        {id:id(),cat:'Personal & Health',label:'Toothbrush + toothpaste + floss',done:false},
+        {id:id(),cat:'Personal & Health',label:'Hair dryer',done:false},
+        {id:id(),cat:'Personal & Health',label:'Nail clipper + grooming kit',done:false},
+        {id:id(),cat:'Personal & Health',label:'Something from home (comfort item)',done:false},
+      ],
+      classes: [
+        {id:id(),name:'MATH 117 – Calculus 1',day:'Mon',start:'08:30',end:'09:20',loc:'MC 4045',color:'#C06A45'},
+        {id:id(),name:'ECE 105 – Classical Mechanics',day:'Mon',start:'10:30',end:'11:20',loc:'PHY 313',color:'#7B8A66'},
+        {id:id(),name:'ECE 140 – Linear Circuits',day:'Mon',start:'13:30',end:'14:50',loc:'E5 6004',color:'#CA9A3E'},
+        {id:id(),name:'MATH 115 – Linear Algebra',day:'Tue',start:'08:30',end:'09:50',loc:'MC 4045',color:'#6E8499'},
+        {id:id(),name:'ECE 150 – Fundamentals of Programming',day:'Tue',start:'11:30',end:'12:50',loc:'E7 4053',color:'#B5754F'},
+        {id:id(),name:'MATH 117 – Calculus 1',day:'Wed',start:'08:30',end:'09:20',loc:'MC 4045',color:'#C06A45'},
+        {id:id(),name:'ECE 105 – Classical Mechanics',day:'Wed',start:'10:30',end:'11:20',loc:'PHY 313',color:'#7B8A66'},
+        {id:id(),name:'ECE 190 – Engineering Profession',day:'Wed',start:'13:30',end:'14:20',loc:'EIT 1015',color:'#8C7B62'},
+        {id:id(),name:'MATH 115 – Linear Algebra',day:'Thu',start:'08:30',end:'09:50',loc:'MC 4045',color:'#6E8499'},
+        {id:id(),name:'MATH 117 – Tutorial',day:'Thu',start:'10:30',end:'11:20',loc:'MC 4042',color:'#C06A45'},
+        {id:id(),name:'ECE 150 – Fundamentals of Programming',day:'Thu',start:'11:30',end:'12:50',loc:'E7 4053',color:'#B5754F'},
+        {id:id(),name:'MATH 117 – Calculus 1',day:'Fri',start:'08:30',end:'09:20',loc:'MC 4045',color:'#C06A45'},
+        {id:id(),name:'ECE 105 – Classical Mechanics',day:'Fri',start:'10:30',end:'11:20',loc:'PHY 313',color:'#7B8A66'},
+        {id:id(),name:'ECE 140 – Lab',day:'Fri',start:'14:30',end:'16:50',loc:'E3 2369',color:'#CA9A3E'},
+      ],
+      dates: [
+        {id:id(),title:'Residence move-in day',date:'2026-09-01'},
+        {id:id(),title:'EngFrosh / Orientation Week',date:'2026-09-01'},
+        {id:id(),title:'1A classes begin',date:'2026-09-08'},
+        {id:id(),title:'Course add/drop deadline',date:'2026-09-21'},
+        {id:id(),title:'Tuition due',date:'2026-09-30'},
+        {id:id(),title:'MATH 117 Midterm',date:'2026-10-15'},
+        {id:id(),title:'Fall Reading Week',date:'2026-10-26'},
+        {id:id(),title:'ECE 150 Project due',date:'2026-11-13'},
+        {id:id(),title:'Last day of 1A classes',date:'2026-12-04'},
+        {id:id(),title:'Final exams begin',date:'2026-12-07'},
+      ],
+      recipes: [
+        {id:id(),type:'food',name:'Microwave mug omelette',time:'5 min',ingredients:['2 eggs','Splash of milk','Shredded cheese','Salt + pepper','Diced ham or spinach'],steps:['Beat eggs + milk in a mug','Stir in cheese and add-ins','Microwave 1 min, stir','Microwave 45s more until set']},
+        {id:id(),type:'food',name:'Dorm ramen upgrade',time:'10 min',ingredients:['1 pack instant ramen','1 egg','Handful frozen veg','Soy sauce','Sriracha'],steps:['Boil noodles + veg 3 min','Crack egg in, stir gently','Add half the seasoning','Top with soy + sriracha']},
+        {id:id(),type:'food',name:'No-cook overnight oats',time:'2 min + overnight',ingredients:['1/2 cup oats','1/2 cup milk','1 tbsp peanut butter','Honey','Banana'],steps:['Mix oats + milk in a jar','Stir in PB + honey','Fridge overnight','Top with banana']},
+        {id:id(),type:'drink',name:'Iced brown sugar latte',time:'5 min',ingredients:['1 shot coffee / espresso','1 tbsp brown sugar','Splash hot water','Milk','Ice'],steps:['Dissolve sugar in hot water','Add coffee, stir','Fill glass with ice + milk','Pour over and stir']},
+        {id:id(),type:'drink',name:'Electrolyte study water',time:'2 min',ingredients:['Cold water','Pinch of salt','Squeeze of lemon','1 tsp honey'],steps:['Combine in bottle','Shake well','Sip during late-night study']},
+      ],
+      workout: {
+        Mon:{label:'Push',items:[
+          {id:id(),name:'Bench press',sets:4,reps:8,weight:115,prev:110,done:false},
+          {id:id(),name:'Overhead press',sets:3,reps:10,weight:65,prev:65,done:false},
+          {id:id(),name:'Incline dumbbell',sets:3,reps:12,weight:40,prev:35,done:false},
+          {id:id(),name:'Tricep pushdown',sets:3,reps:15,weight:50,prev:50,done:false},
+        ]},
+        Tue:{label:'Pull',items:[
+          {id:id(),name:'Deadlift',sets:3,reps:5,weight:185,prev:175,done:false},
+          {id:id(),name:'Pull-ups',sets:4,reps:8,weight:0,prev:0,done:false},
+          {id:id(),name:'Barbell row',sets:3,reps:10,weight:95,prev:95,done:false},
+          {id:id(),name:'Bicep curls',sets:3,reps:12,weight:30,prev:25,done:false},
+        ]},
+        Wed:{label:'Legs',items:[
+          {id:id(),name:'Back squat',sets:4,reps:6,weight:155,prev:145,done:false},
+          {id:id(),name:'Romanian deadlift',sets:3,reps:10,weight:115,prev:115,done:false},
+          {id:id(),name:'Leg press',sets:3,reps:12,weight:230,prev:220,done:false},
+          {id:id(),name:'Calf raises',sets:4,reps:15,weight:90,prev:90,done:false},
+        ]},
+        Thu:{label:'Rest',items:[]},
+        Fri:{label:'Upper',items:[
+          {id:id(),name:'Incline bench',sets:4,reps:8,weight:95,prev:95,done:false},
+          {id:id(),name:'Lat pulldown',sets:3,reps:12,weight:110,prev:100,done:false},
+          {id:id(),name:'Lateral raises',sets:3,reps:15,weight:15,prev:15,done:false},
+        ]},
+        Sat:{label:'Cardio + core',items:[
+          {id:id(),name:'Run (intervals)',sets:1,reps:1,weight:0,prev:0,done:false},
+          {id:id(),name:'Plank (sec)',sets:3,reps:45,weight:0,prev:0,done:false},
+          {id:id(),name:'Hanging leg raise',sets:3,reps:12,weight:0,prev:0,done:false},
+        ]},
+        Sun:{label:'Rest',items:[]},
+      },
+      habits: [
+        {id:id(),name:'Drink 8 glasses of water',done:false,streak:3},
+        {id:id(),name:'Read 20 minutes',done:true,streak:5},
+        {id:id(),name:'Make the bed',done:true,streak:8},
+        {id:id(),name:'Hit the gym',done:false,streak:2},
+        {id:id(),name:'No phone in bed',done:false,streak:1},
+        {id:id(),name:'Take vitamins',done:true,streak:6},
+      ],
+      photos: [],
+      notes: [
+        {id:id(),title:'ECE 150 \u2013 C++ notes',body:'Pointers are on week 4 \u2014 review before tutorial. Office hours: MC 3rd floor. Linux servers: linux.student.cs.uwaterloo.ca. Assignments auto-graded, submit before midnight.',ts:Date.now()-86400000},
+        {id:id(),title:'1A survival brain dump',body:'- email academic advisor re: course load\n- best coffee: DP (Davis Centre) or the Plaza\n- ECE Society Discord for study groups\n- MathSoc game room in MC is free + open\n- WUSA food bank in SLC no questions asked\n- grab the free printing on the 1st floor DC',ts:Date.now()-3600000},
+      ],
+      trash: [],
+    };
+  }
+
+  _purgeTrash(d){
+    const week=7*24*3600*1000;
+    d.trash=(d.trash||[]).filter(x=>Date.now()-x.deletedAt<week);
+  }
+
+  componentDidMount(){
+    this._onR = ()=>this.setState({width:window.innerWidth});
+    window.addEventListener('resize',this._onR);
+    if(window.supabase){
+      this._supa = window.supabase.createClient(this.SUPA_URL, this.SUPA_KEY);
+    }
+    this.loadFromCloud();
+    this._onSel=()=>{
+      if(!this.state.noteOpen)return;
+      try{this.setState({noteActiveFmt:{bold:document.queryCommandState('bold'),italic:document.queryCommandState('italic'),underline:document.queryCommandState('underline'),strike:document.queryCommandState('strikeThrough'),ul:document.queryCommandState('insertUnorderedList'),ol:document.queryCommandState('insertOrderedList')}});}catch(e){}
+    };
+    document.addEventListener('selectionchange',this._onSel);
+  }
+  componentWillUnmount(){ window.removeEventListener('resize',this._onR); if(this._onSel) document.removeEventListener('selectionchange',this._onSel); if(this._noteBodyEl&&this._noteBodyHandler){this._noteBodyEl.removeEventListener('input',this._noteBodyHandler);} }
+  componentDidUpdate(pv){
+    // dc-runtime only passes prevProps (one arg) — prevState is unavailable.
+    // Track noteOpen changes manually.
+    const prev=this._prevNoteOpen;
+    this._prevNoteOpen=this.state.noteOpen;
+    if(prev===this.state.noteOpen) return;
+    // noteOpen changed: tear down old listener
+    if(this._noteBodyEl&&this._noteBodyHandler){
+      this._noteBodyEl.removeEventListener('input',this._noteBodyHandler);
+      this._noteBodyEl=null; this._noteBodyHandler=null;
+    }
+    if(this.state.noteOpen){
+      const el=document.querySelector('[data-note-editor]');
+      if(el){
+        const note=this.state.data.notes.find(n=>n.id===this.state.noteOpen);
+        el.innerHTML=(note&&note.body)||'';
+        el.focus();
+        const nid=this.state.noteOpen;
+        this._noteBodyEl=el;
+        this._noteBodyHandler=()=>{if(this._noteBodyEl)this.updateNote(nid,'body',this._noteBodyEl.innerHTML);};
+        el.addEventListener('input',this._noteBodyHandler);
+      }
+    }
+  }
+
+  async loadFromCloud(){
+    if(!this._supa){ this.setState({syncStatus:'Local only'}); return; }
+    const {data:row,error}=await this._supa.from('app_data').select('data').eq('key','anna').single();
+    if(error&&error.code!=='PGRST116'){ console.warn('Cloud load:',error.message); this.setState({syncStatus:'Offline'}); return; }
+    if(row&&row.data&&Object.keys(row.data).length>0){
+      const d=row.data; if(!d.trash) d.trash=[]; this._purgeTrash(d);
+      try{localStorage.setItem('collegeApp_v4',JSON.stringify(d));}catch(e){}
+      this.setState({data:d,syncStatus:'Synced'});
+    } else {
+      this.pushToCloud(this.state.data);
+    }
+  }
+  pushToCloud(data){
+    if(!this._supa)return;
+    this._supa.from('app_data').upsert({key:'anna',data,updated_at:new Date().toISOString()},{onConflict:'key'})
+      .then(({error})=>{
+        if(error){ console.warn('Cloud push:',error.message); this.setState({syncStatus:'Offline'}); }
+        else { this.setState({syncStatus:'Synced'}); }
+      });
+  }
+
+  uid(){ return Math.random().toString(36).slice(2,8); }
+
+  ref(n){ this._r=this._r||{}; return (this._r[n]=this._r[n]||React.createRef()); }
+  setWDraft(v){ this.setState({weightDraft:v}); }
+  startWeight(day,id,cur){ this.setState({editingWeight:day+':'+id, weightDraft:cur>0?String(cur):''}); }
+  setWorkoutDay(k){ this.setState({workoutDay:k}); }
+
+  save(mut){
+    let _d;
+    this.setState(s=>{
+      const data=JSON.parse(JSON.stringify(s.data));
+      if(!data.trash) data.trash=[];
+      mut(data);
+      this._purgeTrash(data);
+      try{localStorage.setItem('collegeApp_v4',JSON.stringify(data));}catch(e){}
+      _d=data; return {data};
+    },()=>this.pushToCloud(_d));
+  }
+
+  nav(screen){ this.setState({screen, recipeOpen:null, noteOpen:null, editRecipe:null, editRecipeImgDraft:null}); if(typeof window!=='undefined') window.scrollTo(0,0); }
+
+  // ---- checklist ----
+  toggleItem(id){ this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it) it.done=!it.done; }); }
+  addItem(cat, label){ if(!label||!label.trim())return; this.save(d=>{ d.checklist.push({id:this.uid(),cat,label:label.trim(),done:false}); }); }
+  delItem(id){ this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'checklist',name:it.label,item:it,deletedAt:Date.now()}); d.checklist=d.checklist.filter(x=>x.id!==id); } }); }
+
+  // ---- classes ----
+  addClass(c){ if(!c.name||!c.name.trim())return; this.save(d=>{ d.classes.push({id:this.uid(),color:'#7B8A66',...c,name:c.name.trim()}); }); this.setState({addingClass:false}); }
+  delClass(id){ this.save(d=>{ d.classes=d.classes.filter(x=>x.id!==id); }); }
+
+  // ---- dates ----
+  addDate(title,date){ if(!title||!title.trim()||!date)return; this.save(d=>{ d.dates.push({id:this.uid(),title:title.trim(),date}); }); }
+  delDate(id){ this.save(d=>{ const it=d.dates.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'date',name:it.title,item:it,deletedAt:Date.now()}); d.dates=d.dates.filter(x=>x.id!==id); } }); }
+
+  // ---- recipes ----
+  addRecipe(r){ if(!r.name||!r.name.trim())return; this.save(d=>{ d.recipes.push({id:this.uid(),type:r.type||'food',name:r.name.trim(),time:r.time||'',img:r.img||null,ingredients:r.ingredients||[],steps:r.steps||[]}); }); this.setState({addingRecipe:false,recipeImgDraft:null}); }
+  setRecipeImgDraft(files){ const f=files&&files[0]; if(!f)return; const r=new FileReader(); r.onload=e=>this.setState({recipeImgDraft:e.target.result}); r.readAsDataURL(f); }
+  delRecipe(id){ const rec=this.state.data.recipes.find(x=>x.id===id); this.save(d=>{ if(rec){ d.trash.push({id:this.uid(),type:'recipe',name:rec.name,item:rec,deletedAt:Date.now()}); } d.recipes=d.recipes.filter(x=>x.id!==id); }); this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}); }
+  updateRecipeInData(id,changes){ this.save(d=>{ const r=d.recipes.find(x=>x.id===id); if(r) Object.assign(r,changes); }); }
+  startEditRecipe(id){ const r=this.state.data.recipes.find(x=>x.id===id); if(!r)return; this.setState({editRecipe:{id:r.id,type:r.type,name:r.name,time:r.time,ingredients:r.ingredients.join('\n'),steps:r.steps.join('\n')},editRecipeImgDraft:r.img||null}); }
+  cancelEditRecipe(){ this.setState({editRecipe:null,editRecipeImgDraft:null}); }
+  updateRecipeField(field,val){ this.setState({editRecipe:{...this.state.editRecipe,[field]:val}}); }
+  saveEditRecipe(){ const er=this.state.editRecipe; if(!er)return; this.updateRecipeInData(er.id,{name:er.name.trim(),type:er.type,time:er.time,img:this.state.editRecipeImgDraft,ingredients:er.ingredients.split('\n').map(s=>s.trim()).filter(Boolean),steps:er.steps.split('\n').map(s=>s.trim()).filter(Boolean)}); this.setState({editRecipe:null,editRecipeImgDraft:null}); }
+
+  // ---- workout ----
+  toggleEx(day,id){ this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.done=!it.done; }); }
+  addEx(day,name,sets,reps){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),sets:+sets||3,reps:+reps||10,weight:0,prev:0,done:false}); }); }
+  delEx(day,id){ this.save(d=>{ d.workout[day].items=d.workout[day].items.filter(x=>x.id!==id); }); }
+  commitWeight(day,id){ const v=parseFloat(this.state.weightDraft); this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it && !isNaN(v)){ it.prev=it.weight; it.weight=v; } }); this.setState({editingWeight:null,weightDraft:''}); }
+
+  // ---- habits ----
+  toggleHabit(id){ this.save(d=>{ const h=d.habits.find(x=>x.id===id); if(h){ h.done=!h.done; h.streak=Math.max(0,(h.streak||0)+(h.done?1:-1)); } }); }
+  addHabit(name){ if(!name||!name.trim())return; this.save(d=>{ d.habits.push({id:this.uid(),name:name.trim(),done:false,streak:0}); }); }
+  delHabit(id){ this.save(d=>{ const it=d.habits.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'habit',name:it.name,item:it,deletedAt:Date.now()}); d.habits=d.habits.filter(x=>x.id!==id); } }); }
+
+  // ---- photos ----
+  addPhotos(files){ if(!files||!files.length)return; Array.from(files).forEach(f=>{ const r=new FileReader(); r.onload=e=>{ this.save(d=>{ d.photos.unshift({id:this.uid(),src:e.target.result,caption:''}); }); }; r.readAsDataURL(f); }); }
+  setCaption(id,v){ this.save(d=>{ const p=d.photos.find(x=>x.id===id); if(p) p.caption=v; }); }
+  delPhoto(id){ this.save(d=>{ d.photos=d.photos.filter(x=>x.id!==id); }); }
+
+  // ---- notes ----
+  newNote(){ const nid=this.uid(); this.save(d=>{ d.notes.unshift({id:nid,title:'',body:'',ts:Date.now()}); }); this.setState({noteOpen:nid}); }
+  updateNote(id,field,v){ this.save(d=>{ const n=d.notes.find(x=>x.id===id); if(n){ n[field]=v; n.ts=Date.now(); } }); }
+  delNote(id){ const note=this.state.data.notes.find(x=>x.id===id); this.save(d=>{ if(note){ d.trash.push({id:this.uid(),type:'note',name:(note.title||'').trim()||'Untitled',item:note,deletedAt:Date.now()}); } d.notes=d.notes.filter(x=>x.id!==id); }); this.setState({noteOpen:null}); }
+
+  restoreFromTrash(tid){
+    this.save(d=>{
+      const e=d.trash.find(x=>x.id===tid); if(!e) return;
+      d.trash=d.trash.filter(x=>x.id!==tid);
+      if(e.type==='note') d.notes.unshift(e.item);
+      else if(e.type==='recipe') d.recipes.unshift(e.item);
+      else if(e.type==='checklist') d.checklist.push(e.item);
+      else if(e.type==='date') d.dates.push(e.item);
+      else if(e.type==='habit') d.habits.push(e.item);
+    });
+  }
+  permDelete(tid){ this.save(d=>{ d.trash=d.trash.filter(x=>x.id!==tid); }); }
+
+  fmtDate(iso){ const d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+  daysUntil(iso){ const d=new Date(iso+'T00:00:00'); const now=new Date(); now.setHours(0,0,0,0); return Math.round((d-now)/86400000); }
+  countLabel(n){ if(n<0) return Math.abs(n)+'d ago'; if(n===0) return 'Today'; if(n===1) return 'Tomorrow'; return 'in '+n+' days'; }
+
+  renderVals(){
+    const d=this.state.data, w=this.state.width;
+    const showSidebar = w>=900;
+    const isPhone = w<700;
+    const screen=this.state.screen;
+    const accents={home:'#C06A45',checklist:'#C06A45',schedule:'#7B8A66',dates:'#CA9A3E',recipes:'#C98E7E',workout:'#6E8499',habits:'#B5754F',photos:'#8C7B62',notes:'#5C6B57',trash:'#9A8C78'};
+    const titles={checklist:'Move-in Checklist',schedule:'Class Schedule',dates:'Key Dates',recipes:'Recipes',workout:'Workout Planner',habits:'Habits',photos:'Photo Board',notes:'Notes',trash:'Trash'};
+    const kickers={checklist:'pack it up',schedule:'this week',dates:'don\u2019t forget',recipes:'food & drinks',workout:'get after it',habits:'one day at a time',photos:'good vibes',notes:'brain dump',trash:'gone but not forgotten'};
+
+    const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const dayFull={Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday',Sun:'Sunday'};
+    const todayIdx=(new Date().getDay()+6)%7; // 0=Mon
+    const todayKey=days[todayIdx];
+
+    // greeting / hero
+    const hr=new Date().getHours();
+    const greeting=(hr<12?'Good morning,':hr<18?'Good afternoon,':'Good evening,')+' Anna';
+    const todayLabel=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+    const todaysClasses=d.classes.filter(c=>c.day===todayKey).sort((a,b)=>a.start.localeCompare(b.start));
+    let nextLabel='NO CLASSES TODAY',nextTitle='Free day',nextSub='Make it count';
+    if(todaysClasses.length){ const c=todaysClasses[0]; nextLabel='UP NEXT \u00b7 '+c.start; nextTitle=c.name; nextSub=c.loc; }
+    const habDone=d.habits.filter(h=>h.done).length;
+    const wToday=d.workout[todayKey]||{items:[],label:''};
+    const wDone=wToday.items.filter(x=>x.done).length;
+
+    // tile subtitles
+    const packDone=d.checklist.filter(x=>x.done).length;
+    const upcoming=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).filter(x=>x.n>=0).sort((a,b)=>a.n-b.n);
+
+    // nav items for sidebar
+    const navDefs=[['home','Today'],['checklist','Checklist'],['schedule','Schedule'],['dates','Key Dates'],['recipes','Recipes'],['workout','Workout'],['habits','Habits'],['photos','Photos'],['notes','Notes'],['trash','Trash']];
+    const navItems=navDefs.map(([k,name])=>{
+      const active=screen===k;
+      return {name, go:()=>this.nav(k), badge:'',
+        style:`display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:${active?600:500};color:${active?'#3B322A':'#6E6253'};background:${active?'#F7EFE0':'transparent'};`,
+        dot:`width:8px;height:8px;border-radius:50%;flex:none;background:${active?accents[k]:'#CFC2A8'};`};
+    });
+
+    // ===== refs & helpers =====
+    const R=['clText','clCat','dateTitle','dateWhen','habit','exName','exSets','exReps','cName','cDay','cStart','cEnd','cLoc','rType','rName','rTime','rIng','rSteps'];
+    const refs={}; R.forEach(n=>refs[n]=this.ref(n));
+    const rv=(n)=>{ const r=refs[n]; return r&&r.current?r.current.value:''; };
+    const clr=(...ns)=>ns.forEach(n=>{ if(refs[n]&&refs[n].current) refs[n].current.value=''; });
+    const enter=(fn)=>(e)=>{ if(e.key==='Enter'){ e.preventDefault(); fn(); } };
+    const isS=(k)=>screen===k;
+
+    // ===== checklist =====
+    const catOrder=['Admin & Accounts','Residence','Clothing — Tops','Clothing — Bottoms & Undergarments','Clothing — Outerwear & Footwear','Sleepwear','Class Supplies','Electronics & Tech','Kitchen','Personal & Health'];
+    const catOptions=[...new Set([...catOrder,...d.checklist.map(x=>x.cat)])];
+    const checklistGroups=catOptions.map(cat=>({cat,catUpper:cat.toUpperCase(),items:d.checklist.filter(x=>x.cat===cat).map(it=>({id:it.id,label:it.label,done:it.done,toggle:()=>this.toggleItem(it.id),del:()=>this.delItem(it.id),boxStyle:`width:22px;height:22px;flex:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?'#C06A45':'#D2C6AE'};background:${it.done?'#C06A45':'transparent'};`,labelStyle:`flex:1;font-size:15px;color:${it.done?'#AEA088':'#3B322A'};text-decoration:${it.done?'line-through':'none'};`}))})).filter(g=>g.items.length);
+    const packPct=Math.round(packDone/Math.max(1,d.checklist.length)*100);
+    const addCLnow=()=>{ const t=rv('clText'); if(!t.trim())return; this.addItem(rv('clCat')||catOptions[0],t); clr('clText'); };
+
+    // ===== schedule =====
+    const week=days.map(k=>{ const cs=d.classes.filter(c=>c.day===k).sort((a,b)=>a.start.localeCompare(b.start)).map(c=>({name:c.name,loc:c.loc,color:c.color,range:c.start+'–'+c.end,del:()=>this.delClass(c.id)})); return {key:k,name:dayFull[k],isToday:k===todayKey,classes:cs,hasClasses:cs.length>0,empty:cs.length===0,nameStyle:`font-family:'Newsreader',serif;font-size:18px;color:${k===todayKey?'#7B8A66':'#3B322A'};`}; });
+    const addClassNow=()=>{ const n=rv('cName'); if(!n.trim())return; this.addClass({name:n,day:rv('cDay')||'Mon',start:rv('cStart')||'09:00',end:rv('cEnd')||'09:50',loc:rv('cLoc'),color:'#7B8A66'}); clr('cName','cLoc'); };
+
+    // ===== dates =====
+    const datesList=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).sort((a,b)=>a.n-b.n).map(x=>{ const urgent=x.n>=0&&x.n<=3, past=x.n<0; const bg=past?'#E4DAC6':urgent?'#C06A45':'#CA9A3E'; const fg=past?'#9A8C78':'#F7EFE0'; return {id:x.id,title:x.title,dateLabel:this.fmtDate(x.date),count:this.countLabel(x.n),del:()=>this.delDate(x.id),badgeStyle:`flex:none;min-width:88px;text-align:center;background:${bg};color:${fg};font-size:12px;font-weight:600;border-radius:10px;padding:9px 10px;`,titleStyle:`flex:1;font-family:'Newsreader',serif;font-size:18px;color:${past?'#AEA088':'#3B322A'};`}; });
+    const addDateNow=()=>{ const t=rv('dateTitle'); if(!t.trim()||!rv('dateWhen'))return; this.addDate(t,rv('dateWhen')); clr('dateTitle','dateWhen'); };
+
+    // ===== recipes =====
+    const recipeTab=this.state.recipeTab;
+    const tabStyle=(on)=>`padding:9px 20px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;background:${on?'#C98E7E':'transparent'};color:${on?'#F7EFE0':'#8A7E6F'};`;
+    const recipesList=d.recipes.filter(r=>r.type===recipeTab).map(r=>({id:r.id,name:r.name,time:r.time,ingCount:r.ingredients.length+' ingredients',open:()=>this.setState({recipeOpen:r.id})}));
+    const ro=d.recipes.find(r=>r.id===this.state.recipeOpen);
+    const openRecipe=ro?{id:ro.id,name:ro.name,time:ro.time,img:ro.img||null,hasImg:!!ro.img,ingredients:ro.ingredients,steps:ro.steps.map((t,i)=>({num:i+1,text:t})),del:()=>this.delRecipe(ro.id),close:()=>this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}),edit:()=>this.startEditRecipe(ro.id)}:null;
+    const er=this.state.editRecipe;
+    const editRecipeData=er?{name:er.name,type:er.type,time:er.time,ingredients:er.ingredients,steps:er.steps,img:this.state.editRecipeImgDraft,hasImg:!!this.state.editRecipeImgDraft,setName:(e)=>this.updateRecipeField('name',e.target.value),setType:(e)=>this.updateRecipeField('type',e.target.value),setTime:(e)=>this.updateRecipeField('time',e.target.value),setIngredients:(e)=>this.updateRecipeField('ingredients',e.target.value),setSteps:(e)=>this.updateRecipeField('steps',e.target.value),save:()=>this.saveEditRecipe(),cancel:()=>this.cancelEditRecipe(),onImgChange:(e)=>{const f=e.target.files&&e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>this.setState({editRecipeImgDraft:ev.target.result});fr.readAsDataURL(f);e.target.value='';},clearImg:()=>this.setState({editRecipeImgDraft:null})}:null;
+    const addRecipeNow=()=>{ const n=rv('rName'); if(!n.trim())return; this.addRecipe({type:rv('rType')||'food',name:n,time:rv('rTime'),img:this.state.recipeImgDraft,ingredients:rv('rIng').split('\n').map(s=>s.trim()).filter(Boolean),steps:rv('rSteps').split('\n').map(s=>s.trim()).filter(Boolean)}); clr('rName','rTime','rIng','rSteps'); };
+
+    // ===== workout =====
+    const wDay=this.state.workoutDay||todayKey;
+    const workoutTabs=days.map(k=>({key:k,label:k,go:()=>this.setWorkoutDay(k),style:`flex:none;padding:9px 15px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;background:${k===wDay?'#6E8499':'#FBF5EA'};color:${k===wDay?'#F7EFE0':'#6E6253'};border:1px solid ${k===wDay?'#6E8499':'#E7DCC7'};`,dotShow:k===todayKey,dotStyle:`width:5px;height:5px;border-radius:50%;margin:4px auto 0;background:${k===wDay?'#F7EFE0':'#6E8499'};`}));
+    const wd=d.workout[wDay]||{label:'',items:[]};
+    const wDoneN=wd.items.filter(x=>x.done).length;
+    const editing=this.state.editingWeight;
+    const workoutItems=wd.items.map(it=>({id:it.id,name:it.name,scheme:it.sets+' × '+it.reps,done:it.done,editing:editing===wDay+':'+it.id,notEditing:editing!==wDay+':'+it.id,weightLabel:it.weight>0?it.weight+' lb':'BW',hasPrev:!!(it.prev&&it.prev!==it.weight),prevLabel:'was '+it.prev+' lb',toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),startW:()=>this.startWeight(wDay,it.id,it.weight),commitW:()=>this.commitWeight(wDay,it.id),onKey:enter(()=>this.commitWeight(wDay,it.id)),boxStyle:`width:26px;height:26px;flex:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?'#6E8499':'#D2C6AE'};background:${it.done?'#6E8499':'transparent'};`,nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#AEA088':'#3B322A'};text-decoration:${it.done?'line-through':'none'};`,chipStyle:`cursor:pointer;font-size:13px;font-weight:600;color:${it.weight>0?'#3B322A':'#8A7E6F'};background:#EFE6D5;border-radius:9px;padding:7px 11px;white-space:nowrap;`}));
+    const addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exSets'),rv('exReps')); clr('exName','exSets','exReps'); };
+
+    // ===== habits =====
+    const habitsList=d.habits.map(h=>({id:h.id,name:h.name,done:h.done,streakLabel:(h.streak||0)+'-day streak',toggle:()=>this.toggleHabit(h.id),del:()=>this.delHabit(h.id),boxStyle:`width:28px;height:28px;flex:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${h.done?'#B5754F':'#D2C6AE'};background:${h.done?'#B5754F':'transparent'};`,nameStyle:`flex:1;font-size:15px;color:${h.done?'#AEA088':'#3B322A'};text-decoration:${h.done?'line-through':'none'};`}));
+    const habitPct=Math.round(habDone/Math.max(1,d.habits.length)*100);
+    const addHabitNow=()=>{ const n=rv('habit'); if(!n.trim())return; this.addHabit(n); clr('habit'); };
+
+    // ===== photos =====
+    const photosList=d.photos.map(p=>({id:p.id,src:p.src,hasSrc:!!(p.src&&p.src.length>4),caption:p.caption,del:()=>this.delPhoto(p.id),setCap:(e)=>this.setCaption(p.id,e.target.value)}));
+    const addPhotosNow=(e)=>{ this.addPhotos(e.target.files); e.target.value=''; };
+    const photoCols=w>=900?4:w>=560?3:2;
+
+    // ===== trash =====
+    const trashItems=(d.trash||[]).slice().sort((a,b)=>b.deletedAt-a.deletedAt);
+    const typeLabel={note:'Note',recipe:'Recipe',checklist:'Checklist',date:'Key Date',habit:'Habit'};
+    const typeColor={note:'#5C6B57',recipe:'#C98E7E',checklist:'#C06A45',date:'#CA9A3E',habit:'#B5754F'};
+    const trashList=trashItems.map(e=>{
+      const daysLeft=Math.ceil((7*24*3600*1000-(Date.now()-e.deletedAt))/86400000);
+      return {id:e.id,name:e.name,typeLabel:typeLabel[e.type]||e.type,daysLeft,expiry:daysLeft<=1?'expires today':('expires in '+daysLeft+' days'),typeStyle:`font-size:11px;font-weight:600;letter-spacing:.08em;padding:3px 8px;border-radius:6px;background:${typeColor[e.type]||'#9A8C78'}22;color:${typeColor[e.type]||'#9A8C78'};`,restore:()=>this.restoreFromTrash(e.id),perm:()=>this.permDelete(e.id)};
+    });
+
+    // ===== notes =====
+    const stripHtml=(h)=>(h||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').trim();
+    const notesList=d.notes.map(n=>({id:n.id,title:(n.title||'').trim()||'Untitled',snippet:(stripHtml(n.body).slice(0,100))||'Empty note',open:()=>this.setState({noteOpen:n.id}),del:()=>this.delNote(n.id)}));
+    const no=d.notes.find(n=>n.id===this.state.noteOpen);
+    const openNote=no?{title:no.title,body:no.body,close:()=>this.setState({noteOpen:null}),del:()=>this.delNote(no.id),setTitle:(e)=>this.updateNote(no.id,'title',e.target.value),onInput:(e)=>this.updateNote(no.id,'body',e.currentTarget.innerHTML)}:null;
+    const execCmd=(cmd,val)=>{document.execCommand(cmd,false,val||null);};
+    const fmt=this.state.noteActiveFmt||{};
+    const fmtBg=(k)=>fmt[k]?'background:#E0D4BE;border-radius:7px;':'';
+    // selectionchange doesn't reliably fire after execCommand — update active states manually
+    const updateFmt=()=>{try{this.setState({noteActiveFmt:{bold:document.queryCommandState('bold'),italic:document.queryCommandState('italic'),underline:document.queryCommandState('underline'),strike:document.queryCommandState('strikeThrough'),ul:document.queryCommandState('insertUnorderedList'),ol:document.queryCommandState('insertOrderedList')}});}catch(ex){}};
+    const saveBody=()=>{if(this.state.noteOpen&&this._noteBodyEl)this.updateNote(this.state.noteOpen,'body',this._noteBodyEl.innerHTML);};
+    const noteCmd={
+      bold:(e)=>{e.preventDefault();execCmd('bold');updateFmt();saveBody();},
+      italic:(e)=>{e.preventDefault();execCmd('italic');updateFmt();saveBody();},
+      underline:(e)=>{e.preventDefault();execCmd('underline');updateFmt();saveBody();},
+      strike:(e)=>{e.preventDefault();execCmd('strikeThrough');updateFmt();saveBody();},
+      ul:(e)=>{e.preventDefault();execCmd('insertUnorderedList');updateFmt();saveBody();},
+      ol:(e)=>{e.preventDefault();execCmd('insertOrderedList');updateFmt();saveBody();},
+      hlYellow:(e)=>{e.preventDefault();execCmd('hiliteColor','#FFF59D');saveBody();},
+      hlGreen:(e)=>{e.preventDefault();execCmd('hiliteColor','#C8E6C9');saveBody();},
+      hlBlue:(e)=>{e.preventDefault();execCmd('hiliteColor','#BBDEFB');saveBody();},
+      hlPink:(e)=>{e.preventDefault();execCmd('hiliteColor','#F8BBD9');saveBody();},
+      hlOrange:(e)=>{e.preventDefault();execCmd('hiliteColor','#FFE0B2');saveBody();},
+      removeFormat:(e)=>{e.preventDefault();execCmd('removeFormat');try{execCmd('hiliteColor','inherit');}catch(ex){}try{execCmd('backColor','inherit');}catch(ex){}updateFmt();saveBody();},
+      blur:()=>saveBody(),
+      keyDown:(e)=>{const m=e.metaKey||e.ctrlKey;if(!m)return;if(e.key==='b'){e.preventDefault();execCmd('bold');updateFmt();}else if(e.key==='i'){e.preventDefault();execCmd('italic');updateFmt();}else if(e.key==='u'){e.preventDefault();execCmd('underline');updateFmt();}else if(e.key==='z'){e.preventDefault();execCmd(e.shiftKey?'redo':'undo');}else if(e.key==='y'){e.preventDefault();execCmd('redo');}},
+    };
+    const noteFmtBoldStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-weight:700;font-size:14px;color:#3B322A;${fmtBg('bold')}`;
+    const noteFmtItalicStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-style:italic;font-size:14px;color:#3B322A;${fmtBg('italic')}`;
+    const noteFmtUnderlineStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#3B322A;text-decoration:underline;${fmtBg('underline')}`;
+    const noteFmtStrikeStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#3B322A;text-decoration:line-through;${fmtBg('strike')}`;
+    const noteFmtUlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:16px;color:#3B322A;${fmtBg('ul')}`;
+    const noteFmtOlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;color:#3B322A;font-weight:600;${fmtBg('ol')}`;
+
+    return {
+      showSidebar, isPhone,
+      homeVisible:isS('home'),
+      isChecklist:isS('checklist'),isSchedule:isS('schedule'),isDates:isS('dates'),
+      isWorkout:isS('workout'),isHabits:isS('habits'),isPhotos:isS('photos'),
+      isRecipes:isS('recipes'),isNotes:isS('notes'),isTrash:isS('trash'),
+      // checklist
+      checklistGroups,packPct,packText:packDone+' of '+d.checklist.length+' packed',catOptions,
+      refClText:refs.clText,refClCat:refs.clCat,addCLnow,onAddCLKey:enter(addCLnow),
+      // schedule
+      week,addingClass:this.state.addingClass,addClassLabel:this.state.addingClass?'Close':'+ Add class',
+      toggleAddClass:()=>this.setState({addingClass:!this.state.addingClass}),dayOptions:days,addClassNow,
+      refCName:refs.cName,refCDay:refs.cDay,refCStart:refs.cStart,refCEnd:refs.cEnd,refCLoc:refs.cLoc,
+      // dates
+      datesList,refDateTitle:refs.dateTitle,refDateWhen:refs.dateWhen,addDateNow,onAddDateKey:enter(addDateNow),
+      // recipes
+      recipeTab,tabFoodStyle:tabStyle(recipeTab==='food'),tabDrinkStyle:tabStyle(recipeTab==='drink'),
+      recTabFood:()=>this.setState({recipeTab:'food',recipeOpen:null}),recTabDrink:()=>this.setState({recipeTab:'drink',recipeOpen:null}),
+      recipesList,openRecipe,editRecipeData,showRecipeList:isS('recipes')&&!openRecipe&&!er,recipeDetailShown:isS('recipes')&&!!openRecipe&&!er,editingRecipeShown:isS('recipes')&&!!er&&!!this.state.recipeOpen,
+      addingRecipe:this.state.addingRecipe,showAddRecipe:()=>this.setState({addingRecipe:true}),hideAddRecipe:()=>this.setState({addingRecipe:false}),
+      addRecipeNow,refRType:refs.rType,refRName:refs.rName,refRTime:refs.rTime,refRIng:refs.rIng,refRSteps:refs.rSteps,
+      recipeImgDraft:this.state.recipeImgDraft,hasRecipeImgDraft:!!this.state.recipeImgDraft,
+      onRecipeImgChange:(e)=>{this.setRecipeImgDraft(e.target.files);e.target.value='';},
+      clearRecipeImg:()=>this.setState({recipeImgDraft:null}),
+      // workout
+      workoutTabs,workoutLabel:wd.label,workoutDayLabel:dayFull[wDay],
+      workoutItems,workoutHasItems:wd.items.length>0,workoutEmpty:wd.items.length===0,
+      workoutDoneText:wd.items.length?(wDoneN+' of '+wd.items.length+' done'):'Recovery day — rest up',
+      weightDraft:this.state.weightDraft,onWDraft:(e)=>this.setWDraft(e.target.value),
+      refExName:refs.exName,refExSets:refs.exSets,refExReps:refs.exReps,addExNow,onAddExKey:enter(addExNow),
+      // habits
+      habitsList,habitPct,habitDoneText:habDone+' of '+d.habits.length+' done today',
+      refHabit:refs.habit,addHabitNow,onAddHabitKey:enter(addHabitNow),
+      // photos
+      photosList,photosEmpty:isS('photos')&&d.photos.length===0,photosHas:d.photos.length>0,
+      photoColStyle:'column-count:'+photoCols+';column-gap:14px;',addPhotosNow,
+      // notes
+      notesList,openNote,noteCmd,notesListShown:isS('notes')&&!openNote,noteEditorShown:isS('notes')&&!!openNote,noteFmtBoldStyle,noteFmtItalicStyle,noteFmtUnderlineStyle,noteFmtStrikeStyle,noteFmtUlStyle,noteFmtOlStyle,
+      goNewNote:()=>this.newNote(),notesEmpty:isS('notes')&&!openNote&&d.notes.length===0,
+      // trash
+      trashList,trashEmpty:isS('trash')&&trashItems.length===0,
+      contentMax: showSidebar?'960px':'620px',
+      contentPad: isPhone?'24px 18px':'40px 32px',
+      tileCols: w>=900?'repeat(2,1fr)':w>=560?'repeat(2,1fr)':'repeat(2,1fr)',
+      navItems,
+      isHome: screen==='home',
+      showHeader: screen!=='home',
+      showBottomBar:false,
+      accent: accents[screen]||'#C06A45',
+      headerTitle: titles[screen]||'',
+      headerKicker: kickers[screen]||'',
+      greeting, todayLabel,
+      nextLabel, nextTitle, nextSub,
+      habitStat: habDone+' / '+d.habits.length,
+      workoutStat: wToday.items.length?(wToday.label):('Rest'),
+      subChecklist: packDone+' of '+d.checklist.length+' packed',
+      subSchedule: todaysClasses.length?(todaysClasses.length+' class'+(todaysClasses.length>1?'es':'')+' today'):'No class today',
+      subDates: upcoming.length?(upcoming[0].title+' '+this.countLabel(upcoming[0].n)):'Nothing upcoming',
+      subRecipes: d.recipes.length+' saved',
+      subWorkout: wToday.items.length?(wToday.label+' \u00b7 '+(wToday.items.length-wDone)+' left'):'Rest day',
+      subHabits: habDone+' of '+d.habits.length+' done today',
+      subPhotos: d.photos.length?(d.photos.length+' pinned'):'Add your first',
+      subNotes: d.notes.length+' note'+(d.notes.length===1?'':'s'),
+      subTrash: trashItems.length?(trashItems.length+' item'+(trashItems.length===1?'':'s')):'Empty',
+      // nav handlers
+      goHome:()=>this.nav('home'), goChecklist:()=>this.nav('checklist'), goSchedule:()=>this.nav('schedule'),
+      goDates:()=>this.nav('dates'), goRecipes:()=>this.nav('recipes'), goWorkout:()=>this.nav('workout'),
+      goHabits:()=>this.nav('habits'), goPhotos:()=>this.nav('photos'), goNotes:()=>this.nav('notes'),
+      goTrash:()=>this.nav('trash'),
+      syncStatus: this.state.syncStatus,
+    };
+  }
+}
+</script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/anna-s-desk/sw.js');</script>
+</body>
+</html>

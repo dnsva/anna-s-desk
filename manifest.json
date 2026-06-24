@@ -1,0 +1,14 @@
+{
+  "name": "Anna's Desk",
+  "short_name": "Anna's Desk",
+  "description": "Personal planner — 1A fall 2026",
+  "start_url": "/anna-s-desk/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F0E6D3",
+  "theme_color": "#F0E6D3",
+  "icons": [
+    { "src": "/anna-s-desk/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/anna-s-desk/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

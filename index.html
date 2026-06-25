@@ -74,7 +74,10 @@
               <div style="font-family:'Caveat',cursive;font-size:21px;color:#C06A45;white-space:nowrap;">{{ todayLabel }}</div>
               <div style="font-family:'Newsreader',serif;font-size:34px;line-height:1.05;color:#3B322A;margin-top:2px;">{{ greeting }}</div>
             </div>
-            <div style="width:46px;height:46px;flex:none;border-radius:50%;background:#C98E7E;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;color:#F7EFE0;font-size:20px;">A</div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:none;">
+              <div style="width:46px;height:46px;border-radius:50%;background:#C98E7E;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;color:#F7EFE0;font-size:20px;">A</div>
+              <sc-if value="{{ !showSidebar }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#B6A88F;white-space:nowrap;">{{ syncStatus }}</div></sc-if>
+            </div>
           </div>
 
           <!-- hero today card -->

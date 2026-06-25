@@ -76,7 +76,7 @@
             </div>
             <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:none;">
               <div style="width:46px;height:46px;border-radius:50%;background:#C98E7E;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;color:#F7EFE0;font-size:20px;">A</div>
-              <sc-if value="{{ !showSidebar }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#B6A88F;white-space:nowrap;">{{ syncStatus }}</div></sc-if>
+              <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#B6A88F;white-space:nowrap;">{{ syncStatus }}</div></sc-if>
             </div>
           </div>
 
@@ -1060,7 +1060,7 @@ class Component extends DCLogic {
     const noteFmtOlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;color:#3B322A;font-weight:600;${fmtBg('ol')}`;
 
     return {
-      showSidebar, isPhone,
+      showSidebar, isPhone, isMobile:!showSidebar,
       homeVisible:isS('home'),
       isChecklist:isS('checklist'),isSchedule:isS('schedule'),isDates:isS('dates'),
       isWorkout:isS('workout'),isHabits:isS('habits'),isPhotos:isS('photos'),

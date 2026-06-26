@@ -407,13 +407,13 @@
           <sc-if value="{{ workoutHasItems }}" hint-placeholder-val="{{ true }}">
             <div style="display:flex;flex-direction:column;gap:9px;">
               <sc-for list="{{ workoutItems }}" as="ex" hint-placeholder-count="4">
-                <div style="display:flex;align-items:center;gap:13px;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:15px;padding:13px 15px;">
+                <div style="display:flex;align-items:center;gap:13px;background:{{ ex.cardBg }};border:1px solid {{ ex.cardBorder }};border-radius:15px;padding:13px 15px;">
                   <div onClick="{{ ex.toggle }}" style="{{ ex.boxStyle }}">
                     <sc-if value="{{ ex.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #EBF3FB;border-bottom:2px solid #EBF3FB;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
                   </div>
                   <div style="flex:1;min-width:0;">
-                    <div style="{{ ex.nameStyle }}">{{ ex.name }}</div>
-                    <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ ex.scheme }}<sc-if value="{{ ex.hasPrev }}" hint-placeholder-val="{{ false }}"> · {{ ex.prevLabel }}</sc-if></div>
+                    <div style="{{ ex.nameStyle }}">{{ ex.name }}<sc-if value="{{ ex.isClass }}" hint-placeholder-val="{{ false }}"><span style="margin-left:7px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;background:#7B8A6622;color:#7B8A66;vertical-align:middle;">CLASS</span></sc-if></div>
+                    <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ ex.subtitle }}</div>
                   </div>
                   <sc-if value="{{ ex.editing }}" hint-placeholder-val="{{ false }}">
                     <input name="weight" value="{{ weightDraft }}" onChange="{{ onWDraft }}" onKeyDown="{{ ex.onKey }}" onBlur="{{ ex.commitW }}" autofocus="true" placeholder="lb" style="width:74px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #6E8499;border-radius:9px;padding:7px 9px;outline:none;">
@@ -731,36 +731,52 @@ class Component extends DCLogic {
         {id:id(),type:'drink',name:'Electrolyte study water',time:'2 min',ingredients:['Cold water','Pinch of salt','Squeeze of lemon','1 tsp honey'],steps:['Combine in bottle','Shake well','Sip during late-night study']},
       ],
       workout: {
-        Mon:{label:'Push',items:[
-          {id:id(),name:'Bench press',sets:4,reps:8,weight:115,prev:110,done:false},
-          {id:id(),name:'Overhead press',sets:3,reps:10,weight:65,prev:65,done:false},
-          {id:id(),name:'Incline dumbbell',sets:3,reps:12,weight:40,prev:35,done:false},
-          {id:id(),name:'Tricep pushdown',sets:3,reps:15,weight:50,prev:50,done:false},
+        Mon:{label:'Legs',items:[
+          {id:id(),name:'Back Squat',sets:7,reps:5,weight:0,prev:0,done:false,scheme:'1×12 bar · 1×12 10lb/side · 5×5 32.5lb/side'},
+          {id:id(),name:'Leg Extensions',sets:4,reps:12,weight:0,prev:0,done:false,scheme:'1×12 warmup · 2×12-15 32kg · 1×failure dropset 36kg'},
+          {id:id(),name:'Pendulum Squat',sets:4,reps:10,weight:0,prev:0,done:false,scheme:'1×12 warmup · 3×8-12 45lb'},
+          {id:id(),name:'Pilates',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Kimberly',classTime:'5:30'},
+          {id:id(),name:'Rhythm and Beats',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Kim',classTime:'5:30'},
+          {id:id(),name:'Sculpt',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Savahanna',classTime:'5:45'},
         ]},
         Tue:{label:'Pull',items:[
-          {id:id(),name:'Deadlift',sets:3,reps:5,weight:185,prev:175,done:false},
-          {id:id(),name:'Pull-ups',sets:4,reps:8,weight:0,prev:0,done:false},
-          {id:id(),name:'Barbell row',sets:3,reps:10,weight:95,prev:95,done:false},
-          {id:id(),name:'Bicep curls',sets:3,reps:12,weight:30,prev:25,done:false},
+          {id:id(),name:'Barbell Curls',sets:3,reps:0,weight:0,prev:0,done:false,scheme:'3×failure (40lb)'},
+          {id:id(),name:'Single Arm Dumbbell Row',sets:3,reps:12,weight:0,prev:0,done:false,scheme:'3×12 (32.5-35lb)'},
+          {id:id(),name:'Face Pulls',sets:3,reps:13,weight:0,prev:0,done:false,scheme:'3×12-15 (80lb) · last set to failure'},
+          {id:id(),name:'Standing Dumbbell Bicep Curls',sets:3,reps:10,weight:0,prev:0,done:false,scheme:'3×8-12 (20lb)'},
+          {id:id(),name:'TRX',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Savahanna',classTime:'5:30'},
         ]},
-        Wed:{label:'Legs',items:[
-          {id:id(),name:'Back squat',sets:4,reps:6,weight:155,prev:145,done:false},
-          {id:id(),name:'Romanian deadlift',sets:3,reps:10,weight:115,prev:115,done:false},
-          {id:id(),name:'Leg press',sets:3,reps:12,weight:230,prev:220,done:false},
-          {id:id(),name:'Calf raises',sets:4,reps:15,weight:90,prev:90,done:false},
+        Wed:{label:'Push',items:[
+          {id:id(),name:'Overhead Barbell Press',sets:7,reps:5,weight:0,prev:0,done:false,scheme:'2×12 20lb · 5×5 40lb'},
+          {id:id(),name:'Skull Crushers',sets:7,reps:5,weight:0,prev:0,done:false,scheme:'2×12 20lb · 5×5 40lb'},
+          {id:id(),name:'Tricep Pushdown',sets:3,reps:0,weight:0,prev:0,done:false,scheme:'3×failure (20lb resistance)'},
+          {id:id(),name:'Dumbbell Shoulder Press',sets:4,reps:9,weight:0,prev:0,done:false,scheme:'4×8-10 (22.5lb)'},
+          {id:id(),name:'Bench Dips',sets:3,reps:15,weight:0,prev:0,done:false,scheme:'3×15'},
+          {id:id(),name:'Pec Fly',sets:2,reps:13,weight:0,prev:0,done:false,scheme:'2×12-15 (60lb)'},
         ]},
-        Thu:{label:'Rest',items:[]},
-        Fri:{label:'Upper',items:[
-          {id:id(),name:'Incline bench',sets:4,reps:8,weight:95,prev:95,done:false},
-          {id:id(),name:'Lat pulldown',sets:3,reps:12,weight:110,prev:100,done:false},
-          {id:id(),name:'Lateral raises',sets:3,reps:15,weight:15,prev:15,done:false},
+        Thu:{label:'Legs',items:[
+          {id:id(),name:'Leg Curl',sets:4,reps:11,weight:0,prev:0,done:false,scheme:'1×12 warmup 9kg · 3×10-12 27kg (60-65lb)'},
+          {id:id(),name:'Standing Calf Raises',sets:4,reps:17,weight:0,prev:0,done:false,scheme:'4×15-20 (18kg machine)'},
+          {id:id(),name:'Pilates',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Annie',classTime:'9:30'},
+          {id:id(),name:'Hot Sweat and Surrender',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Linda',classTime:'12:00'},
         ]},
-        Sat:{label:'Cardio + core',items:[
-          {id:id(),name:'Run (intervals)',sets:1,reps:1,weight:0,prev:0,done:false},
-          {id:id(),name:'Plank (sec)',sets:3,reps:45,weight:0,prev:0,done:false},
-          {id:id(),name:'Hanging leg raise',sets:3,reps:12,weight:0,prev:0,done:false},
+        Fri:{label:'Pull',items:[
+          {id:id(),name:'Cable Bicep Curls',sets:3,reps:0,weight:0,prev:0,done:false,scheme:'1×12 25lb · 2×failure 30lb'},
+          {id:id(),name:'Seated Row',sets:3,reps:11,weight:0,prev:0,done:false,scheme:'3×10-12 (18kg+)'},
+          {id:id(),name:'Face Pulls',sets:3,reps:13,weight:0,prev:0,done:false,scheme:'3×12-15 (80lb)'},
+          {id:id(),name:'Hammer Curls',sets:3,reps:10,weight:0,prev:0,done:false,scheme:'3×8-12 (17.5lb)'},
+          {id:id(),name:'Single Arm Dumbbell Row',sets:3,reps:12,weight:0,prev:0,done:false,scheme:'3×12 (32.5lb)'},
         ]},
-        Sun:{label:'Rest',items:[]},
+        Sat:{label:'Push',items:[
+          {id:id(),name:'Lat Raise Machine',sets:4,reps:13,weight:0,prev:0,done:false,scheme:'1×15 warmup · 3×12-15 (30lb)'},
+          {id:id(),name:'Rear Delt Fly',sets:3,reps:13,weight:0,prev:0,done:false,scheme:'3×12-15 (45lb / 20kg)'},
+          {id:id(),name:'Bench Press',sets:4,reps:10,weight:0,prev:0,done:false,scheme:'1×12 25lb · 3×8-12 50lb'},
+          {id:id(),name:'Dumbbell Shoulder Press',sets:4,reps:9,weight:0,prev:0,done:false,scheme:'4×8-10 (22.5lb)'},
+          {id:id(),name:'Power Barbell',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Danielle',classTime:'9:45'},
+        ]},
+        Sun:{label:'Cycling',items:[
+          {id:id(),name:'Cycling',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Lana',classTime:'9:30'},
+        ]},
       },
       habits: [
         {id:id(),name:'Drink 8 glasses of water',done:false,streak:3},
@@ -1003,7 +1019,7 @@ class Component extends DCLogic {
     const wd=d.workout[wDay]||{label:'',items:[]};
     const wDoneN=wd.items.filter(x=>x.done).length;
     const editing=this.state.editingWeight;
-    const workoutItems=wd.items.map(it=>({id:it.id,name:it.name,scheme:it.sets+' × '+it.reps,done:it.done,editing:editing===wDay+':'+it.id,notEditing:editing!==wDay+':'+it.id,weightLabel:it.weight>0?it.weight+' lb':'BW',hasPrev:!!(it.prev&&it.prev!==it.weight),prevLabel:'was '+it.prev+' lb',toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),startW:()=>this.startWeight(wDay,it.id,it.weight),commitW:()=>this.commitWeight(wDay,it.id),onKey:enter(()=>this.commitWeight(wDay,it.id)),boxStyle:`width:26px;height:26px;flex:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?'#6E8499':'#B0C4D8'};background:${it.done?'#6E8499':'transparent'};`,nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`,chipStyle:`cursor:pointer;font-size:13px;font-weight:600;color:${it.weight>0?'#2C3646':'#5A7090'};background:#DDE8F0;border-radius:9px;padding:7px 11px;white-space:nowrap;`}));
+    const workoutItems=wd.items.map(it=>{ const hasScheme=!!it.scheme; const isClass=!!it.isClass; const baseScheme=hasScheme?it.scheme:(it.sets+' × '+it.reps); const hasPrevWeight=!hasScheme&&!isClass&&!!(it.prev&&it.prev!==it.weight); const subtitle=isClass?((it.instructor||'')+(it.classTime?' · '+it.classTime:'')):(baseScheme+(hasPrevWeight?' · was '+it.prev+' lb':'')); return {id:it.id,name:it.name,isClass,subtitle,done:it.done,editing:!isClass&&!hasScheme&&editing===wDay+':'+it.id,notEditing:!isClass&&!hasScheme&&editing!==wDay+':'+it.id,weightLabel:it.weight>0?it.weight+' lb':'BW',toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),startW:()=>this.startWeight(wDay,it.id,it.weight),commitW:()=>this.commitWeight(wDay,it.id),onKey:enter(()=>this.commitWeight(wDay,it.id)),cardBg:isClass?'#EFF3F0':'#F2F5F9',cardBorder:isClass?'#CDD8CE':'#C8D4DE',boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#7B8A66':'#6E8499'):(isClass?'#B0BFA8':'#B0C4D8')};background:${it.done?(isClass?'#7B8A66':'#6E8499'):'transparent'};`,nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`,chipStyle:`cursor:pointer;font-size:13px;font-weight:600;color:${it.weight>0?'#2C3646':'#5A7090'};background:#DDE8F0;border-radius:9px;padding:7px 11px;white-space:nowrap;`}; });
     const addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exSets'),rv('exReps')); clr('exName','exSets','exReps'); };
 
     // ===== habits =====

@@ -413,14 +413,20 @@
                   </div>
                   <div style="flex:1;min-width:0;">
                     <div style="{{ ex.nameStyle }}">{{ ex.name }}<sc-if value="{{ ex.isClass }}" hint-placeholder-val="{{ false }}"><span style="margin-left:7px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;background:#7B8A6622;color:#7B8A66;vertical-align:middle;">CLASS</span></sc-if></div>
-                    <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ ex.subtitle }}</div>
+                    <sc-if value="{{ ex.isClass }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:12px;color:#6A8099;margin-top:2px;">{{ ex.subtitle }}</div>
+                    </sc-if>
+                    <sc-if value="{{ ex.schemeTagShow }}" hint-placeholder-val="{{ true }}">
+                      <div onClick="{{ ex.startS }}" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;cursor:pointer;">
+                        <sc-for list="{{ ex.schemeChips }}" as="chip" hint-placeholder-count="2">
+                          <div style="background:#D6E4F0;border-radius:7px;padding:4px 10px;font-size:12px;font-weight:600;color:#3A5570;">{{ chip.text }}</div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ ex.schemeInputShow }}" hint-placeholder-val="{{ false }}">
+                      <input value="{{ schemeDraft }}" onChange="{{ onSchemeDraft }}" onKeyDown="{{ ex.onSchemeKey }}" onBlur="{{ ex.commitS }}" autofocus="true" style="width:100%;font-size:13px;color:#2C3646;background:#F5F8FC;border:1px solid #6E8499;border-radius:8px;padding:5px 9px;margin-top:4px;outline:none;box-sizing:border-box;">
+                    </sc-if>
                   </div>
-                  <sc-if value="{{ ex.editing }}" hint-placeholder-val="{{ false }}">
-                    <input name="weight" value="{{ weightDraft }}" onChange="{{ onWDraft }}" onKeyDown="{{ ex.onKey }}" onBlur="{{ ex.commitW }}" autofocus="true" placeholder="lb" style="width:74px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #6E8499;border-radius:9px;padding:7px 9px;outline:none;">
-                  </sc-if>
-                  <sc-if value="{{ ex.notEditing }}" hint-placeholder-val="{{ true }}">
-                    <div onClick="{{ ex.startW }}" style="{{ ex.chipStyle }}">{{ ex.weightLabel }}</div>
-                  </sc-if>
                   <div onClick="{{ ex.del }}" style="color:#A0B8CC;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
                 </div>
               </sc-for>
@@ -429,11 +435,10 @@
           <sc-if value="{{ workoutEmpty }}" hint-placeholder-val="{{ false }}">
             <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:30px;text-align:center;color:#6A8099;font-family:'Newsreader',serif;font-size:18px;font-style:italic;">Rest day. Stretch, hydrate, sleep.</div>
           </sc-if>
-          <div style="display:flex;gap:8px;align-items:center;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:10px;margin-top:14px;flex-wrap:wrap;">
-            <input ref="{{ refExName }}" name="exercise-name" placeholder="Exercise" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:130px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-            <input ref="{{ refExSets }}" name="exercise-sets" type="number" placeholder="sets" style="width:64px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px;outline:none;">
-            <input ref="{{ refExReps }}" name="exercise-reps" type="number" placeholder="reps" style="width:64px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px;outline:none;">
-            <div onClick="{{ addExNow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#6E8499;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          <div style="display:flex;gap:8px;align-items:center;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:10px;margin-top:14px;">
+            <input ref="{{ refExName }}" name="exercise-name" placeholder="Exercise name" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
+            <input ref="{{ refExScheme }}" name="exercise-scheme" placeholder="e.g. 3×10 (20lb)" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
+            <div onClick="{{ addExNow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#6E8499;border-radius:11px;padding:10px 18px;cursor:pointer;white-space:nowrap;">Add</div>
           </div>
           <div style="height:30px;"></div>
         </div>
@@ -604,8 +609,8 @@ class Component extends DCLogic {
       editRecipeImgDraft: null,
       noteOpen: null,
       addingClass: false,
-      editingWeight: null,
-      weightDraft: '',
+      editingScheme: null,
+      schemeDraft: '',
       workoutDay: null,
       syncStatus: 'Syncing…',
       noteActiveFmt: {bold:false,italic:false,underline:false,strike:false,ul:false,ol:false}
@@ -863,8 +868,6 @@ class Component extends DCLogic {
   uid(){ return Math.random().toString(36).slice(2,8); }
 
   ref(n){ this._r=this._r||{}; return (this._r[n]=this._r[n]||React.createRef()); }
-  setWDraft(v){ this.setState({weightDraft:v}); }
-  startWeight(day,id,cur){ this.setState({editingWeight:day+':'+id, weightDraft:cur>0?String(cur):''}); }
   setWorkoutDay(k){ this.setState({workoutDay:k}); }
 
   save(mut){
@@ -906,9 +909,11 @@ class Component extends DCLogic {
 
   // ---- workout ----
   toggleEx(day,id){ this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.done=!it.done; }); }
-  addEx(day,name,sets,reps){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),sets:+sets||3,reps:+reps||10,weight:0,prev:0,done:false}); }); }
+  addEx(day,name,scheme){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),scheme:(scheme||'').trim(),done:false}); }); }
   delEx(day,id){ this.save(d=>{ d.workout[day].items=d.workout[day].items.filter(x=>x.id!==id); }); }
-  commitWeight(day,id){ const v=parseFloat(this.state.weightDraft); this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it && !isNaN(v)){ it.prev=it.weight; it.weight=v; } }); this.setState({editingWeight:null,weightDraft:''}); }
+  startScheme(day,id,cur){ this.setState({editingScheme:day+':'+id,schemeDraft:cur||''}); }
+  commitScheme(day,id){ const v=this.state.schemeDraft.trim(); this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.scheme=v; }); this.setState({editingScheme:null,schemeDraft:''}); }
+  setSchemeDraft(v){ this.setState({schemeDraft:v}); }
 
   // ---- habits ----
   toggleHabit(id){ this.save(d=>{ const h=d.habits.find(x=>x.id===id); if(h){ h.done=!h.done; h.streak=Math.max(0,(h.streak||0)+(h.done?1:-1)); } }); }
@@ -981,7 +986,7 @@ class Component extends DCLogic {
     });
 
     // ===== refs & helpers =====
-    const R=['clText','clCat','dateTitle','dateWhen','habit','exName','exSets','exReps','cName','cDay','cStart','cEnd','cLoc','rType','rName','rTime','rIng','rSteps'];
+    const R=['clText','clCat','dateTitle','dateWhen','habit','exName','exScheme','cName','cDay','cStart','cEnd','cLoc','rType','rName','rTime','rIng','rSteps'];
     const refs={}; R.forEach(n=>refs[n]=this.ref(n));
     const rv=(n)=>{ const r=refs[n]; return r&&r.current?r.current.value:''; };
     const clr=(...ns)=>ns.forEach(n=>{ if(refs[n]&&refs[n].current) refs[n].current.value=''; });
@@ -1018,9 +1023,10 @@ class Component extends DCLogic {
     const workoutTabs=days.map(k=>({key:k,label:k,go:()=>this.setWorkoutDay(k),style:`flex:none;padding:9px 15px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;background:${k===wDay?'#6E8499':'#F2F5F9'};color:${k===wDay?'#EBF3FB':'#506070'};border:1px solid ${k===wDay?'#6E8499':'#C8D4DE'};`,dotShow:k===todayKey,dotStyle:`width:5px;height:5px;border-radius:50%;margin:4px auto 0;background:${k===wDay?'#EBF3FB':'#6E8499'};`}));
     const wd=d.workout[wDay]||{label:'',items:[]};
     const wDoneN=wd.items.filter(x=>x.done).length;
-    const editing=this.state.editingWeight;
-    const workoutItems=wd.items.map(it=>{ const hasScheme=!!it.scheme; const isClass=!!it.isClass; const baseScheme=hasScheme?it.scheme:(it.sets+' × '+it.reps); const hasPrevWeight=!hasScheme&&!isClass&&!!(it.prev&&it.prev!==it.weight); const subtitle=isClass?((it.instructor||'')+(it.classTime?' · '+it.classTime:'')):(baseScheme+(hasPrevWeight?' · was '+it.prev+' lb':'')); return {id:it.id,name:it.name,isClass,subtitle,done:it.done,editing:!isClass&&!hasScheme&&editing===wDay+':'+it.id,notEditing:!isClass&&!hasScheme&&editing!==wDay+':'+it.id,weightLabel:it.weight>0?it.weight+' lb':'BW',toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),startW:()=>this.startWeight(wDay,it.id,it.weight),commitW:()=>this.commitWeight(wDay,it.id),onKey:enter(()=>this.commitWeight(wDay,it.id)),cardBg:isClass?'#EFF3F0':'#F2F5F9',cardBorder:isClass?'#CDD8CE':'#C8D4DE',boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#7B8A66':'#6E8499'):(isClass?'#B0BFA8':'#B0C4D8')};background:${it.done?(isClass?'#7B8A66':'#6E8499'):'transparent'};`,nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`,chipStyle:`cursor:pointer;font-size:13px;font-weight:600;color:${it.weight>0?'#2C3646':'#5A7090'};background:#DDE8F0;border-radius:9px;padding:7px 11px;white-space:nowrap;`}; });
-    const addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exSets'),rv('exReps')); clr('exName','exSets','exReps'); };
+    const editingScheme=this.state.editingScheme;
+    const onSchemeDraft=(e)=>this.setSchemeDraft(e.target.value);
+    const workoutItems=wd.items.map(it=>{ const hasScheme=!!it.scheme; const isClass=!!it.isClass; const schemeText=hasScheme?it.scheme:(isClass?'':(it.sets&&it.reps?(it.sets+' × '+it.reps):'')); const editingS=!isClass&&editingScheme===wDay+':'+it.id; const subtitle=isClass?((it.instructor||'')+(it.classTime?' · '+it.classTime:'')):''; const schemeChips=schemeText?schemeText.split(' · ').map(s=>({text:s.trim()})):[{text:'tap to set scheme'}]; return {id:it.id,name:it.name,isClass,subtitle,schemeText,schemeChips,done:it.done,editingS,schemeTagShow:!isClass&&!editingS,schemeInputShow:!isClass&&editingS,toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),startS:()=>this.startScheme(wDay,it.id,schemeText),commitS:()=>this.commitScheme(wDay,it.id),onSchemeKey:enter(()=>this.commitScheme(wDay,it.id)),cardBg:isClass?'#EFF3F0':'#F2F5F9',cardBorder:isClass?'#CDD8CE':'#C8D4DE',boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#7B8A66':'#6E8499'):(isClass?'#B0BFA8':'#B0C4D8')};background:${it.done?(isClass?'#7B8A66':'#6E8499'):'transparent'};`,nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`}; });
+    const addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exScheme')); clr('exName','exScheme'); };
 
     // ===== habits =====
     const habitsList=d.habits.map(h=>({id:h.id,name:h.name,done:h.done,streakLabel:(h.streak||0)+'-day streak',toggle:()=>this.toggleHabit(h.id),del:()=>this.delHabit(h.id),boxStyle:`width:28px;height:28px;flex:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${h.done?'#4A6B8A':'#B0C4D8'};background:${h.done?'#4A6B8A':'transparent'};`,nameStyle:`flex:1;font-size:15px;color:${h.done?'#8A9BB0':'#2C3646'};text-decoration:${h.done?'line-through':'none'};`}));
@@ -1103,8 +1109,8 @@ class Component extends DCLogic {
       workoutTabs,workoutLabel:wd.label,workoutDayLabel:dayFull[wDay],
       workoutItems,workoutHasItems:wd.items.length>0,workoutEmpty:wd.items.length===0,
       workoutDoneText:wd.items.length?(wDoneN+' of '+wd.items.length+' done'):'Recovery day — rest up',
-      weightDraft:this.state.weightDraft,onWDraft:(e)=>this.setWDraft(e.target.value),
-      refExName:refs.exName,refExSets:refs.exSets,refExReps:refs.exReps,addExNow,onAddExKey:enter(addExNow),
+      schemeDraft:this.state.schemeDraft,onSchemeDraft,
+      refExName:refs.exName,refExScheme:refs.exScheme,addExNow,onAddExKey:enter(addExNow),
       // habits
       habitsList,habitPct,habitDoneText:habDone+' of '+d.habits.length+' done today',
       refHabit:refs.habit,addHabitNow,onAddHabitKey:enter(addHabitNow),

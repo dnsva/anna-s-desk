@@ -586,6 +586,15 @@
   </div>
 </div>
 </x-dc>
+<script src="/anna-s-desk/sections/checklist.js"></script>
+<script src="/anna-s-desk/sections/schedule.js"></script>
+<script src="/anna-s-desk/sections/dates.js"></script>
+<script src="/anna-s-desk/sections/recipes.js"></script>
+<script src="/anna-s-desk/sections/workout.js"></script>
+<script src="/anna-s-desk/sections/habits.js"></script>
+<script src="/anna-s-desk/sections/photos.js"></script>
+<script src="/anna-s-desk/sections/notes.js"></script>
+<script src="/anna-s-desk/sections/trash.js"></script>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:860}}">
 class Component extends DCLogic {
   SUPA_URL = 'https://jpiuorpprqqrvaismmso.supabase.co';
@@ -618,185 +627,16 @@ class Component extends DCLogic {
   }
 
   seed(){
-    const id=()=>Math.random().toString(36).slice(2,8);
     return {
-      checklist: [
-        // Admin & Accounts
-        {id:id(),cat:'Admin & Accounts',label:'Activate WatIAM account',done:true},
-        {id:id(),cat:'Admin & Accounts',label:'Log in to Quest (fees, grades, enrollment)',done:true},
-        {id:id(),cat:'Admin & Accounts',label:'Set up LEARN (online course platform)',done:false},
-        {id:id(),cat:'Admin & Accounts',label:'Register on WaterlooWorks (co-op portal)',done:false},
-        {id:id(),cat:'Admin & Accounts',label:'Pick up WatCard (student ID + access card)',done:false},
-        {id:id(),cat:'Admin & Accounts',label:'Enroll in or opt out of student health plan',done:false},
-        {id:id(),cat:'Admin & Accounts',label:'Set up Duo two-factor authentication',done:false},
-        {id:id(),cat:'Admin & Accounts',label:'Confirm OSAP / financial aid disbursement',done:false},
-        // Residence
-        {id:id(),cat:'Residence',label:'Twin XL sheets × 2 sets',done:true},
-        {id:id(),cat:'Residence',label:'Comforter + pillows × 2',done:true},
-        {id:id(),cat:'Residence',label:'Mattress topper',done:false},
-        {id:id(),cat:'Residence',label:'Bath towels × 3 + washcloths × 3',done:false},
-        {id:id(),cat:'Residence',label:'Shower caddy + flip flops (shared showers)',done:false},
-        {id:id(),cat:'Residence',label:'Ethernet cable — REZ rooms have wired internet',done:false},
-        {id:id(),cat:'Residence',label:'Laundry bag + detergent pods (card-operated machines)',done:false},
-        {id:id(),cat:'Residence',label:'Command strips + hooks (no nails allowed)',done:false},
-        // Clothing — Tops
-        {id:id(),cat:'Clothing — Tops',label:'T-shirts × 8',done:false},
-        {id:id(),cat:'Clothing — Tops',label:'Long-sleeve shirts × 4',done:false},
-        {id:id(),cat:'Clothing — Tops',label:'Hoodies / sweatshirts × 3',done:false},
-        {id:id(),cat:'Clothing — Tops',label:'Sweaters × 2',done:false},
-        {id:id(),cat:'Clothing — Tops',label:'Athletic / workout tops × 5',done:false},
-        {id:id(),cat:'Clothing — Tops',label:'Smart-casual tops × 2 (ECE events, presentations)',done:false},
-        // Clothing — Bottoms & Undergarments
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Underwear × 14 (2 full weeks)',done:false},
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Regular socks × 14 pairs',done:false},
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Warm / wool socks × 5 pairs',done:false},
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Jeans × 2',done:false},
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Joggers / casual pants × 2',done:false},
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Athletic shorts × 2',done:false},
-        {id:id(),cat:'Clothing — Bottoms & Undergarments',label:'Dress pants × 1 (co-op interviews)',done:false},
-        // Clothing — Outerwear & Footwear
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Heavy winter coat (Waterloo gets cold in Oct)',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Rain jacket (Waterloo has 150+ rain days/yr)',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Light fall jacket / fleece',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Toque × 2 + gloves × 2 pairs + scarf',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Waterproof winter boots',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Everyday sneakers',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Gym / running shoes',done:false},
-        {id:id(),cat:'Clothing — Outerwear & Footwear',label:'Dress shoes (co-op interviews, formals)',done:false},
-        // Sleepwear
-        {id:id(),cat:'Sleepwear',label:'Pajama sets × 3',done:false},
-        {id:id(),cat:'Sleepwear',label:'Bathrobe (optional but great in REZ)',done:false},
-        // Class Supplies
-        {id:id(),cat:'Class Supplies',label:'Lined notebooks × 3 (ECE 105, ECE 140, MATH 117)',done:false},
-        {id:id(),cat:'Class Supplies',label:'Graph / engineering paper pad',done:false},
-        {id:id(),cat:'Class Supplies',label:'CASIO fx-991 calculator (non-programmable, exam-approved)',done:true},
-        {id:id(),cat:'Class Supplies',label:'Backpack',done:true},
-        {id:id(),cat:'Class Supplies',label:'Highlighters + pens + pencils',done:true},
-        {id:id(),cat:'Class Supplies',label:'USB drive',done:false},
-        {id:id(),cat:'Class Supplies',label:'Binder + dividers (for MATH 117 / ECE 105 notes)',done:false},
-        // Electronics & Tech
-        {id:id(),cat:'Electronics & Tech',label:'Laptop + charger',done:true},
-        {id:id(),cat:'Electronics & Tech',label:'Power bar + extension cord',done:false},
-        {id:id(),cat:'Electronics & Tech',label:'Desk lamp',done:false},
-        {id:id(),cat:'Electronics & Tech',label:'USB-C hub / dongles',done:false},
-        {id:id(),cat:'Electronics & Tech',label:'Wired earbuds (library / exam quiet)',done:false},
-        {id:id(),cat:'Electronics & Tech',label:'Wireless earbuds (between buildings)',done:false},
-        {id:id(),cat:'Electronics & Tech',label:'Portable power bank',done:false},
-        // Kitchen
-        {id:id(),cat:'Kitchen',label:'Electric kettle (allowed in REZ rooms)',done:false},
-        {id:id(),cat:'Kitchen',label:'Mugs × 2',done:false},
-        {id:id(),cat:'Kitchen',label:'Reusable water bottle',done:true},
-        {id:id(),cat:'Kitchen',label:'Reusable utensil set (fork, knife, spoon, chopsticks)',done:false},
-        {id:id(),cat:'Kitchen',label:'Snack bin / pantry box',done:false},
-        // Personal & Health
-        {id:id(),cat:'Personal & Health',label:'OHIP card + vaccination records',done:false},
-        {id:id(),cat:'Personal & Health',label:'Prescription meds + OTC basics (ibuprofen, antihistamine)',done:false},
-        {id:id(),cat:'Personal & Health',label:'First aid kit (bandaids, thermometer)',done:false},
-        {id:id(),cat:'Personal & Health',label:'Shampoo + conditioner + body wash + loofah',done:false},
-        {id:id(),cat:'Personal & Health',label:'Deodorant (stock up)',done:false},
-        {id:id(),cat:'Personal & Health',label:'Skincare routine products',done:false},
-        {id:id(),cat:'Personal & Health',label:'Toothbrush + toothpaste + floss',done:false},
-        {id:id(),cat:'Personal & Health',label:'Hair dryer',done:false},
-        {id:id(),cat:'Personal & Health',label:'Nail clipper + grooming kit',done:false},
-        {id:id(),cat:'Personal & Health',label:'Something from home (comfort item)',done:false},
-      ],
-      classes: [
-        {id:id(),name:'MATH 117 – Calculus 1',day:'Mon',start:'08:30',end:'09:20',loc:'MC 4045',color:'#4A6B8A'},
-        {id:id(),name:'ECE 105 – Classical Mechanics',day:'Mon',start:'10:30',end:'11:20',loc:'PHY 313',color:'#7B8A66'},
-        {id:id(),name:'ECE 140 – Linear Circuits',day:'Mon',start:'13:30',end:'14:50',loc:'E5 6004',color:'#CA9A3E'},
-        {id:id(),name:'MATH 115 – Linear Algebra',day:'Tue',start:'08:30',end:'09:50',loc:'MC 4045',color:'#6E8499'},
-        {id:id(),name:'ECE 150 – Fundamentals of Programming',day:'Tue',start:'11:30',end:'12:50',loc:'E7 4053',color:'#4A6B8A'},
-        {id:id(),name:'MATH 117 – Calculus 1',day:'Wed',start:'08:30',end:'09:20',loc:'MC 4045',color:'#4A6B8A'},
-        {id:id(),name:'ECE 105 – Classical Mechanics',day:'Wed',start:'10:30',end:'11:20',loc:'PHY 313',color:'#7B8A66'},
-        {id:id(),name:'ECE 190 – Engineering Profession',day:'Wed',start:'13:30',end:'14:20',loc:'EIT 1015',color:'#5A7A9A'},
-        {id:id(),name:'MATH 115 – Linear Algebra',day:'Thu',start:'08:30',end:'09:50',loc:'MC 4045',color:'#6E8499'},
-        {id:id(),name:'MATH 117 – Tutorial',day:'Thu',start:'10:30',end:'11:20',loc:'MC 4042',color:'#4A6B8A'},
-        {id:id(),name:'ECE 150 – Fundamentals of Programming',day:'Thu',start:'11:30',end:'12:50',loc:'E7 4053',color:'#4A6B8A'},
-        {id:id(),name:'MATH 117 – Calculus 1',day:'Fri',start:'08:30',end:'09:20',loc:'MC 4045',color:'#4A6B8A'},
-        {id:id(),name:'ECE 105 – Classical Mechanics',day:'Fri',start:'10:30',end:'11:20',loc:'PHY 313',color:'#7B8A66'},
-        {id:id(),name:'ECE 140 – Lab',day:'Fri',start:'14:30',end:'16:50',loc:'E3 2369',color:'#CA9A3E'},
-      ],
-      dates: [
-        {id:id(),title:'Residence move-in day',date:'2026-09-01'},
-        {id:id(),title:'EngFrosh / Orientation Week',date:'2026-09-01'},
-        {id:id(),title:'1A classes begin',date:'2026-09-08'},
-        {id:id(),title:'Course add/drop deadline',date:'2026-09-21'},
-        {id:id(),title:'Tuition due',date:'2026-09-30'},
-        {id:id(),title:'MATH 117 Midterm',date:'2026-10-15'},
-        {id:id(),title:'Fall Reading Week',date:'2026-10-26'},
-        {id:id(),title:'ECE 150 Project due',date:'2026-11-13'},
-        {id:id(),title:'Last day of 1A classes',date:'2026-12-04'},
-        {id:id(),title:'Final exams begin',date:'2026-12-07'},
-      ],
-      recipes: [
-        {id:id(),type:'food',name:'Microwave mug omelette',time:'5 min',ingredients:['2 eggs','Splash of milk','Shredded cheese','Salt + pepper','Diced ham or spinach'],steps:['Beat eggs + milk in a mug','Stir in cheese and add-ins','Microwave 1 min, stir','Microwave 45s more until set']},
-        {id:id(),type:'food',name:'Dorm ramen upgrade',time:'10 min',ingredients:['1 pack instant ramen','1 egg','Handful frozen veg','Soy sauce','Sriracha'],steps:['Boil noodles + veg 3 min','Crack egg in, stir gently','Add half the seasoning','Top with soy + sriracha']},
-        {id:id(),type:'food',name:'No-cook overnight oats',time:'2 min + overnight',ingredients:['1/2 cup oats','1/2 cup milk','1 tbsp peanut butter','Honey','Banana'],steps:['Mix oats + milk in a jar','Stir in PB + honey','Fridge overnight','Top with banana']},
-        {id:id(),type:'drink',name:'Iced brown sugar latte',time:'5 min',ingredients:['1 shot coffee / espresso','1 tbsp brown sugar','Splash hot water','Milk','Ice'],steps:['Dissolve sugar in hot water','Add coffee, stir','Fill glass with ice + milk','Pour over and stir']},
-        {id:id(),type:'drink',name:'Electrolyte study water',time:'2 min',ingredients:['Cold water','Pinch of salt','Squeeze of lemon','1 tsp honey'],steps:['Combine in bottle','Shake well','Sip during late-night study']},
-      ],
-      workout: {
-        Mon:{label:'Legs',items:[
-          {id:id(),name:'Back Squat',sets:7,reps:5,weight:0,prev:0,done:false,scheme:'1×12 bar · 1×12 10lb/side · 5×5 32.5lb/side'},
-          {id:id(),name:'Leg Extensions',sets:4,reps:12,weight:0,prev:0,done:false,scheme:'1×12 warmup · 2×12-15 32kg · 1×failure dropset 36kg'},
-          {id:id(),name:'Pendulum Squat',sets:4,reps:10,weight:0,prev:0,done:false,scheme:'1×12 warmup · 3×8-12 45lb'},
-          {id:id(),name:'Pilates',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Kimberly',classTime:'5:30'},
-          {id:id(),name:'Rhythm and Beats',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Kim',classTime:'5:30'},
-          {id:id(),name:'Sculpt',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Savahanna',classTime:'5:45'},
-        ]},
-        Tue:{label:'Pull',items:[
-          {id:id(),name:'Barbell Curls',sets:3,reps:0,weight:0,prev:0,done:false,scheme:'3×failure (40lb)'},
-          {id:id(),name:'Single Arm Dumbbell Row',sets:3,reps:12,weight:0,prev:0,done:false,scheme:'3×12 (32.5-35lb)'},
-          {id:id(),name:'Face Pulls',sets:3,reps:13,weight:0,prev:0,done:false,scheme:'3×12-15 (80lb) · last set to failure'},
-          {id:id(),name:'Standing Dumbbell Bicep Curls',sets:3,reps:10,weight:0,prev:0,done:false,scheme:'3×8-12 (20lb)'},
-          {id:id(),name:'TRX',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Savahanna',classTime:'5:30'},
-        ]},
-        Wed:{label:'Push',items:[
-          {id:id(),name:'Overhead Barbell Press',sets:7,reps:5,weight:0,prev:0,done:false,scheme:'2×12 20lb · 5×5 40lb'},
-          {id:id(),name:'Skull Crushers',sets:7,reps:5,weight:0,prev:0,done:false,scheme:'2×12 20lb · 5×5 40lb'},
-          {id:id(),name:'Tricep Pushdown',sets:3,reps:0,weight:0,prev:0,done:false,scheme:'3×failure (20lb resistance)'},
-          {id:id(),name:'Dumbbell Shoulder Press',sets:4,reps:9,weight:0,prev:0,done:false,scheme:'4×8-10 (22.5lb)'},
-          {id:id(),name:'Bench Dips',sets:3,reps:15,weight:0,prev:0,done:false,scheme:'3×15'},
-          {id:id(),name:'Pec Fly',sets:2,reps:13,weight:0,prev:0,done:false,scheme:'2×12-15 (60lb)'},
-        ]},
-        Thu:{label:'Legs',items:[
-          {id:id(),name:'Leg Curl',sets:4,reps:11,weight:0,prev:0,done:false,scheme:'1×12 warmup 9kg · 3×10-12 27kg (60-65lb)'},
-          {id:id(),name:'Standing Calf Raises',sets:4,reps:17,weight:0,prev:0,done:false,scheme:'4×15-20 (18kg machine)'},
-          {id:id(),name:'Pilates',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Annie',classTime:'9:30'},
-          {id:id(),name:'Hot Sweat and Surrender',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Linda',classTime:'12:00'},
-        ]},
-        Fri:{label:'Pull',items:[
-          {id:id(),name:'Cable Bicep Curls',sets:3,reps:0,weight:0,prev:0,done:false,scheme:'1×12 25lb · 2×failure 30lb'},
-          {id:id(),name:'Seated Row',sets:3,reps:11,weight:0,prev:0,done:false,scheme:'3×10-12 (18kg+)'},
-          {id:id(),name:'Face Pulls',sets:3,reps:13,weight:0,prev:0,done:false,scheme:'3×12-15 (80lb)'},
-          {id:id(),name:'Hammer Curls',sets:3,reps:10,weight:0,prev:0,done:false,scheme:'3×8-12 (17.5lb)'},
-          {id:id(),name:'Single Arm Dumbbell Row',sets:3,reps:12,weight:0,prev:0,done:false,scheme:'3×12 (32.5lb)'},
-        ]},
-        Sat:{label:'Push',items:[
-          {id:id(),name:'Lat Raise Machine',sets:4,reps:13,weight:0,prev:0,done:false,scheme:'1×15 warmup · 3×12-15 (30lb)'},
-          {id:id(),name:'Rear Delt Fly',sets:3,reps:13,weight:0,prev:0,done:false,scheme:'3×12-15 (45lb / 20kg)'},
-          {id:id(),name:'Bench Press',sets:4,reps:10,weight:0,prev:0,done:false,scheme:'1×12 25lb · 3×8-12 50lb'},
-          {id:id(),name:'Dumbbell Shoulder Press',sets:4,reps:9,weight:0,prev:0,done:false,scheme:'4×8-10 (22.5lb)'},
-          {id:id(),name:'Power Barbell',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Danielle',classTime:'9:45'},
-        ]},
-        Sun:{label:'Cycling',items:[
-          {id:id(),name:'Cycling',sets:0,reps:0,weight:0,prev:0,done:false,isClass:true,instructor:'Lana',classTime:'9:30'},
-        ]},
-      },
-      habits: [
-        {id:id(),name:'Drink 8 glasses of water',done:false,streak:3},
-        {id:id(),name:'Read 20 minutes',done:true,streak:5},
-        {id:id(),name:'Make the bed',done:true,streak:8},
-        {id:id(),name:'Hit the gym',done:false,streak:2},
-        {id:id(),name:'No phone in bed',done:false,streak:1},
-        {id:id(),name:'Take vitamins',done:true,streak:6},
-      ],
-      photos: [],
-      notes: [
-        {id:id(),title:'ECE 150 \u2013 C++ notes',body:'Pointers are on week 4 \u2014 review before tutorial. Office hours: MC 3rd floor. Linux servers: linux.student.cs.uwaterloo.ca. Assignments auto-graded, submit before midnight.',ts:Date.now()-86400000},
-        {id:id(),title:'1A survival brain dump',body:'- email academic advisor re: course load\n- best coffee: DP (Davis Centre) or the Plaza\n- ECE Society Discord for study groups\n- MathSoc game room in MC is free + open\n- WUSA food bank in SLC no questions asked\n- grab the free printing on the 1st floor DC',ts:Date.now()-3600000},
-      ],
-      trash: [],
+      checklist: ChecklistSection.seed(),
+      classes:   ScheduleSection.seed(),
+      dates:     DatesSection.seed(),
+      recipes:   RecipesSection.seed(),
+      workout:   WorkoutSection.seed(),
+      habits:    HabitsSection.seed(),
+      photos:    PhotosSection.seed(),
+      notes:     NotesSection.seed(),
+      trash:     [],
     };
   }
 
@@ -868,7 +708,6 @@ class Component extends DCLogic {
   uid(){ return Math.random().toString(36).slice(2,8); }
 
   ref(n){ this._r=this._r||{}; return (this._r[n]=this._r[n]||React.createRef()); }
-  setWorkoutDay(k){ this.setState({workoutDay:k}); }
 
   save(mut){
     let _d;
@@ -884,276 +723,89 @@ class Component extends DCLogic {
 
   nav(screen){ this.setState({screen, recipeOpen:null, noteOpen:null, editRecipe:null, editRecipeImgDraft:null}); if(typeof window!=='undefined') window.scrollTo(0,0); }
 
-  // ---- checklist ----
-  toggleItem(id){ this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it) it.done=!it.done; }); }
-  addItem(cat, label){ if(!label||!label.trim())return; this.save(d=>{ d.checklist.push({id:this.uid(),cat,label:label.trim(),done:false}); }); }
-  delItem(id){ this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'checklist',name:it.label,item:it,deletedAt:Date.now()}); d.checklist=d.checklist.filter(x=>x.id!==id); } }); }
-
-  // ---- classes ----
-  addClass(c){ if(!c.name||!c.name.trim())return; this.save(d=>{ d.classes.push({id:this.uid(),color:'#7B8A66',...c,name:c.name.trim()}); }); this.setState({addingClass:false}); }
-  delClass(id){ this.save(d=>{ d.classes=d.classes.filter(x=>x.id!==id); }); }
-
-  // ---- dates ----
-  addDate(title,date){ if(!title||!title.trim()||!date)return; this.save(d=>{ d.dates.push({id:this.uid(),title:title.trim(),date}); }); }
-  delDate(id){ this.save(d=>{ const it=d.dates.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'date',name:it.title,item:it,deletedAt:Date.now()}); d.dates=d.dates.filter(x=>x.id!==id); } }); }
-
-  // ---- recipes ----
-  addRecipe(r){ if(!r.name||!r.name.trim())return; this.save(d=>{ d.recipes.push({id:this.uid(),type:r.type||'food',name:r.name.trim(),time:r.time||'',img:r.img||null,ingredients:r.ingredients||[],steps:r.steps||[]}); }); this.setState({addingRecipe:false,recipeImgDraft:null}); }
-  setRecipeImgDraft(files){ const f=files&&files[0]; if(!f)return; const r=new FileReader(); r.onload=e=>this.setState({recipeImgDraft:e.target.result}); r.readAsDataURL(f); }
-  delRecipe(id){ const rec=this.state.data.recipes.find(x=>x.id===id); this.save(d=>{ if(rec){ d.trash.push({id:this.uid(),type:'recipe',name:rec.name,item:rec,deletedAt:Date.now()}); } d.recipes=d.recipes.filter(x=>x.id!==id); }); this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}); }
-  updateRecipeInData(id,changes){ this.save(d=>{ const r=d.recipes.find(x=>x.id===id); if(r) Object.assign(r,changes); }); }
-  startEditRecipe(id){ const r=this.state.data.recipes.find(x=>x.id===id); if(!r)return; this.setState({editRecipe:{id:r.id,type:r.type,name:r.name,time:r.time,ingredients:r.ingredients.join('\n'),steps:r.steps.join('\n')},editRecipeImgDraft:r.img||null}); }
-  cancelEditRecipe(){ this.setState({editRecipe:null,editRecipeImgDraft:null}); }
-  updateRecipeField(field,val){ this.setState({editRecipe:{...this.state.editRecipe,[field]:val}}); }
-  saveEditRecipe(){ const er=this.state.editRecipe; if(!er)return; this.updateRecipeInData(er.id,{name:er.name.trim(),type:er.type,time:er.time,img:this.state.editRecipeImgDraft,ingredients:er.ingredients.split('\n').map(s=>s.trim()).filter(Boolean),steps:er.steps.split('\n').map(s=>s.trim()).filter(Boolean)}); this.setState({editRecipe:null,editRecipeImgDraft:null}); }
-
-  // ---- workout ----
-  toggleEx(day,id){ this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.done=!it.done; }); }
-  addEx(day,name,scheme){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),scheme:(scheme||'').trim(),done:false}); }); }
-  delEx(day,id){ this.save(d=>{ d.workout[day].items=d.workout[day].items.filter(x=>x.id!==id); }); }
-  startScheme(day,id,cur){ this.setState({editingScheme:day+':'+id,schemeDraft:cur||''}); }
-  commitScheme(day,id){ const v=this.state.schemeDraft.trim(); this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.scheme=v; }); this.setState({editingScheme:null,schemeDraft:''}); }
-  setSchemeDraft(v){ this.setState({schemeDraft:v}); }
-
-  // ---- habits ----
-  toggleHabit(id){ this.save(d=>{ const h=d.habits.find(x=>x.id===id); if(h){ h.done=!h.done; h.streak=Math.max(0,(h.streak||0)+(h.done?1:-1)); } }); }
-  addHabit(name){ if(!name||!name.trim())return; this.save(d=>{ d.habits.push({id:this.uid(),name:name.trim(),done:false,streak:0}); }); }
-  delHabit(id){ this.save(d=>{ const it=d.habits.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'habit',name:it.name,item:it,deletedAt:Date.now()}); d.habits=d.habits.filter(x=>x.id!==id); } }); }
-
-  // ---- photos ----
-  addPhotos(files){ if(!files||!files.length)return; Array.from(files).forEach(f=>{ const r=new FileReader(); r.onload=e=>{ this.save(d=>{ d.photos.unshift({id:this.uid(),src:e.target.result,caption:''}); }); }; r.readAsDataURL(f); }); }
-  setCaption(id,v){ this.save(d=>{ const p=d.photos.find(x=>x.id===id); if(p) p.caption=v; }); }
-  delPhoto(id){ this.save(d=>{ d.photos=d.photos.filter(x=>x.id!==id); }); }
-
-  // ---- notes ----
-  newNote(){ const nid=this.uid(); this.save(d=>{ d.notes.unshift({id:nid,title:'',body:'',ts:Date.now()}); }); this.setState({noteOpen:nid}); }
-  updateNote(id,field,v){ this.save(d=>{ const n=d.notes.find(x=>x.id===id); if(n){ n[field]=v; n.ts=Date.now(); } }); }
-  delNote(id){ const note=this.state.data.notes.find(x=>x.id===id); this.save(d=>{ if(note){ d.trash.push({id:this.uid(),type:'note',name:(note.title||'').trim()||'Untitled',item:note,deletedAt:Date.now()}); } d.notes=d.notes.filter(x=>x.id!==id); }); this.setState({noteOpen:null}); }
-
-  restoreFromTrash(tid){
-    this.save(d=>{
-      const e=d.trash.find(x=>x.id===tid); if(!e) return;
-      d.trash=d.trash.filter(x=>x.id!==tid);
-      if(e.type==='note') d.notes.unshift(e.item);
-      else if(e.type==='recipe') d.recipes.unshift(e.item);
-      else if(e.type==='checklist') d.checklist.push(e.item);
-      else if(e.type==='date') d.dates.push(e.item);
-      else if(e.type==='habit') d.habits.push(e.item);
-    });
-  }
-  permDelete(tid){ this.save(d=>{ d.trash=d.trash.filter(x=>x.id!==tid); }); }
-
   fmtDate(iso){ const d=new Date(iso+'T00:00:00'); return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
   daysUntil(iso){ const d=new Date(iso+'T00:00:00'); const now=new Date(); now.setHours(0,0,0,0); return Math.round((d-now)/86400000); }
   countLabel(n){ if(n<0) return Math.abs(n)+'d ago'; if(n===0) return 'Today'; if(n===1) return 'Tomorrow'; return 'in '+n+' days'; }
 
   renderVals(){
-    const d=this.state.data, w=this.state.width;
-    const showSidebar = w>=900;
-    const isPhone = w<700;
-    const screen=this.state.screen;
-    const accents={home:'#4A6B8A',checklist:'#4A6B8A',schedule:'#7B8A66',dates:'#CA9A3E',recipes:'#6A8FAF',workout:'#6E8499',habits:'#4A6B8A',photos:'#5A7A9A',notes:'#3D6080',trash:'#6A8099'};
-    const titles={checklist:'Move-in Checklist',schedule:'Class Schedule',dates:'Key Dates',recipes:'Recipes',workout:'Workout Planner',habits:'Habits',photos:'Photo Board',notes:'Notes',trash:'Trash'};
-    const kickers={checklist:'pack it up',schedule:'this week',dates:'don\u2019t forget',recipes:'food & drinks',workout:'get after it',habits:'one day at a time',photos:'good vibes',notes:'brain dump',trash:'gone but not forgotten'};
-
+    const d=this.state.data, w=this.state.width, screen=this.state.screen;
     const days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
     const dayFull={Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday',Sun:'Sunday'};
-    const todayIdx=(new Date().getDay()+6)%7; // 0=Mon
+    const todayIdx=(new Date().getDay()+6)%7;
     const todayKey=days[todayIdx];
+    const enter=(fn)=>(e)=>{ if(e.key==='Enter'){e.preventDefault();fn();} };
+    const isS=(k)=>screen===k;
+    const allSections=[ChecklistSection,ScheduleSection,DatesSection,RecipesSection,WorkoutSection,HabitsSection,PhotosSection,NotesSection,TrashSection];
+    const R=allSections.flatMap(s=>s.refs||[]);
+    const refs={}; R.forEach(n=>refs[n]=this.ref(n));
+    const rv=(n)=>{ const r=refs[n]; return r&&r.current?r.current.value:''; };
+    const clr=(...ns)=>ns.forEach(n=>{ if(refs[n]&&refs[n].current) refs[n].current.value=''; });
+    const ctx={d,state:this.state,screen,w,days,dayFull,todayKey,todayIdx:todayIdx,enter,isS,refs,rv,clr};
+    return {
+      ...this._coreVals(ctx),
+      ...ChecklistSection.render.call(this,ctx),
+      ...ScheduleSection.render.call(this,ctx),
+      ...DatesSection.render.call(this,ctx),
+      ...RecipesSection.render.call(this,ctx),
+      ...WorkoutSection.render.call(this,ctx),
+      ...HabitsSection.render.call(this,ctx),
+      ...PhotosSection.render.call(this,ctx),
+      ...NotesSection.render.call(this,ctx),
+      ...TrashSection.render.call(this,ctx),
+    };
+  }
 
-    // greeting / hero
+  _coreVals({d,state,screen,w,days,dayFull,todayKey,isS}){
+    const showSidebar=w>=900, isPhone=w<700;
+    const accents={home:'#4A6B8A',checklist:'#4A6B8A',schedule:'#7B8A66',dates:'#CA9A3E',recipes:'#6A8FAF',workout:'#6E8499',habits:'#4A6B8A',photos:'#5A7A9A',notes:'#3D6080',trash:'#6A8099'};
+    const titles={checklist:'Move-in Checklist',schedule:'Class Schedule',dates:'Key Dates',recipes:'Recipes',workout:'Workout Planner',habits:'Habits',photos:'Photo Board',notes:'Notes',trash:'Trash'};
+    const kickers={checklist:'pack it up',schedule:'this week',dates:'don’t forget',recipes:'food & drinks',workout:'get after it',habits:'one day at a time',photos:'good vibes',notes:'brain dump',trash:'gone but not forgotten'};
     const hr=new Date().getHours();
     const greeting=(hr<12?'Good morning,':hr<18?'Good afternoon,':'Good evening,')+' Anna';
     const todayLabel=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
     const todaysClasses=d.classes.filter(c=>c.day===todayKey).sort((a,b)=>a.start.localeCompare(b.start));
     let nextLabel='NO CLASSES TODAY',nextTitle='Free day',nextSub='Make it count';
-    if(todaysClasses.length){ const c=todaysClasses[0]; nextLabel='UP NEXT \u00b7 '+c.start; nextTitle=c.name; nextSub=c.loc; }
+    if(todaysClasses.length){ const c=todaysClasses[0]; nextLabel='UP NEXT · '+c.start; nextTitle=c.name; nextSub=c.loc; }
     const habDone=d.habits.filter(h=>h.done).length;
     const wToday=d.workout[todayKey]||{items:[],label:''};
     const wDone=wToday.items.filter(x=>x.done).length;
-
-    // tile subtitles
     const packDone=d.checklist.filter(x=>x.done).length;
     const upcoming=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).filter(x=>x.n>=0).sort((a,b)=>a.n-b.n);
-
-    // nav items for sidebar
     const navDefs=[['home','Today'],['checklist','Checklist'],['schedule','Schedule'],['dates','Key Dates'],['recipes','Recipes'],['workout','Workout'],['habits','Habits'],['photos','Photos'],['notes','Notes'],['trash','Trash']];
     const navItems=navDefs.map(([k,name])=>{
       const active=screen===k;
-      return {name, go:()=>this.nav(k), badge:'',
+      return {name,go:()=>this.nav(k),badge:'',
         style:`display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:${active?600:500};color:${active?'#2C3646':'#506070'};background:${active?'#EBF3FB':'transparent'};`,
         dot:`width:8px;height:8px;border-radius:50%;flex:none;background:${active?accents[k]:'#8A9BB0'};`};
     });
-
-    // ===== refs & helpers =====
-    const R=['clText','clCat','dateTitle','dateWhen','habit','exName','exScheme','cName','cDay','cStart','cEnd','cLoc','rType','rName','rTime','rIng','rSteps'];
-    const refs={}; R.forEach(n=>refs[n]=this.ref(n));
-    const rv=(n)=>{ const r=refs[n]; return r&&r.current?r.current.value:''; };
-    const clr=(...ns)=>ns.forEach(n=>{ if(refs[n]&&refs[n].current) refs[n].current.value=''; });
-    const enter=(fn)=>(e)=>{ if(e.key==='Enter'){ e.preventDefault(); fn(); } };
-    const isS=(k)=>screen===k;
-
-    // ===== checklist =====
-    const catOrder=['Admin & Accounts','Residence','Clothing — Tops','Clothing — Bottoms & Undergarments','Clothing — Outerwear & Footwear','Sleepwear','Class Supplies','Electronics & Tech','Kitchen','Personal & Health'];
-    const catOptions=[...new Set([...catOrder,...d.checklist.map(x=>x.cat)])];
-    const checklistGroups=catOptions.map(cat=>({cat,catUpper:cat.toUpperCase(),items:d.checklist.filter(x=>x.cat===cat).map(it=>({id:it.id,label:it.label,done:it.done,toggle:()=>this.toggleItem(it.id),del:()=>this.delItem(it.id),boxStyle:`width:22px;height:22px;flex:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?'#4A6B8A':'#B0C4D8'};background:${it.done?'#4A6B8A':'transparent'};`,labelStyle:`flex:1;font-size:15px;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`}))})).filter(g=>g.items.length);
-    const packPct=Math.round(packDone/Math.max(1,d.checklist.length)*100);
-    const addCLnow=()=>{ const t=rv('clText'); if(!t.trim())return; this.addItem(rv('clCat')||catOptions[0],t); clr('clText'); };
-
-    // ===== schedule =====
-    const week=days.map(k=>{ const cs=d.classes.filter(c=>c.day===k).sort((a,b)=>a.start.localeCompare(b.start)).map(c=>({name:c.name,loc:c.loc,color:c.color,range:c.start+'–'+c.end,del:()=>this.delClass(c.id)})); return {key:k,name:dayFull[k],isToday:k===todayKey,classes:cs,hasClasses:cs.length>0,empty:cs.length===0,nameStyle:`font-family:'Newsreader',serif;font-size:18px;color:${k===todayKey?'#7B8A66':'#2C3646'};`}; });
-    const addClassNow=()=>{ const n=rv('cName'); if(!n.trim())return; this.addClass({name:n,day:rv('cDay')||'Mon',start:rv('cStart')||'09:00',end:rv('cEnd')||'09:50',loc:rv('cLoc'),color:'#7B8A66'}); clr('cName','cLoc'); };
-
-    // ===== dates =====
-    const datesList=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).sort((a,b)=>a.n-b.n).map(x=>{ const urgent=x.n>=0&&x.n<=3, past=x.n<0; const bg=past?'#D0DCE8':urgent?'#4A6B8A':'#CA9A3E'; const fg=past?'#6A8099':'#EBF3FB'; return {id:x.id,title:x.title,dateLabel:this.fmtDate(x.date),count:this.countLabel(x.n),del:()=>this.delDate(x.id),badgeStyle:`flex:none;min-width:88px;text-align:center;background:${bg};color:${fg};font-size:12px;font-weight:600;border-radius:10px;padding:9px 10px;`,titleStyle:`flex:1;font-family:'Newsreader',serif;font-size:18px;color:${past?'#8A9BB0':'#2C3646'};`}; });
-    const addDateNow=()=>{ const t=rv('dateTitle'); if(!t.trim()||!rv('dateWhen'))return; this.addDate(t,rv('dateWhen')); clr('dateTitle','dateWhen'); };
-
-    // ===== recipes =====
-    const recipeTab=this.state.recipeTab;
-    const tabStyle=(on)=>`padding:9px 20px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;background:${on?'#6A8FAF':'transparent'};color:${on?'#EBF3FB':'#5A7090'};`;
-    const recipesList=d.recipes.filter(r=>r.type===recipeTab).map(r=>({id:r.id,name:r.name,time:r.time,ingCount:r.ingredients.length+' ingredients',open:()=>this.setState({recipeOpen:r.id})}));
-    const ro=d.recipes.find(r=>r.id===this.state.recipeOpen);
-    const openRecipe=ro?{id:ro.id,name:ro.name,time:ro.time,img:ro.img||null,hasImg:!!ro.img,ingredients:ro.ingredients,steps:ro.steps.map((t,i)=>({num:i+1,text:t})),del:()=>this.delRecipe(ro.id),close:()=>this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}),edit:()=>this.startEditRecipe(ro.id)}:null;
-    const er=this.state.editRecipe;
-    const editRecipeData=er?{name:er.name,type:er.type,time:er.time,ingredients:er.ingredients,steps:er.steps,img:this.state.editRecipeImgDraft,hasImg:!!this.state.editRecipeImgDraft,setName:(e)=>this.updateRecipeField('name',e.target.value),setType:(e)=>this.updateRecipeField('type',e.target.value),setTime:(e)=>this.updateRecipeField('time',e.target.value),setIngredients:(e)=>this.updateRecipeField('ingredients',e.target.value),setSteps:(e)=>this.updateRecipeField('steps',e.target.value),save:()=>this.saveEditRecipe(),cancel:()=>this.cancelEditRecipe(),onImgChange:(e)=>{const f=e.target.files&&e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>this.setState({editRecipeImgDraft:ev.target.result});fr.readAsDataURL(f);e.target.value='';},clearImg:()=>this.setState({editRecipeImgDraft:null})}:null;
-    const addRecipeNow=()=>{ const n=rv('rName'); if(!n.trim())return; this.addRecipe({type:rv('rType')||'food',name:n,time:rv('rTime'),img:this.state.recipeImgDraft,ingredients:rv('rIng').split('\n').map(s=>s.trim()).filter(Boolean),steps:rv('rSteps').split('\n').map(s=>s.trim()).filter(Boolean)}); clr('rName','rTime','rIng','rSteps'); };
-
-    // ===== workout =====
-    const wDay=this.state.workoutDay||todayKey;
-    const workoutTabs=days.map(k=>({key:k,label:k,go:()=>this.setWorkoutDay(k),style:`flex:none;padding:9px 15px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;background:${k===wDay?'#6E8499':'#F2F5F9'};color:${k===wDay?'#EBF3FB':'#506070'};border:1px solid ${k===wDay?'#6E8499':'#C8D4DE'};`,dotShow:k===todayKey,dotStyle:`width:5px;height:5px;border-radius:50%;margin:4px auto 0;background:${k===wDay?'#EBF3FB':'#6E8499'};`}));
-    const wd=d.workout[wDay]||{label:'',items:[]};
-    const wDoneN=wd.items.filter(x=>x.done).length;
-    const editingScheme=this.state.editingScheme;
-    const onSchemeDraft=(e)=>this.setSchemeDraft(e.target.value);
-    const workoutItems=wd.items.map(it=>{ const hasScheme=!!it.scheme; const isClass=!!it.isClass; const schemeText=hasScheme?it.scheme:(isClass?'':(it.sets&&it.reps?(it.sets+' × '+it.reps):'')); const editingS=!isClass&&editingScheme===wDay+':'+it.id; const subtitle=isClass?((it.instructor||'')+(it.classTime?' · '+it.classTime:'')):''; const schemeChips=schemeText?schemeText.split(' · ').map(s=>({text:s.trim()})):[{text:'tap to set scheme'}]; return {id:it.id,name:it.name,isClass,subtitle,schemeText,schemeChips,done:it.done,editingS,schemeTagShow:!isClass&&!editingS,schemeInputShow:!isClass&&editingS,toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),startS:()=>this.startScheme(wDay,it.id,schemeText),commitS:()=>this.commitScheme(wDay,it.id),onSchemeKey:enter(()=>this.commitScheme(wDay,it.id)),cardBg:isClass?'#EFF3F0':'#F2F5F9',cardBorder:isClass?'#CDD8CE':'#C8D4DE',boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#7B8A66':'#6E8499'):(isClass?'#B0BFA8':'#B0C4D8')};background:${it.done?(isClass?'#7B8A66':'#6E8499'):'transparent'};`,nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`}; });
-    const addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exScheme')); clr('exName','exScheme'); };
-
-    // ===== habits =====
-    const habitsList=d.habits.map(h=>({id:h.id,name:h.name,done:h.done,streakLabel:(h.streak||0)+'-day streak',toggle:()=>this.toggleHabit(h.id),del:()=>this.delHabit(h.id),boxStyle:`width:28px;height:28px;flex:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${h.done?'#4A6B8A':'#B0C4D8'};background:${h.done?'#4A6B8A':'transparent'};`,nameStyle:`flex:1;font-size:15px;color:${h.done?'#8A9BB0':'#2C3646'};text-decoration:${h.done?'line-through':'none'};`}));
-    const habitPct=Math.round(habDone/Math.max(1,d.habits.length)*100);
-    const addHabitNow=()=>{ const n=rv('habit'); if(!n.trim())return; this.addHabit(n); clr('habit'); };
-
-    // ===== photos =====
-    const photosList=d.photos.map(p=>({id:p.id,src:p.src,hasSrc:!!(p.src&&p.src.length>4),caption:p.caption,del:()=>this.delPhoto(p.id),setCap:(e)=>this.setCaption(p.id,e.target.value)}));
-    const addPhotosNow=(e)=>{ this.addPhotos(e.target.files); e.target.value=''; };
-    const photoCols=w>=900?4:w>=560?3:2;
-
-    // ===== trash =====
-    const trashItems=(d.trash||[]).slice().sort((a,b)=>b.deletedAt-a.deletedAt);
-    const typeLabel={note:'Note',recipe:'Recipe',checklist:'Checklist',date:'Key Date',habit:'Habit'};
-    const typeColor={note:'#3D6080',recipe:'#6A8FAF',checklist:'#4A6B8A',date:'#CA9A3E',habit:'#4A6B8A'};
-    const trashList=trashItems.map(e=>{
-      const daysLeft=Math.ceil((7*24*3600*1000-(Date.now()-e.deletedAt))/86400000);
-      return {id:e.id,name:e.name,typeLabel:typeLabel[e.type]||e.type,daysLeft,expiry:daysLeft<=1?'expires today':('expires in '+daysLeft+' days'),typeStyle:`font-size:11px;font-weight:600;letter-spacing:.08em;padding:3px 8px;border-radius:6px;background:${typeColor[e.type]||'#6A8099'}22;color:${typeColor[e.type]||'#6A8099'};`,restore:()=>this.restoreFromTrash(e.id),perm:()=>this.permDelete(e.id)};
-    });
-
-    // ===== notes =====
-    const stripHtml=(h)=>(h||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').trim();
-    const notesList=d.notes.map(n=>({id:n.id,title:(n.title||'').trim()||'Untitled',snippet:(stripHtml(n.body).slice(0,100))||'Empty note',open:()=>this.setState({noteOpen:n.id}),del:()=>this.delNote(n.id)}));
-    const no=d.notes.find(n=>n.id===this.state.noteOpen);
-    const openNote=no?{title:no.title,body:no.body,close:()=>this.setState({noteOpen:null}),del:()=>this.delNote(no.id),setTitle:(e)=>this.updateNote(no.id,'title',e.target.value),onInput:(e)=>this.updateNote(no.id,'body',e.currentTarget.innerHTML)}:null;
-    const execCmd=(cmd,val)=>{document.execCommand(cmd,false,val||null);};
-    const fmt=this.state.noteActiveFmt||{};
-    const fmtBg=(k)=>fmt[k]?'background:#BCC8D6;border-radius:7px;':'';
-    // selectionchange doesn't reliably fire after execCommand — update active states manually
-    const updateFmt=()=>{try{this.setState({noteActiveFmt:{bold:document.queryCommandState('bold'),italic:document.queryCommandState('italic'),underline:document.queryCommandState('underline'),strike:document.queryCommandState('strikeThrough'),ul:document.queryCommandState('insertUnorderedList'),ol:document.queryCommandState('insertOrderedList')}});}catch(ex){}};
-    const saveBody=()=>{if(this.state.noteOpen&&this._noteBodyEl)this.updateNote(this.state.noteOpen,'body',this._noteBodyEl.innerHTML);};
-    const noteCmd={
-      bold:(e)=>{e.preventDefault();execCmd('bold');updateFmt();saveBody();},
-      italic:(e)=>{e.preventDefault();execCmd('italic');updateFmt();saveBody();},
-      underline:(e)=>{e.preventDefault();execCmd('underline');updateFmt();saveBody();},
-      strike:(e)=>{e.preventDefault();execCmd('strikeThrough');updateFmt();saveBody();},
-      ul:(e)=>{e.preventDefault();execCmd('insertUnorderedList');updateFmt();saveBody();},
-      ol:(e)=>{e.preventDefault();execCmd('insertOrderedList');updateFmt();saveBody();},
-      hlYellow:(e)=>{e.preventDefault();execCmd('hiliteColor','#FFF59D');saveBody();},
-      hlGreen:(e)=>{e.preventDefault();execCmd('hiliteColor','#C8E6C9');saveBody();},
-      hlBlue:(e)=>{e.preventDefault();execCmd('hiliteColor','#BBDEFB');saveBody();},
-      hlPink:(e)=>{e.preventDefault();execCmd('hiliteColor','#F8BBD9');saveBody();},
-      hlOrange:(e)=>{e.preventDefault();execCmd('hiliteColor','#FFE0B2');saveBody();},
-      removeFormat:(e)=>{e.preventDefault();execCmd('removeFormat');try{execCmd('hiliteColor','inherit');}catch(ex){}try{execCmd('backColor','inherit');}catch(ex){}updateFmt();saveBody();},
-      blur:()=>saveBody(),
-      keyDown:(e)=>{const m=e.metaKey||e.ctrlKey;if(!m)return;if(e.key==='b'){e.preventDefault();execCmd('bold');updateFmt();}else if(e.key==='i'){e.preventDefault();execCmd('italic');updateFmt();}else if(e.key==='u'){e.preventDefault();execCmd('underline');updateFmt();}else if(e.key==='z'){e.preventDefault();execCmd(e.shiftKey?'redo':'undo');}else if(e.key==='y'){e.preventDefault();execCmd('redo');}},
-    };
-    const noteFmtBoldStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-weight:700;font-size:14px;color:#2C3646;${fmtBg('bold')}`;
-    const noteFmtItalicStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-style:italic;font-size:14px;color:#2C3646;${fmtBg('italic')}`;
-    const noteFmtUnderlineStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#2C3646;text-decoration:underline;${fmtBg('underline')}`;
-    const noteFmtStrikeStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#2C3646;text-decoration:line-through;${fmtBg('strike')}`;
-    const noteFmtUlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:16px;color:#2C3646;${fmtBg('ul')}`;
-    const noteFmtOlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;color:#2C3646;font-weight:600;${fmtBg('ol')}`;
-
     return {
-      showSidebar, isPhone, isMobile:!showSidebar,
-      homeVisible:isS('home'),
-      isChecklist:isS('checklist'),isSchedule:isS('schedule'),isDates:isS('dates'),
+      showSidebar,isPhone,isMobile:!showSidebar,
+      homeVisible:isS('home'),isChecklist:isS('checklist'),isSchedule:isS('schedule'),isDates:isS('dates'),
       isWorkout:isS('workout'),isHabits:isS('habits'),isPhotos:isS('photos'),
       isRecipes:isS('recipes'),isNotes:isS('notes'),isTrash:isS('trash'),
-      // checklist
-      checklistGroups,packPct,packText:packDone+' of '+d.checklist.length+' packed',catOptions,
-      refClText:refs.clText,refClCat:refs.clCat,addCLnow,onAddCLKey:enter(addCLnow),
-      // schedule
-      week,addingClass:this.state.addingClass,addClassLabel:this.state.addingClass?'Close':'+ Add class',
-      toggleAddClass:()=>this.setState({addingClass:!this.state.addingClass}),dayOptions:days,addClassNow,
-      refCName:refs.cName,refCDay:refs.cDay,refCStart:refs.cStart,refCEnd:refs.cEnd,refCLoc:refs.cLoc,
-      // dates
-      datesList,refDateTitle:refs.dateTitle,refDateWhen:refs.dateWhen,addDateNow,onAddDateKey:enter(addDateNow),
-      // recipes
-      recipeTab,tabFoodStyle:tabStyle(recipeTab==='food'),tabDrinkStyle:tabStyle(recipeTab==='drink'),
-      recTabFood:()=>this.setState({recipeTab:'food',recipeOpen:null}),recTabDrink:()=>this.setState({recipeTab:'drink',recipeOpen:null}),
-      recipesList,openRecipe,editRecipeData,showRecipeList:isS('recipes')&&!openRecipe&&!er,recipeDetailShown:isS('recipes')&&!!openRecipe&&!er,editingRecipeShown:isS('recipes')&&!!er&&!!this.state.recipeOpen,
-      addingRecipe:this.state.addingRecipe,showAddRecipe:()=>this.setState({addingRecipe:true}),hideAddRecipe:()=>this.setState({addingRecipe:false}),
-      addRecipeNow,refRType:refs.rType,refRName:refs.rName,refRTime:refs.rTime,refRIng:refs.rIng,refRSteps:refs.rSteps,
-      recipeImgDraft:this.state.recipeImgDraft,hasRecipeImgDraft:!!this.state.recipeImgDraft,
-      onRecipeImgChange:(e)=>{this.setRecipeImgDraft(e.target.files);e.target.value='';},
-      clearRecipeImg:()=>this.setState({recipeImgDraft:null}),
-      // workout
-      workoutTabs,workoutLabel:wd.label,workoutDayLabel:dayFull[wDay],
-      workoutItems,workoutHasItems:wd.items.length>0,workoutEmpty:wd.items.length===0,
-      workoutDoneText:wd.items.length?(wDoneN+' of '+wd.items.length+' done'):'Recovery day — rest up',
-      schemeDraft:this.state.schemeDraft,onSchemeDraft,
-      refExName:refs.exName,refExScheme:refs.exScheme,addExNow,onAddExKey:enter(addExNow),
-      // habits
-      habitsList,habitPct,habitDoneText:habDone+' of '+d.habits.length+' done today',
-      refHabit:refs.habit,addHabitNow,onAddHabitKey:enter(addHabitNow),
-      // photos
-      photosList,photosEmpty:isS('photos')&&d.photos.length===0,photosHas:d.photos.length>0,
-      photoColStyle:'column-count:'+photoCols+';column-gap:14px;',addPhotosNow,
-      // notes
-      notesList,openNote,noteCmd,notesListShown:isS('notes')&&!openNote,noteEditorShown:isS('notes')&&!!openNote,noteFmtBoldStyle,noteFmtItalicStyle,noteFmtUnderlineStyle,noteFmtStrikeStyle,noteFmtUlStyle,noteFmtOlStyle,
-      goNewNote:()=>this.newNote(),notesEmpty:isS('notes')&&!openNote&&d.notes.length===0,
-      // trash
-      trashList,trashEmpty:isS('trash')&&trashItems.length===0,
-      contentMax: showSidebar?'960px':'620px',
-      contentPad: isPhone?'24px 18px':'40px 32px',
-      tileCols: w>=900?'repeat(2,1fr)':w>=560?'repeat(2,1fr)':'repeat(2,1fr)',
-      navItems,
-      isHome: screen==='home',
-      showHeader: screen!=='home',
-      showBottomBar:false,
-      accent: accents[screen]||'#4A6B8A',
-      headerTitle: titles[screen]||'',
-      headerKicker: kickers[screen]||'',
-      greeting, todayLabel,
-      nextLabel, nextTitle, nextSub,
-      habitStat: habDone+' / '+d.habits.length,
-      workoutStat: wToday.items.length?(wToday.label):('Rest'),
-      subChecklist: packDone+' of '+d.checklist.length+' packed',
-      subSchedule: todaysClasses.length?(todaysClasses.length+' class'+(todaysClasses.length>1?'es':'')+' today'):'No class today',
-      subDates: upcoming.length?(upcoming[0].title+' '+this.countLabel(upcoming[0].n)):'Nothing upcoming',
-      subRecipes: d.recipes.length+' saved',
-      subWorkout: wToday.items.length?(wToday.label+' \u00b7 '+(wToday.items.length-wDone)+' left'):'Rest day',
-      subHabits: habDone+' of '+d.habits.length+' done today',
-      subPhotos: d.photos.length?(d.photos.length+' pinned'):'Add your first',
-      subNotes: d.notes.length+' note'+(d.notes.length===1?'':'s'),
-      subTrash: trashItems.length?(trashItems.length+' item'+(trashItems.length===1?'':'s')):'Empty',
-      // nav handlers
-      goHome:()=>this.nav('home'), goChecklist:()=>this.nav('checklist'), goSchedule:()=>this.nav('schedule'),
-      goDates:()=>this.nav('dates'), goRecipes:()=>this.nav('recipes'), goWorkout:()=>this.nav('workout'),
-      goHabits:()=>this.nav('habits'), goPhotos:()=>this.nav('photos'), goNotes:()=>this.nav('notes'),
-      goTrash:()=>this.nav('trash'),
-      syncStatus: this.state.syncStatus,
+      contentMax:showSidebar?'960px':'620px',contentPad:isPhone?'24px 18px':'40px 32px',
+      tileCols:'repeat(2,1fr)',navItems,
+      isHome:screen==='home',showHeader:screen!=='home',showBottomBar:false,
+      accent:accents[screen]||'#4A6B8A',headerTitle:titles[screen]||'',headerKicker:kickers[screen]||'',
+      greeting,todayLabel,nextLabel,nextTitle,nextSub,
+      habitStat:habDone+' / '+d.habits.length,workoutStat:wToday.items.length?(wToday.label):('Rest'),
+      subChecklist:packDone+' of '+d.checklist.length+' packed',
+      subSchedule:todaysClasses.length?(todaysClasses.length+' class'+(todaysClasses.length>1?'es':'')+' today'):'No class today',
+      subDates:upcoming.length?(upcoming[0].title+' '+this.countLabel(upcoming[0].n)):'Nothing upcoming',
+      subRecipes:d.recipes.length+' saved',
+      subWorkout:wToday.items.length?(wToday.label+' · '+(wToday.items.length-wDone)+' left'):'Rest day',
+      subHabits:habDone+' of '+d.habits.length+' done today',
+      subPhotos:d.photos.length?(d.photos.length+' pinned'):'Add your first',
+      subNotes:d.notes.length+' note'+(d.notes.length===1?'':'s'),
+      subTrash:(d.trash||[]).length?((d.trash||[]).length+' item'+((d.trash||[]).length===1?'':'s')):'Empty',
+      goHome:()=>this.nav('home'),goChecklist:()=>this.nav('checklist'),goSchedule:()=>this.nav('schedule'),
+      goDates:()=>this.nav('dates'),goRecipes:()=>this.nav('recipes'),goWorkout:()=>this.nav('workout'),
+      goHabits:()=>this.nav('habits'),goPhotos:()=>this.nav('photos'),goNotes:()=>this.nav('notes'),
+      goTrash:()=>this.nav('trash'),syncStatus:state.syncStatus,
     };
   }
 }
+[ChecklistSection,ScheduleSection,DatesSection,RecipesSection,WorkoutSection,HabitsSection,PhotosSection,NotesSection,TrashSection].forEach(s=>Object.assign(Component.prototype,s.methods||{}));
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/anna-s-desk/sw.js');</script>
 </body>

@@ -145,6 +145,4 @@ Soft-deleted items are retained in Trash for 7 days before being purged automati
 
 <div align="center">
 
-*Small steps, every day.*
-
 </div>

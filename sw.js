@@ -1,6 +1,14 @@
-const CACHE = 'annas-desk-v2';
+const CACHE = 'annas-desk-v3';
 const BASE = '/anna-s-desk';
-const PRECACHE = [BASE + '/', BASE + '/index.html', BASE + '/support.js', BASE + '/manifest.json', BASE + '/icon-192.png', BASE + '/icon-512.png'];
+const PRECACHE = [
+  BASE + '/', BASE + '/index.html', BASE + '/support.js',
+  BASE + '/manifest.json', BASE + '/icon-192.png', BASE + '/icon-512.png',
+  BASE + '/sections/checklist.js', BASE + '/sections/schedule.js',
+  BASE + '/sections/dates.js',     BASE + '/sections/recipes.js',
+  BASE + '/sections/workout.js',   BASE + '/sections/habits.js',
+  BASE + '/sections/photos.js',    BASE + '/sections/notes.js',
+  BASE + '/sections/trash.js',
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)));

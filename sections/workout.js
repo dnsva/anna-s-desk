@@ -67,8 +67,8 @@ var WorkoutSection = {
     var d=ctx.d, state=ctx.state, days=ctx.days, dayFull=ctx.dayFull, todayKey=ctx.todayKey, enter=ctx.enter, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
     var wDay=state.workoutDay||todayKey;
     var workoutTabs=days.map(k=>({key:k,label:k,go:()=>this.setWorkoutDay(k),
-      style:`flex:none;padding:9px 15px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;background:${k===wDay?'#6E8499':'#F2F5F9'};color:${k===wDay?'#EBF3FB':'#506070'};border:1px solid ${k===wDay?'#6E8499':'#C8D4DE'};`,
-      dotShow:k===todayKey,dotStyle:`width:5px;height:5px;border-radius:50%;margin:4px auto 0;background:${k===wDay?'#EBF3FB':'#6E8499'};`}));
+      style:`flex:none;padding:9px 15px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;background:${k===wDay?'#3a7a25':'#edfffe'};color:${k===wDay?'#fdf0f3':'#3a5020'};border:1px solid ${k===wDay?'#3a7a25':'#9adede'};`,
+      dotShow:k===todayKey,dotStyle:`width:5px;height:5px;border-radius:50%;margin:4px auto 0;background:${k===wDay?'#fdf0f3':'#3a7a25'};`}));
     var wd=d.workout[wDay]||{label:'',items:[]};
     var wDoneN=wd.items.filter(x=>x.done).length;
     var editingScheme=state.editingScheme;
@@ -85,9 +85,9 @@ var WorkoutSection = {
         startS:()=>this.startScheme(wDay,it.id,schemeText),
         commitS:()=>this.commitScheme(wDay,it.id),
         onSchemeKey:enter(()=>this.commitScheme(wDay,it.id)),
-        cardBg:isClass?'#EFF3F0':'#F2F5F9',cardBorder:isClass?'#CDD8CE':'#C8D4DE',
-        boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#7B8A66':'#6E8499'):(isClass?'#B0BFA8':'#B0C4D8')};background:${it.done?(isClass?'#7B8A66':'#6E8499'):'transparent'};`,
-        nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#8A9BB0':'#2C3646'};text-decoration:${it.done?'line-through':'none'};`};
+        cardBg:isClass?'#f0fef5':'#edfffe',cardBorder:isClass?'#a8eba4':'#9adede',
+        boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#2b9720':'#3a7a25'):(isClass?'#7fd87a':'#7dcece')};background:${it.done?(isClass?'#2b9720':'#3a7a25'):'transparent'};`,
+        nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#5a8a3a':'#343a1a'};text-decoration:${it.done?'line-through':'none'};`};
     });
     var addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exScheme')); clr('exName','exScheme'); };
     return {

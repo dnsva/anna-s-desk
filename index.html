@@ -17,19 +17,19 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;}
   input,textarea,select,button{font-family:'Work Sans',sans-serif;}
-  ::placeholder{color:#8AA0B8;}
+  ::placeholder{color:#5a8a3a;}
   textarea{resize:none;}
   ::-webkit-scrollbar{width:8px;height:8px;}
-  ::-webkit-scrollbar-thumb{background:#B0C4D8;border-radius:8px;}
+  ::-webkit-scrollbar-thumb{background:#7dcece;border-radius:8px;}
   @keyframes scfade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-  [contenteditable]:empty:before{content:attr(placeholder);color:#8AA0B8;pointer-events:none;}
+  [contenteditable]:empty:before{content:attr(placeholder);color:#5a8a3a;pointer-events:none;}
   [contenteditable] ul{margin:4px 0;padding-left:22px;} [contenteditable] ol{margin:4px 0;padding-left:22px;}
   [contenteditable] li{margin:2px 0;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <!-- PWA -->
 <link rel="manifest" href="/anna-s-desk/manifest.json">
-<meta name="theme-color" content="#EBF0F5">
+<meta name="theme-color" content="#edfffe">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Anna's Desk">
@@ -37,27 +37,27 @@
 </helmet>
 
 <!-- ===== MAIN APP ===== -->
-<div style="min-height:100vh;display:flex;background:#EBF0F5;font-family:'Work Sans',sans-serif;color:#2C3646;">
+<div style="min-height:100vh;display:flex;background:#edfffe;font-family:'Work Sans',sans-serif;color:#343a1a;">
 
   <!-- ============ SIDEBAR (wide screens) ============ -->
   <sc-if value="{{ showSidebar }}" hint-placeholder-val="{{ false }}">
-    <div style="width:248px;flex:none;background:#DDE4EC;border-right:1px solid #B8C8D8;padding:28px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;">
+    <div style="width:248px;flex:none;background:#d0f8fa;border-right:1px solid #85d2d3;padding:28px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;">
       <div style="padding:0 8px 4px;">
-        <div style="font-family:'Newsreader',serif;font-size:24px;color:#2C3646;line-height:1;">Anna's Desk</div>
-        <div style="font-family:'Caveat',cursive;font-size:17px;color:#4A6B8A;margin-top:2px;">1A · fall 2026 ✦</div>
+        <div style="font-family:'Newsreader',serif;font-size:24px;color:#343a1a;line-height:1;">Anna's Desk</div>
+        <div style="font-family:'Caveat',cursive;font-size:17px;color:#8b1e3f;margin-top:2px;">1A · fall 2026 ✦</div>
       </div>
       <div style="margin-top:22px;display:flex;flex-direction:column;gap:2px;">
         <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="9">
           <div onClick="{{ n.go }}" style="{{ n.style }}">
             <div style="{{ n.dot }}"></div>
             <div style="flex:1;">{{ n.name }}</div>
-            <div style="font-size:12px;color:#8A9BB0;">{{ n.badge }}</div>
+            <div style="font-size:12px;color:#5a8a3a;">{{ n.badge }}</div>
           </div>
         </sc-for>
       </div>
-      <div style="margin-top:auto;padding:16px 10px 4px;border-top:1px solid #B8C8D8;">
-        <div style=”font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:#506070;line-height:1.45;”>”Small steps, every day.”</div>
-        <div style=”margin-top:8px;font-size:11px;color:#8AA0B8;”>{{ syncStatus }}</div>
+      <div style="margin-top:auto;padding:16px 10px 4px;border-top:1px solid #85d2d3;">
+        <div style=”font-family:'Newsreader',serif;font-style:italic;font-size:15px;color:#3a5020;line-height:1.45;”>”Small steps, every day.”</div>
+        <div style=”margin-top:8px;font-size:11px;color:#5a8a3a;”>{{ syncStatus }}</div>
       </div>
     </div>
   </sc-if>
@@ -71,26 +71,26 @@
         <div style="animation:scfade .4s ease both;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
             <div style="min-width:0;">
-              <div style="font-family:'Caveat',cursive;font-size:21px;color:#4A6B8A;white-space:nowrap;">{{ todayLabel }}</div>
-              <div style="font-family:'Newsreader',serif;font-size:34px;line-height:1.05;color:#2C3646;margin-top:2px;">{{ greeting }}</div>
+              <div style="font-family:'Caveat',cursive;font-size:21px;color:#8b1e3f;white-space:nowrap;">{{ todayLabel }}</div>
+              <div style="font-family:'Newsreader',serif;font-size:34px;line-height:1.05;color:#343a1a;margin-top:2px;">{{ greeting }}</div>
             </div>
             <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:none;">
-              <div style="width:46px;height:46px;border-radius:50%;background:#6A8FAF;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;color:#EBF3FB;font-size:20px;">A</div>
-              <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#8AA0B8;white-space:nowrap;">{{ syncStatus }}</div></sc-if>
+              <div style="width:46px;height:46px;border-radius:50%;background:#b0304f;display:flex;align-items:center;justify-content:center;font-family:'Newsreader',serif;color:#fdf0f3;font-size:20px;">A</div>
+              <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;color:#5a8a3a;white-space:nowrap;">{{ syncStatus }}</div></sc-if>
             </div>
           </div>
 
           <!-- hero today card -->
-          <div style="background:#4A6B8A;border-radius:24px;padding:24px;color:#EBF3FB;box-shadow:0 12px 30px rgba(42,79,110,.22);">
+          <div style="background:#8b1e3f;border-radius:24px;padding:24px;color:#fdf0f3;box-shadow:0 12px 30px rgba(139,30,63,.22);">
             <div style="font-size:11px;letter-spacing:.16em;opacity:.82;font-weight:600;">{{ nextLabel }}</div>
             <div style="font-family:'Newsreader',serif;font-size:27px;margin-top:5px;">{{ nextTitle }}</div>
             <div style="font-size:13px;opacity:.85;margin-top:3px;">{{ nextSub }}</div>
             <div style="display:flex;gap:10px;margin-top:18px;">
-              <div onClick="{{ goHabits }}" style="flex:1;background:rgba(235,243,251,.16);border-radius:15px;padding:13px 14px;cursor:pointer;">
+              <div onClick="{{ goHabits }}" style="flex:1;background:rgba(253,240,243,.16);border-radius:15px;padding:13px 14px;cursor:pointer;">
                 <div style="font-size:11px;opacity:.85;">Habits today</div>
                 <div style="font-family:'Newsreader',serif;font-size:22px;margin-top:2px;">{{ habitStat }}</div>
               </div>
-              <div onClick="{{ goWorkout }}" style="flex:1;background:rgba(235,243,251,.16);border-radius:15px;padding:13px 14px;cursor:pointer;">
+              <div onClick="{{ goWorkout }}" style="flex:1;background:rgba(253,240,243,.16);border-radius:15px;padding:13px 14px;cursor:pointer;">
                 <div style="font-size:11px;opacity:.85;">Today's workout</div>
                 <div style="font-family:'Newsreader',serif;font-size:22px;margin-top:2px;">{{ workoutStat }}</div>
               </div>
@@ -100,58 +100,58 @@
           <!-- all category tiles -->
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;margin-top:18px;">
 
-            <div onClick="{{ goChecklist }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#4A6B8A;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5.5" y="3" width="9" height="13" rx="1.5" stroke="#EBF3FB" stroke-width="1.5"/><path d="M8.5 3V2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><path d="M7.5 9 9 10.5l3.5-3.5" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="7.5" y1="13" x2="12.5" y2="13" stroke="#EBF3FB" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+            <div onClick="{{ goChecklist }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#8b1e3f;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="5.5" y="3" width="9" height="13" rx="1.5" stroke="#fdf0f3" stroke-width="1.5"/><path d="M8.5 3V2a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><path d="M7.5 9 9 10.5l3.5-3.5" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="7.5" y1="13" x2="12.5" y2="13" stroke="#fdf0f3" stroke-width="1.3" stroke-linecap="round"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Move-in Checklist</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subChecklist }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subChecklist }}</div>
             </div>
 
-            <div onClick="{{ goSchedule }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#7B8A66;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="14" height="13" rx="2" stroke="#EBF3FB" stroke-width="1.5"/><line x1="3" y1="8" x2="17" y2="8" stroke="#EBF3FB" stroke-width="1.5"/><line x1="7" y1="2.5" x2="7" y2="5.5" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="2.5" x2="13" y2="5.5" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="11.5" r="1.1" fill="#EBF3FB"/><circle cx="10" cy="11.5" r="1.1" fill="#EBF3FB"/><circle cx="13" cy="11.5" r="1.1" fill="#EBF3FB"/><circle cx="7" cy="14.5" r="1.1" fill="#EBF3FB"/><circle cx="10" cy="14.5" r="1.1" fill="#EBF3FB"/></svg></div>
+            <div onClick="{{ goSchedule }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#2b9720;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="14" height="13" rx="2" stroke="#fdf0f3" stroke-width="1.5"/><line x1="3" y1="8" x2="17" y2="8" stroke="#fdf0f3" stroke-width="1.5"/><line x1="7" y1="2.5" x2="7" y2="5.5" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="2.5" x2="13" y2="5.5" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="11.5" r="1.1" fill="#fdf0f3"/><circle cx="10" cy="11.5" r="1.1" fill="#fdf0f3"/><circle cx="13" cy="11.5" r="1.1" fill="#fdf0f3"/><circle cx="7" cy="14.5" r="1.1" fill="#fdf0f3"/><circle cx="10" cy="14.5" r="1.1" fill="#fdf0f3"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Class Schedule</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subSchedule }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subSchedule }}</div>
             </div>
 
-            <div onClick="{{ goDates }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#CA9A3E;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="14" height="13" rx="2" stroke="#EBF3FB" stroke-width="1.5"/><line x1="3" y1="8" x2="17" y2="8" stroke="#EBF3FB" stroke-width="1.5"/><line x1="7" y1="2.5" x2="7" y2="5.5" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="2.5" x2="13" y2="5.5" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><polygon points="10,9.5 10.6,11.3 12.5,11.3 11,12.4 11.5,14.2 10,13.1 8.5,14.2 9,12.4 7.5,11.3 9.4,11.3" fill="#EBF3FB"/></svg></div>
+            <div onClick="{{ goDates }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#2b9720;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="14" height="13" rx="2" stroke="#fdf0f3" stroke-width="1.5"/><line x1="3" y1="8" x2="17" y2="8" stroke="#fdf0f3" stroke-width="1.5"/><line x1="7" y1="2.5" x2="7" y2="5.5" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="13" y1="2.5" x2="13" y2="5.5" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><polygon points="10,9.5 10.6,11.3 12.5,11.3 11,12.4 11.5,14.2 10,13.1 8.5,14.2 9,12.4 7.5,11.3 9.4,11.3" fill="#fdf0f3"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Key Dates</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subDates }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subDates }}</div>
             </div>
 
-            <div onClick="{{ goRecipes }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#6A8FAF;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="7.5" y1="3" x2="7.5" y2="17" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><path d="M6 3v3.5A1.5 1.5 0 0 0 7.5 8" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><path d="M9 3v3.5A1.5 1.5 0 0 1 7.5 8" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><path d="M13 3c0 0 2 2 2 4.5S13 10 13 10v7" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div onClick="{{ goRecipes }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#b0304f;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="7.5" y1="3" x2="7.5" y2="17" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><path d="M6 3v3.5A1.5 1.5 0 0 0 7.5 8" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><path d="M9 3v3.5A1.5 1.5 0 0 1 7.5 8" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><path d="M13 3c0 0 2 2 2 4.5S13 10 13 10v7" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Recipes</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subRecipes }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subRecipes }}</div>
             </div>
 
-            <div onClick="{{ goWorkout }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#6E8499;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="7" y1="10" x2="13" y2="10" stroke="#EBF3FB" stroke-width="2" stroke-linecap="round"/><rect x="4.5" y="7.5" width="3" height="5" rx="1" fill="#EBF3FB"/><rect x="2.2" y="8.2" width="2.8" height="3.6" rx="0.9" fill="#EBF3FB"/><rect x="12.5" y="7.5" width="3" height="5" rx="1" fill="#EBF3FB"/><rect x="15" y="8.2" width="2.8" height="3.6" rx="0.9" fill="#EBF3FB"/></svg></div>
+            <div onClick="{{ goWorkout }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#3a7a25;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="7" y1="10" x2="13" y2="10" stroke="#fdf0f3" stroke-width="2" stroke-linecap="round"/><rect x="4.5" y="7.5" width="3" height="5" rx="1" fill="#fdf0f3"/><rect x="2.2" y="8.2" width="2.8" height="3.6" rx="0.9" fill="#fdf0f3"/><rect x="12.5" y="7.5" width="3" height="5" rx="1" fill="#fdf0f3"/><rect x="15" y="8.2" width="2.8" height="3.6" rx="0.9" fill="#fdf0f3"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Workout Planner</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subWorkout }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subWorkout }}</div>
             </div>
 
-            <div onClick="{{ goHabits }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#4A6B8A;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" stroke="#EBF3FB" stroke-width="1.5"/><line x1="10" y1="3" x2="10" y2="5" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="17" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="5" y2="10" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="10" x2="17" y2="10" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="5.05" y1="5.05" x2="6.46" y2="6.46" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="13.54" y1="13.54" x2="14.95" y2="14.95" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="5.05" y1="14.95" x2="6.46" y2="13.54" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><line x1="13.54" y1="6.46" x2="14.95" y2="5.05" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <div onClick="{{ goHabits }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#8b1e3f;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="3" stroke="#fdf0f3" stroke-width="1.5"/><line x1="10" y1="3" x2="10" y2="5" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="15" x2="10" y2="17" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="5" y2="10" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="10" x2="17" y2="10" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="5.05" y1="5.05" x2="6.46" y2="6.46" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="13.54" y1="13.54" x2="14.95" y2="14.95" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="5.05" y1="14.95" x2="6.46" y2="13.54" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><line x1="13.54" y1="6.46" x2="14.95" y2="5.05" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Habits</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subHabits }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subHabits }}</div>
             </div>
 
-            <div onClick="{{ goPhotos }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#5A7A9A;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 7.5a2 2 0 0 1 2-2h1.5L7.5 4h5l1.5 1.5H15.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7.5z" stroke="#EBF3FB" stroke-width="1.5"/><circle cx="10" cy="11.5" r="2.5" stroke="#EBF3FB" stroke-width="1.5"/><circle cx="15" cy="8" r="1" fill="#EBF3FB"/></svg></div>
+            <div onClick="{{ goPhotos }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#9b2848;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 7.5a2 2 0 0 1 2-2h1.5L7.5 4h5l1.5 1.5H15.5a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V7.5z" stroke="#fdf0f3" stroke-width="1.5"/><circle cx="10" cy="11.5" r="2.5" stroke="#fdf0f3" stroke-width="1.5"/><circle cx="15" cy="8" r="1" fill="#fdf0f3"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Photo Board</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subPhotos }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subPhotos }}</div>
             </div>
 
-            <div onClick="{{ goNotes }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#3D6080;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="10" height="13" rx="1.5" stroke="#EBF3FB" stroke-width="1.5"/><line x1="6.5" y1="7.5" x2="11.5" y2="7.5" stroke="#EBF3FB" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="10.5" x2="11.5" y2="10.5" stroke="#EBF3FB" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="13.5" x2="10" y2="13.5" stroke="#EBF3FB" stroke-width="1.3" stroke-linecap="round"/><path d="M14 7.5l1.5-1.5a1 1 0 0 1 1.4 1.4L15.4 9l-2 .5.6-2z" fill="#EBF3FB"/></svg></div>
+            <div onClick="{{ goNotes }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#6b1530;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="10" height="13" rx="1.5" stroke="#fdf0f3" stroke-width="1.5"/><line x1="6.5" y1="7.5" x2="11.5" y2="7.5" stroke="#fdf0f3" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="10.5" x2="11.5" y2="10.5" stroke="#fdf0f3" stroke-width="1.3" stroke-linecap="round"/><line x1="6.5" y1="13.5" x2="10" y2="13.5" stroke="#fdf0f3" stroke-width="1.3" stroke-linecap="round"/><path d="M14 7.5l1.5-1.5a1 1 0 0 1 1.4 1.4L15.4 9l-2 .5.6-2z" fill="#fdf0f3"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Notes</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subNotes }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subNotes }}</div>
             </div>
 
-            <div onClick="{{ goTrash }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;cursor:pointer;">
-              <div style="width:34px;height:34px;border-radius:11px;background:#6A8099;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="6" x2="16" y2="6" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><path d="M8 6V4.5C8 3.7 8.4 3 9.2 3h1.6c.8 0 1.2.7 1.2 1.5V6" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 6 6.5 17h7l1-11" stroke="#EBF3FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="8.5" y1="9.5" x2="8.5" y2="14" stroke="#EBF3FB" stroke-width="1.3" stroke-linecap="round"/><line x1="11.5" y1="9.5" x2="11.5" y2="14" stroke="#EBF3FB" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+            <div onClick="{{ goTrash }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;cursor:pointer;">
+              <div style="width:34px;height:34px;border-radius:11px;background:#3a7a25;display:flex;align-items:center;justify-content:center;margin-bottom:10px;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="4" y1="6" x2="16" y2="6" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><path d="M8 6V4.5C8 3.7 8.4 3 9.2 3h1.6c.8 0 1.2.7 1.2 1.5V6" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round"/><path d="M5.5 6 6.5 17h7l1-11" stroke="#fdf0f3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="8.5" y1="9.5" x2="8.5" y2="14" stroke="#fdf0f3" stroke-width="1.3" stroke-linecap="round"/><line x1="11.5" y1="9.5" x2="11.5" y2="14" stroke="#fdf0f3" stroke-width="1.3" stroke-linecap="round"/></svg></div>
               <div style="font-family:'Newsreader',serif;font-size:18px;">Trash</div>
-              <div style="font-size:12px;color:#6A8099;margin-top:1px;">{{ subTrash }}</div>
+              <div style="font-size:12px;color:#3a7a25;margin-top:1px;">{{ subTrash }}</div>
             </div>
 
           </div>
@@ -161,8 +161,8 @@
 
       <!-- ===== screen header (non-home) ===== -->
       <sc-if value="{{ showHeader }}" hint-placeholder-val="{{ false }}">
-        <div style="display:flex;align-items:center;gap:14px;padding:6px 0 18px;position:sticky;top:0;background:#EBF0F5;z-index:5;">
-          <div onClick="{{ goHome }}" style="width:40px;height:40px;border-radius:50%;background:#F2F5F9;border:1px solid #C8D4DE;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:#506070;">‹</div>
+        <div style="display:flex;align-items:center;gap:14px;padding:6px 0 18px;position:sticky;top:0;background:#edfffe;z-index:5;">
+          <div onClick="{{ goHome }}" style="width:40px;height:40px;border-radius:50%;background:#edfffe;border:1px solid #9adede;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:#3a5020;">‹</div>
           <div style="flex:1;">
             <div style="font-family:'Caveat',cursive;font-size:16px;color:{{ accent }};line-height:1;">{{ headerKicker }}</div>
             <div style="font-family:'Newsreader',serif;font-size:26px;line-height:1.1;">{{ headerTitle }}</div>
@@ -173,35 +173,35 @@
       <!-- ===== CHECKLIST ===== -->
       <sc-if value="{{ isChecklist }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
-          <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:18px;margin-bottom:18px;">
+          <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:18px;margin-bottom:18px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;">
               <div style="font-family:'Newsreader',serif;font-size:18px;">{{ packText }}</div>
-              <div style="font-size:13px;color:#6A8099;">{{ packPct }}%</div>
+              <div style="font-size:13px;color:#3a7a25;">{{ packPct }}%</div>
             </div>
-            <div style="height:9px;border-radius:6px;background:#C8D8E8;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ packPct }}%;background:#4A6B8A;border-radius:6px;transition:width .35s;"></div></div>
+            <div style="height:9px;border-radius:6px;background:#9adede;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ packPct }}%;background:#8b1e3f;border-radius:6px;transition:width .35s;"></div></div>
           </div>
           <sc-for list="{{ checklistGroups }}" as="g" hint-placeholder-count="4">
             <div style="margin-bottom:20px;">
-              <div style="font-size:11px;letter-spacing:.14em;color:#8A9BB0;font-weight:600;margin:0 2px 9px;">{{ g.catUpper }}</div>
-              <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;overflow:hidden;">
+              <div style="font-size:11px;letter-spacing:.14em;color:#5a8a3a;font-weight:600;margin:0 2px 9px;">{{ g.catUpper }}</div>
+              <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;overflow:hidden;">
                 <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
-                  <div style="display:flex;align-items:center;gap:13px;padding:13px 16px;border-top:1px solid #DDE8F0;">
+                  <div style="display:flex;align-items:center;gap:13px;padding:13px 16px;border-top:1px solid #c8f9fa;">
                     <div onClick="{{ it.toggle }}" style="{{ it.boxStyle }}">
-                      <sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><div style="width:9px;height:5px;border-left:2px solid #EBF3FB;border-bottom:2px solid #EBF3FB;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                      <sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><div style="width:9px;height:5px;border-left:2px solid #fdf0f3;border-bottom:2px solid #fdf0f3;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
                     </div>
                     <div style="{{ it.labelStyle }}">{{ it.label }}</div>
-                    <div onClick="{{ it.del }}" style="color:#A0B8CC;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                    <div onClick="{{ it.del }}" style="color:#78a558;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
                   </div>
                 </sc-for>
               </div>
             </div>
           </sc-for>
-          <div style="display:flex;gap:8px;align-items:center;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:10px;flex-wrap:wrap;">
-            <select ref="{{ refClCat }}" name="cl-category" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px;outline:none;">
+          <div style="display:flex;gap:8px;align-items:center;background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:10px;flex-wrap:wrap;">
+            <select ref="{{ refClCat }}" name="cl-category" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px;outline:none;">
               <sc-for list="{{ catOptions }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for>
             </select>
-            <input ref="{{ refClText }}" name="cl-item" placeholder="Add an item…" onKeyDown="{{ onAddCLKey }}" style="flex:1;min-width:130px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-            <div onClick="{{ addCLnow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#4A6B8A;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+            <input ref="{{ refClText }}" name="cl-item" placeholder="Add an item…" onKeyDown="{{ onAddCLKey }}" style="flex:1;min-width:130px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+            <div onClick="{{ addCLnow }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#8b1e3f;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
           </div>
           <div style="height:30px;"></div>
         </div>
@@ -211,41 +211,41 @@
       <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
           <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
-            <div onClick="{{ toggleAddClass }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#7B8A66;border-radius:11px;padding:10px 18px;cursor:pointer;">{{ addClassLabel }}</div>
+            <div onClick="{{ toggleAddClass }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#2b9720;border-radius:11px;padding:10px 18px;cursor:pointer;">{{ addClassLabel }}</div>
           </div>
           <sc-if value="{{ addingClass }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px;">
-              <input ref="{{ refCName }}" name="class-name" placeholder="Class name" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px;">
+              <input ref="{{ refCName }}" name="class-name" placeholder="Class name" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <select ref="{{ refCDay }}" name="class-day" style="flex:1;min-width:90px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px;outline:none;">
+                <select ref="{{ refCDay }}" name="class-day" style="flex:1;min-width:90px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px;outline:none;">
                   <sc-for list="{{ dayOptions }}" as="dy" hint-placeholder-count="7"><option value="{{ dy }}">{{ dy }}</option></sc-for>
                 </select>
-                <input ref="{{ refCStart }}" name="class-start" type="time" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:9px 10px;outline:none;">
-                <input ref="{{ refCEnd }}" name="class-end" type="time" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:9px 10px;outline:none;">
+                <input ref="{{ refCStart }}" name="class-start" type="time" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:9px 10px;outline:none;">
+                <input ref="{{ refCEnd }}" name="class-end" type="time" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:9px 10px;outline:none;">
               </div>
-              <input ref="{{ refCLoc }}" name="class-location" placeholder="Location" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-              <div onClick="{{ addClassNow }}" style="align-self:flex-start;font-weight:600;font-size:14px;color:#EBF3FB;background:#7B8A66;border-radius:11px;padding:10px 20px;cursor:pointer;">Save class</div>
+              <input ref="{{ refCLoc }}" name="class-location" placeholder="Location" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+              <div onClick="{{ addClassNow }}" style="align-self:flex-start;font-weight:600;font-size:14px;color:#fdf0f3;background:#2b9720;border-radius:11px;padding:10px 20px;cursor:pointer;">Save class</div>
             </div>
           </sc-if>
           <sc-for list="{{ week }}" as="day" hint-placeholder-count="7">
             <div style="margin-bottom:18px;">
               <div style="display:flex;align-items:center;gap:9px;margin:0 2px 9px;">
                 <div style="{{ day.nameStyle }}">{{ day.name }}</div>
-                <sc-if value="{{ day.isToday }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;letter-spacing:.1em;font-weight:700;color:#7B8A66;background:#D8E4F0;border-radius:20px;padding:3px 9px;">TODAY</div></sc-if>
+                <sc-if value="{{ day.isToday }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;letter-spacing:.1em;font-weight:700;color:#2b9720;background:#c8f7d0;border-radius:20px;padding:3px 9px;">TODAY</div></sc-if>
               </div>
               <sc-if value="{{ day.hasClasses }}" hint-placeholder-val="{{ true }}">
                 <div style="display:flex;flex-direction:column;gap:9px;">
                   <sc-for list="{{ day.classes }}" as="c" hint-placeholder-count="2">
-                    <div style="display:flex;align-items:center;gap:14px;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:15px;padding:14px 16px;">
+                    <div style="display:flex;align-items:center;gap:14px;background:#edfffe;border:1px solid #9adede;border-radius:15px;padding:14px 16px;">
                       <div style="width:4px;align-self:stretch;border-radius:4px;background:{{ c.color }};"></div>
-                      <div style="font-size:13px;color:#5A7090;font-variant-numeric:tabular-nums;width:104px;flex:none;">{{ c.range }}</div>
-                      <div style="flex:1;min-width:0;"><div style="font-family:'Newsreader',serif;font-size:18px;">{{ c.name }}</div><div style="font-size:12px;color:#6A8099;">{{ c.loc }}</div></div>
-                      <div onClick="{{ c.del }}" style="color:#A0B8CC;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                      <div style="font-size:13px;color:#2b7a1a;font-variant-numeric:tabular-nums;width:104px;flex:none;">{{ c.range }}</div>
+                      <div style="flex:1;min-width:0;"><div style="font-family:'Newsreader',serif;font-size:18px;">{{ c.name }}</div><div style="font-size:12px;color:#3a7a25;">{{ c.loc }}</div></div>
+                      <div onClick="{{ c.del }}" style="color:#78a558;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
                     </div>
                   </sc-for>
                 </div>
               </sc-if>
-              <sc-if value="{{ day.empty }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#8AA0B8;padding:4px 6px;">No classes</div></sc-if>
+              <sc-if value="{{ day.empty }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#5a8a3a;padding:4px 6px;">No classes</div></sc-if>
             </div>
           </sc-for>
           <div style="height:30px;"></div>
@@ -255,18 +255,18 @@
       <!-- ===== KEY DATES ===== -->
       <sc-if value="{{ isDates }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
-          <div style="display:flex;gap:8px;align-items:center;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:10px;margin-bottom:20px;flex-wrap:wrap;">
-            <input ref="{{ refDateTitle }}" name="date-title" placeholder="What's happening…" onKeyDown="{{ onAddDateKey }}" style="flex:1;min-width:140px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-            <input ref="{{ refDateWhen }}" name="date-when" type="date" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:9px 10px;outline:none;">
-            <div onClick="{{ addDateNow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#CA9A3E;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          <div style="display:flex;gap:8px;align-items:center;background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:10px;margin-bottom:20px;flex-wrap:wrap;">
+            <input ref="{{ refDateTitle }}" name="date-title" placeholder="What's happening…" onKeyDown="{{ onAddDateKey }}" style="flex:1;min-width:140px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+            <input ref="{{ refDateWhen }}" name="date-when" type="date" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:9px 10px;outline:none;">
+            <div onClick="{{ addDateNow }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#2b9720;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <sc-for list="{{ datesList }}" as="x" hint-placeholder-count="6">
-              <div style="display:flex;align-items:center;gap:14px;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:15px;padding:13px 16px;">
+              <div style="display:flex;align-items:center;gap:14px;background:#edfffe;border:1px solid #9adede;border-radius:15px;padding:13px 16px;">
                 <div style="{{ x.badgeStyle }}">{{ x.count }}</div>
                 <div style="{{ x.titleStyle }}">{{ x.title }}</div>
-                <div style="font-size:13px;color:#6A8099;">{{ x.dateLabel }}</div>
-                <div onClick="{{ x.del }}" style="color:#A0B8CC;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                <div style="font-size:13px;color:#3a7a25;">{{ x.dateLabel }}</div>
+                <div onClick="{{ x.del }}" style="color:#78a558;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
               </div>
             </sc-for>
           </div>
@@ -278,45 +278,45 @@
       <sc-if value="{{ showRecipeList }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
-            <div style="display:flex;gap:4px;background:#DDE8F0;border-radius:13px;padding:4px;">
+            <div style="display:flex;gap:4px;background:#c8f9fa;border-radius:13px;padding:4px;">
               <div onClick="{{ recTabFood }}" style="{{ tabFoodStyle }}">Food</div>
               <div onClick="{{ recTabDrink }}" style="{{ tabDrinkStyle }}">Drinks</div>
             </div>
             <div style="flex:1;"></div>
-            <div onClick="{{ showAddRecipe }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#6A8FAF;border-radius:11px;padding:10px 16px;cursor:pointer;">+ New</div>
+            <div onClick="{{ showAddRecipe }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#b0304f;border-radius:11px;padding:10px 16px;cursor:pointer;">+ New</div>
           </div>
           <sc-if value="{{ addingRecipe }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px;">
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:10px;">
               <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <select ref="{{ refRType }}" name="recipe-type" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px;outline:none;"><option value="food">Food</option><option value="drink">Drink</option></select>
-                <input ref="{{ refRName }}" name="recipe-name" placeholder="Recipe name" style="flex:1;min-width:140px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-                <input ref="{{ refRTime }}" name="recipe-time" placeholder="Time (e.g. 5 min)" style="width:140px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
+                <select ref="{{ refRType }}" name="recipe-type" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px;outline:none;"><option value="food">Food</option><option value="drink">Drink</option></select>
+                <input ref="{{ refRName }}" name="recipe-name" placeholder="Recipe name" style="flex:1;min-width:140px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+                <input ref="{{ refRTime }}" name="recipe-time" placeholder="Time (e.g. 5 min)" style="width:140px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
               </div>
-              <textarea ref="{{ refRIng }}" name="recipe-ingredients" placeholder="Ingredients — one per line" rows="4" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
-              <textarea ref="{{ refRSteps }}" name="recipe-steps" placeholder="Steps — one per line" rows="4" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+              <textarea ref="{{ refRIng }}" name="recipe-ingredients" placeholder="Ingredients — one per line" rows="4" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+              <textarea ref="{{ refRSteps }}" name="recipe-steps" placeholder="Steps — one per line" rows="4" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
               <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#5A7090;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:9px 14px;cursor:pointer;">
+                <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#2b7a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:9px 14px;cursor:pointer;">
                   <span style="font-size:16px;">📷</span> Add photo
                   <input type="file" accept="image/*" onChange="{{ onRecipeImgChange }}" style="display:none;">
                 </label>
                 <sc-if value="{{ hasRecipeImgDraft }}" hint-placeholder-val="{{ false }}">
                   <div style="position:relative;display:inline-block;">
-                    <img src="{{ recipeImgDraft }}" loading="lazy" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #BCC8D6;">
-                    <div onClick="{{ clearRecipeImg }}" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#4A6B8A;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">×</div>
+                    <img src="{{ recipeImgDraft }}" loading="lazy" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #8dd8d9;">
+                    <div onClick="{{ clearRecipeImg }}" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#8b1e3f;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">×</div>
                   </div>
                 </sc-if>
               </div>
               <div style="display:flex;gap:10px;">
-                <div onClick="{{ addRecipeNow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#6A8FAF;border-radius:11px;padding:10px 20px;cursor:pointer;">Save</div>
-                <div onClick="{{ hideAddRecipe }}" style="font-weight:600;font-size:14px;color:#5A7090;background:#DDE8F0;border-radius:11px;padding:10px 20px;cursor:pointer;">Cancel</div>
+                <div onClick="{{ addRecipeNow }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#b0304f;border-radius:11px;padding:10px 20px;cursor:pointer;">Save</div>
+                <div onClick="{{ hideAddRecipe }}" style="font-weight:600;font-size:14px;color:#2b7a1a;background:#c8f9fa;border-radius:11px;padding:10px 20px;cursor:pointer;">Cancel</div>
               </div>
             </div>
           </sc-if>
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;">
             <sc-for list="{{ recipesList }}" as="r" hint-placeholder-count="4">
-              <div onClick="{{ r.open }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:18px;cursor:pointer;">
+              <div onClick="{{ r.open }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:18px;cursor:pointer;">
                 <div style="font-family:'Newsreader',serif;font-size:20px;line-height:1.15;">{{ r.name }}</div>
-                <div style="display:flex;gap:12px;margin-top:10px;font-size:12px;color:#6A8099;"><div>{{ r.time }}</div><div>·</div><div>{{ r.ingCount }}</div></div>
+                <div style="display:flex;gap:12px;margin-top:10px;font-size:12px;color:#3a7a25;"><div>{{ r.time }}</div><div>·</div><div>{{ r.ingCount }}</div></div>
               </div>
             </sc-for>
           </div>
@@ -327,33 +327,33 @@
       <!-- ===== RECIPE DETAIL ===== -->
       <sc-if value="{{ recipeDetailShown }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .3s ease both;">
-          <div onClick="{{ openRecipe.close }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#5A7090;font-size:14px;margin-bottom:16px;">‹ All recipes</div>
+          <div onClick="{{ openRecipe.close }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#2b7a1a;font-size:14px;margin-bottom:16px;">‹ All recipes</div>
           <sc-if value="{{ openRecipe.hasImg }}" hint-placeholder-val="{{ false }}">
             <img src="{{ openRecipe.img }}" loading="lazy" style="width:100%;max-height:260px;object-fit:cover;border-radius:18px;margin-bottom:16px;display:block;">
           </sc-if>
           <div style="font-family:'Newsreader',serif;font-size:30px;line-height:1.1;">{{ openRecipe.name }}</div>
-          <div style="font-size:13px;color:#6A8FAF;font-weight:600;margin-top:4px;">{{ openRecipe.time }}</div>
+          <div style="font-size:13px;color:#b0304f;font-weight:600;margin-top:4px;">{{ openRecipe.time }}</div>
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:16px;margin-top:22px;align-items:start;">
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:18px;">
-              <div style="font-size:11px;letter-spacing:.14em;color:#8A9BB0;font-weight:600;margin-bottom:12px;">INGREDIENTS</div>
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:18px;">
+              <div style="font-size:11px;letter-spacing:.14em;color:#5a8a3a;font-weight:600;margin-bottom:12px;">INGREDIENTS</div>
               <div style="display:flex;flex-direction:column;gap:9px;">
                 <sc-for list="{{ openRecipe.ingredients }}" as="ing" hint-placeholder-count="4">
-                  <div style="display:flex;gap:10px;align-items:flex-start;font-size:15px;"><div style="width:6px;height:6px;border-radius:50%;background:#6A8FAF;margin-top:7px;flex:none;"></div><div>{{ ing }}</div></div>
+                  <div style="display:flex;gap:10px;align-items:flex-start;font-size:15px;"><div style="width:6px;height:6px;border-radius:50%;background:#b0304f;margin-top:7px;flex:none;"></div><div>{{ ing }}</div></div>
                 </sc-for>
               </div>
             </div>
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:18px;">
-              <div style="font-size:11px;letter-spacing:.14em;color:#8A9BB0;font-weight:600;margin-bottom:12px;">METHOD</div>
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:18px;">
+              <div style="font-size:11px;letter-spacing:.14em;color:#5a8a3a;font-weight:600;margin-bottom:12px;">METHOD</div>
               <div style="display:flex;flex-direction:column;gap:13px;">
                 <sc-for list="{{ openRecipe.steps }}" as="st" hint-placeholder-count="4">
-                  <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;flex:none;border-radius:50%;background:#6A8FAF;color:#EBF3FB;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ st.num }}</div><div style="font-size:15px;line-height:1.45;padding-top:1px;">{{ st.text }}</div></div>
+                  <div style="display:flex;gap:12px;align-items:flex-start;"><div style="width:24px;height:24px;flex:none;border-radius:50%;background:#b0304f;color:#fdf0f3;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ st.num }}</div><div style="font-size:15px;line-height:1.45;padding-top:1px;">{{ st.text }}</div></div>
                 </sc-for>
               </div>
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:18px;margin-top:20px;">
-            <div onClick="{{ openRecipe.edit }}" style="font-size:13px;font-weight:600;color:#6A8FAF;cursor:pointer;">Edit recipe</div>
-            <div onClick="{{ openRecipe.del }}" style="font-size:13px;color:#7090B8;cursor:pointer;">Delete recipe</div>
+            <div onClick="{{ openRecipe.edit }}" style="font-size:13px;font-weight:600;color:#b0304f;cursor:pointer;">Edit recipe</div>
+            <div onClick="{{ openRecipe.del }}" style="font-size:13px;color:#c04060;cursor:pointer;">Delete recipe</div>
           </div>
           <div style="height:30px;"></div>
         </div>
@@ -362,30 +362,30 @@
       <!-- ===== RECIPE EDIT ===== -->
       <sc-if value="{{ editingRecipeShown }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .3s ease both;">
-          <div onClick="{{ editRecipeData.cancel }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#5A7090;font-size:14px;margin-bottom:16px;">‹ Cancel</div>
-          <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;">
+          <div onClick="{{ editRecipeData.cancel }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#2b7a1a;font-size:14px;margin-bottom:16px;">‹ Cancel</div>
+          <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <select name="edit-recipe-type" value="{{ editRecipeData.type }}" onChange="{{ editRecipeData.setType }}" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px;outline:none;"><option value="food">Food</option><option value="drink">Drink</option></select>
-              <input name="edit-recipe-name" value="{{ editRecipeData.name }}" onChange="{{ editRecipeData.setName }}" placeholder="Recipe name" style="flex:1;min-width:140px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-              <input name="edit-recipe-time" value="{{ editRecipeData.time }}" onChange="{{ editRecipeData.setTime }}" placeholder="Time (e.g. 5 min)" style="width:140px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
+              <select name="edit-recipe-type" value="{{ editRecipeData.type }}" onChange="{{ editRecipeData.setType }}" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px;outline:none;"><option value="food">Food</option><option value="drink">Drink</option></select>
+              <input name="edit-recipe-name" value="{{ editRecipeData.name }}" onChange="{{ editRecipeData.setName }}" placeholder="Recipe name" style="flex:1;min-width:140px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+              <input name="edit-recipe-time" value="{{ editRecipeData.time }}" onChange="{{ editRecipeData.setTime }}" placeholder="Time (e.g. 5 min)" style="width:140px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
             </div>
-            <textarea name="edit-recipe-ingredients" value="{{ editRecipeData.ingredients }}" onChange="{{ editRecipeData.setIngredients }}" placeholder="Ingredients — one per line" rows="5" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
-            <textarea name="edit-recipe-steps" value="{{ editRecipeData.steps }}" onChange="{{ editRecipeData.setSteps }}" placeholder="Steps — one per line" rows="5" style="font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+            <textarea name="edit-recipe-ingredients" value="{{ editRecipeData.ingredients }}" onChange="{{ editRecipeData.setIngredients }}" placeholder="Ingredients — one per line" rows="5" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
+            <textarea name="edit-recipe-steps" value="{{ editRecipeData.steps }}" onChange="{{ editRecipeData.setSteps }}" placeholder="Steps — one per line" rows="5" style="font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;"></textarea>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-              <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#5A7090;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:9px 14px;cursor:pointer;">
+              <label style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:#2b7a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:9px 14px;cursor:pointer;">
                 <span style="font-size:16px;">📷</span> Change photo
                 <input type="file" accept="image/*" onChange="{{ editRecipeData.onImgChange }}" style="display:none;">
               </label>
               <sc-if value="{{ editRecipeData.hasImg }}" hint-placeholder-val="{{ false }}">
                 <div style="position:relative;display:inline-block;">
-                  <img src="{{ editRecipeData.img }}" loading="lazy" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #BCC8D6;">
-                  <div onClick="{{ editRecipeData.clearImg }}" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#4A6B8A;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">×</div>
+                  <img src="{{ editRecipeData.img }}" loading="lazy" style="height:56px;width:56px;object-fit:cover;border-radius:10px;border:1px solid #8dd8d9;">
+                  <div onClick="{{ editRecipeData.clearImg }}" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#8b1e3f;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;">×</div>
                 </div>
               </sc-if>
             </div>
             <div style="display:flex;gap:10px;">
-              <div onClick="{{ editRecipeData.save }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#6A8FAF;border-radius:11px;padding:10px 20px;cursor:pointer;">Save changes</div>
-              <div onClick="{{ editRecipeData.cancel }}" style="font-weight:600;font-size:14px;color:#5A7090;background:#DDE8F0;border-radius:11px;padding:10px 20px;cursor:pointer;">Cancel</div>
+              <div onClick="{{ editRecipeData.save }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#b0304f;border-radius:11px;padding:10px 20px;cursor:pointer;">Save changes</div>
+              <div onClick="{{ editRecipeData.cancel }}" style="font-weight:600;font-size:14px;color:#2b7a1a;background:#c8f9fa;border-radius:11px;padding:10px 20px;cursor:pointer;">Cancel</div>
             </div>
           </div>
           <div style="height:30px;"></div>
@@ -402,43 +402,43 @@
           </div>
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;">
             <div style="font-family:'Newsreader',serif;font-size:22px;">{{ workoutDayLabel }} · {{ workoutLabel }}</div>
-            <div style="font-size:13px;color:#6A8099;">{{ workoutDoneText }}</div>
+            <div style="font-size:13px;color:#3a7a25;">{{ workoutDoneText }}</div>
           </div>
           <sc-if value="{{ workoutHasItems }}" hint-placeholder-val="{{ true }}">
             <div style="display:flex;flex-direction:column;gap:9px;">
               <sc-for list="{{ workoutItems }}" as="ex" hint-placeholder-count="4">
                 <div style="display:flex;align-items:center;gap:13px;background:{{ ex.cardBg }};border:1px solid {{ ex.cardBorder }};border-radius:15px;padding:13px 15px;">
                   <div onClick="{{ ex.toggle }}" style="{{ ex.boxStyle }}">
-                    <sc-if value="{{ ex.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #EBF3FB;border-bottom:2px solid #EBF3FB;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                    <sc-if value="{{ ex.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #fdf0f3;border-bottom:2px solid #fdf0f3;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
                   </div>
                   <div style="flex:1;min-width:0;">
-                    <div style="{{ ex.nameStyle }}">{{ ex.name }}<sc-if value="{{ ex.isClass }}" hint-placeholder-val="{{ false }}"><span style="margin-left:7px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;background:#7B8A6622;color:#7B8A66;vertical-align:middle;">CLASS</span></sc-if></div>
+                    <div style="{{ ex.nameStyle }}">{{ ex.name }}<sc-if value="{{ ex.isClass }}" hint-placeholder-val="{{ false }}"><span style="margin-left:7px;font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;background:#2b972022;color:#2b9720;vertical-align:middle;">CLASS</span></sc-if></div>
                     <sc-if value="{{ ex.isClass }}" hint-placeholder-val="{{ false }}">
-                      <div style="font-size:12px;color:#6A8099;margin-top:2px;">{{ ex.subtitle }}</div>
+                      <div style="font-size:12px;color:#3a7a25;margin-top:2px;">{{ ex.subtitle }}</div>
                     </sc-if>
                     <sc-if value="{{ ex.schemeTagShow }}" hint-placeholder-val="{{ true }}">
                       <div onClick="{{ ex.startS }}" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;cursor:pointer;">
                         <sc-for list="{{ ex.schemeChips }}" as="chip" hint-placeholder-count="2">
-                          <div style="background:#D6E4F0;border-radius:7px;padding:4px 10px;font-size:12px;font-weight:600;color:#3A5570;">{{ chip.text }}</div>
+                          <div style="background:#c0f7ce;border-radius:7px;padding:4px 10px;font-size:12px;font-weight:600;color:#6b1530;">{{ chip.text }}</div>
                         </sc-for>
                       </div>
                     </sc-if>
                     <sc-if value="{{ ex.schemeInputShow }}" hint-placeholder-val="{{ false }}">
-                      <input value="{{ schemeDraft }}" onChange="{{ onSchemeDraft }}" onKeyDown="{{ ex.onSchemeKey }}" onBlur="{{ ex.commitS }}" autofocus="true" style="width:100%;font-size:13px;color:#2C3646;background:#F5F8FC;border:1px solid #6E8499;border-radius:8px;padding:5px 9px;margin-top:4px;outline:none;box-sizing:border-box;">
+                      <input value="{{ schemeDraft }}" onChange="{{ onSchemeDraft }}" onKeyDown="{{ ex.onSchemeKey }}" onBlur="{{ ex.commitS }}" autofocus="true" style="width:100%;font-size:13px;color:#343a1a;background:#f5fffe;border:1px solid #3a7a25;border-radius:8px;padding:5px 9px;margin-top:4px;outline:none;box-sizing:border-box;">
                     </sc-if>
                   </div>
-                  <div onClick="{{ ex.del }}" style="color:#A0B8CC;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                  <div onClick="{{ ex.del }}" style="color:#78a558;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
                 </div>
               </sc-for>
             </div>
           </sc-if>
           <sc-if value="{{ workoutEmpty }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:30px;text-align:center;color:#6A8099;font-family:'Newsreader',serif;font-size:18px;font-style:italic;">Rest day. Stretch, hydrate, sleep.</div>
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:30px;text-align:center;color:#3a7a25;font-family:'Newsreader',serif;font-size:18px;font-style:italic;">Rest day. Stretch, hydrate, sleep.</div>
           </sc-if>
-          <div style="display:flex;gap:8px;align-items:center;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:10px;margin-top:14px;">
-            <input ref="{{ refExName }}" name="exercise-name" placeholder="Exercise name" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-            <input ref="{{ refExScheme }}" name="exercise-scheme" placeholder="e.g. 3×10 (20lb)" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-            <div onClick="{{ addExNow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#6E8499;border-radius:11px;padding:10px 18px;cursor:pointer;white-space:nowrap;">Add</div>
+          <div style="display:flex;gap:8px;align-items:center;background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:10px;margin-top:14px;">
+            <input ref="{{ refExName }}" name="exercise-name" placeholder="Exercise name" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+            <input ref="{{ refExScheme }}" name="exercise-scheme" placeholder="e.g. 3×10 (20lb)" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+            <div onClick="{{ addExNow }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#3a7a25;border-radius:11px;padding:10px 18px;cursor:pointer;white-space:nowrap;">Add</div>
           </div>
           <div style="height:30px;"></div>
         </div>
@@ -447,28 +447,28 @@
       <!-- ===== HABITS ===== -->
       <sc-if value="{{ isHabits }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
-          <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:18px;margin-bottom:18px;">
+          <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:18px;margin-bottom:18px;">
             <div style="display:flex;justify-content:space-between;align-items:baseline;">
               <div style="font-family:'Newsreader',serif;font-size:18px;">{{ habitDoneText }}</div>
-              <div style="font-size:13px;color:#6A8099;">{{ habitPct }}%</div>
+              <div style="font-size:13px;color:#3a7a25;">{{ habitPct }}%</div>
             </div>
-            <div style="height:9px;border-radius:6px;background:#C8D8E8;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ habitPct }}%;background:#4A6B8A;border-radius:6px;transition:width .35s;"></div></div>
+            <div style="height:9px;border-radius:6px;background:#9adede;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ habitPct }}%;background:#8b1e3f;border-radius:6px;transition:width .35s;"></div></div>
           </div>
           <div style="display:flex;flex-direction:column;gap:9px;">
             <sc-for list="{{ habitsList }}" as="h" hint-placeholder-count="6">
-              <div style="display:flex;align-items:center;gap:14px;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:15px;padding:14px 16px;">
+              <div style="display:flex;align-items:center;gap:14px;background:#edfffe;border:1px solid #9adede;border-radius:15px;padding:14px 16px;">
                 <div onClick="{{ h.toggle }}" style="{{ h.boxStyle }}">
-                  <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #EBF3FB;border-bottom:2px solid #EBF3FB;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                  <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #fdf0f3;border-bottom:2px solid #fdf0f3;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
                 </div>
                 <div style="{{ h.nameStyle }}">{{ h.name }}</div>
-                <div style="font-size:12px;color:#4A6B8A;font-weight:600;white-space:nowrap;">{{ h.streakLabel }}</div>
-                <div onClick="{{ h.del }}" style="color:#A0B8CC;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                <div style="font-size:12px;color:#8b1e3f;font-weight:600;white-space:nowrap;">{{ h.streakLabel }}</div>
+                <div onClick="{{ h.del }}" style="color:#78a558;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
               </div>
             </sc-for>
           </div>
-          <div style="display:flex;gap:8px;align-items:center;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:10px;margin-top:14px;">
-            <input ref="{{ refHabit }}" name="habit-name" placeholder="Add a habit…" onKeyDown="{{ onAddHabitKey }}" style="flex:1;font-size:14px;color:#2C3646;background:#F5F8FC;border:1px solid #BCC8D6;border-radius:11px;padding:10px 12px;outline:none;">
-            <div onClick="{{ addHabitNow }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#4A6B8A;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
+          <div style="display:flex;gap:8px;align-items:center;background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:10px;margin-top:14px;">
+            <input ref="{{ refHabit }}" name="habit-name" placeholder="Add a habit…" onKeyDown="{{ onAddHabitKey }}" style="flex:1;font-size:14px;color:#343a1a;background:#f5fffe;border:1px solid #8dd8d9;border-radius:11px;padding:10px 12px;outline:none;">
+            <div onClick="{{ addHabitNow }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#8b1e3f;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
           </div>
           <div style="height:30px;"></div>
         </div>
@@ -478,23 +478,23 @@
       <sc-if value="{{ isPhotos }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
           <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
-            <label style="font-weight:600;font-size:14px;color:#EBF3FB;background:#5A7A9A;border-radius:11px;padding:10px 18px;cursor:pointer;">+ Add photos<input type="file" accept="image/*" multiple onChange="{{ addPhotosNow }}" style="display:none;"></label>
+            <label style="font-weight:600;font-size:14px;color:#fdf0f3;background:#9b2848;border-radius:11px;padding:10px 18px;cursor:pointer;">+ Add photos<input type="file" accept="image/*" multiple onChange="{{ addPhotosNow }}" style="display:none;"></label>
           </div>
           <sc-if value="{{ photosEmpty }}" hint-placeholder-val="{{ true }}">
-            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#F2F5F9;border:2px dashed #B0C4D8;border-radius:20px;padding:60px 20px;cursor:pointer;text-align:center;">
-              <div style="width:48px;height:48px;border-radius:14px;background:#5A7A9A;display:flex;align-items:center;justify-content:center;color:#EBF3FB;font-size:26px;font-weight:300;">+</div>
-              <div style="font-family:'Newsreader',serif;font-size:20px;color:#2C3646;">Pin your inspiration</div>
-              <div style="font-size:13px;color:#6A8099;max-width:260px;">Quotes, dorm ideas, people who keep you going. Tap to add a few photos.</div>
+            <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#edfffe;border:2px dashed #7dcece;border-radius:20px;padding:60px 20px;cursor:pointer;text-align:center;">
+              <div style="width:48px;height:48px;border-radius:14px;background:#9b2848;display:flex;align-items:center;justify-content:center;color:#fdf0f3;font-size:26px;font-weight:300;">+</div>
+              <div style="font-family:'Newsreader',serif;font-size:20px;color:#343a1a;">Pin your inspiration</div>
+              <div style="font-size:13px;color:#3a7a25;max-width:260px;">Quotes, dorm ideas, people who keep you going. Tap to add a few photos.</div>
               <input type="file" accept="image/*" multiple onChange="{{ addPhotosNow }}" style="display:none;">
             </label>
           </sc-if>
           <sc-if value="{{ photosHas }}" hint-placeholder-val="{{ false }}">
             <div style="{{ photoColStyle }}">
               <sc-for list="{{ photosList }}" as="p" hint-placeholder-count="0">
-                <div style="break-inside:avoid;margin-bottom:14px;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:8px;position:relative;">
+                <div style="break-inside:avoid;margin-bottom:14px;background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:8px;position:relative;">
                   <sc-if value="{{ p.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ p.src }}" loading="lazy" style="width:100%;display:block;border-radius:11px;"></sc-if>
-                  <div onClick="{{ p.del }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(30,40,55,.55);color:#EBF3FB;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;">×</div>
-                  <input name="photo-caption" value="{{ p.caption }}" onChange="{{ p.setCap }}" placeholder="Add a caption…" style="width:100%;margin-top:8px;font-size:13px;color:#2C3646;background:transparent;border:none;outline:none;font-family:'Caveat',cursive;font-size:17px;">
+                  <div onClick="{{ p.del }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(52,58,26,.55);color:#fdf0f3;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;">×</div>
+                  <input name="photo-caption" value="{{ p.caption }}" onChange="{{ p.setCap }}" placeholder="Add a caption…" style="width:100%;margin-top:8px;font-size:13px;color:#343a1a;background:transparent;border:none;outline:none;font-family:'Caveat',cursive;font-size:17px;">
                 </div>
               </sc-for>
             </div>
@@ -507,17 +507,17 @@
       <sc-if value="{{ notesListShown }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
           <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
-            <div onClick="{{ goNewNote }}" style="font-weight:600;font-size:14px;color:#EBF3FB;background:#3D6080;border-radius:11px;padding:10px 18px;cursor:pointer;">+ New note</div>
+            <div onClick="{{ goNewNote }}" style="font-weight:600;font-size:14px;color:#fdf0f3;background:#6b1530;border-radius:11px;padding:10px 18px;cursor:pointer;">+ New note</div>
           </div>
           <sc-if value="{{ notesEmpty }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:50px 20px;text-align:center;color:#6A8099;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Nothing on your mind yet. Start a note.</div>
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:50px 20px;text-align:center;color:#3a7a25;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Nothing on your mind yet. Start a note.</div>
           </sc-if>
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;">
             <sc-for list="{{ notesList }}" as="n" hint-placeholder-count="2">
-              <div onClick="{{ n.open }}" style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:18px;cursor:pointer;position:relative;">
+              <div onClick="{{ n.open }}" style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:18px;cursor:pointer;position:relative;">
                 <div style="font-family:'Newsreader',serif;font-size:19px;line-height:1.2;padding-right:18px;">{{ n.title }}</div>
-                <div style="font-size:13px;color:#6A8099;margin-top:7px;line-height:1.5;white-space:pre-wrap;">{{ n.snippet }}</div>
-                <div onClick="{{ n.del }}" style="position:absolute;top:14px;right:14px;color:#A0B8CC;cursor:pointer;font-size:18px;line-height:1;">×</div>
+                <div style="font-size:13px;color:#3a7a25;margin-top:7px;line-height:1.5;white-space:pre-wrap;">{{ n.snippet }}</div>
+                <div onClick="{{ n.del }}" style="position:absolute;top:14px;right:14px;color:#78a558;cursor:pointer;font-size:18px;line-height:1;">×</div>
               </div>
             </sc-for>
           </div>
@@ -529,21 +529,21 @@
       <sc-if value="{{ isTrash }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
           <sc-if value="{{ trashEmpty }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:18px;padding:50px 20px;text-align:center;color:#6A8099;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Your trash is empty. Items deleted from Notes, Recipes, Checklist, Key Dates, and Habits land here.</div>
+            <div style="background:#edfffe;border:1px solid #9adede;border-radius:18px;padding:50px 20px;text-align:center;color:#3a7a25;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Your trash is empty. Items deleted from Notes, Recipes, Checklist, Key Dates, and Habits land here.</div>
           </sc-if>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <sc-for list="{{ trashList }}" as="t" hint-placeholder-count="0">
-              <div style="background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
+              <div style="background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
                 <div style="flex:1;min-width:0;">
                   <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
                     <span style="{{ t.typeStyle }}">{{ t.typeLabel }}</span>
-                    <span style="font-size:12px;color:#8AA0B8;">{{ t.expiry }}</span>
+                    <span style="font-size:12px;color:#5a8a3a;">{{ t.expiry }}</span>
                   </div>
-                  <div style="font-family:'Newsreader',serif;font-size:17px;color:#2C3646;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.name }}</div>
+                  <div style="font-family:'Newsreader',serif;font-size:17px;color:#343a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.name }}</div>
                 </div>
                 <div style="display:flex;gap:8px;flex:none;">
-                  <div onClick="{{ t.restore }}" style="font-size:13px;font-weight:600;color:#3D6080;background:#E0EAF5;border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;">Restore</div>
-                  <div onClick="{{ t.perm }}" style="font-size:13px;color:#7090B8;background:#E4ECF5;border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;">Delete</div>
+                  <div onClick="{{ t.restore }}" style="font-size:13px;font-weight:600;color:#6b1530;background:#d8fafc;border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;">Restore</div>
+                  <div onClick="{{ t.perm }}" style="font-size:13px;color:#c04060;background:#dcfbfc;border-radius:9px;padding:7px 13px;cursor:pointer;white-space:nowrap;">Delete</div>
                 </div>
               </div>
             </sc-for>
@@ -555,29 +555,29 @@
       <!-- ===== NOTE EDITOR ===== -->
       <sc-if value="{{ noteEditorShown }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .3s ease both;">
-          <div onClick="{{ openNote.close }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#5A7090;font-size:14px;margin-bottom:16px;">‹ All notes</div>
-          <input name="note-title" value="{{ openNote.title }}" onChange="{{ openNote.setTitle }}" placeholder="Title" style="width:100%;font-family:'Newsreader',serif;font-size:28px;color:#2C3646;background:transparent;border:none;outline:none;margin-bottom:10px;">
+          <div onClick="{{ openNote.close }}" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:#2b7a1a;font-size:14px;margin-bottom:16px;">‹ All notes</div>
+          <input name="note-title" value="{{ openNote.title }}" onChange="{{ openNote.setTitle }}" placeholder="Title" style="width:100%;font-family:'Newsreader',serif;font-size:28px;color:#343a1a;background:transparent;border:none;outline:none;margin-bottom:10px;">
           <!-- rich text toolbar -->
-          <div style="display:flex;align-items:center;gap:3px;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:12px;padding:7px 10px;margin-bottom:8px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:3px;background:#edfffe;border:1px solid #9adede;border-radius:12px;padding:7px 10px;margin-bottom:8px;flex-wrap:wrap;">
             <div onMouseDown="{{ noteCmd.bold }}" title="Bold (⌘B)" style="{{ noteFmtBoldStyle }}">B</div>
             <div onMouseDown="{{ noteCmd.italic }}" title="Italic (⌘I)" style="{{ noteFmtItalicStyle }}">I</div>
             <div onMouseDown="{{ noteCmd.underline }}" title="Underline (⌘U)" style="{{ noteFmtUnderlineStyle }}">U</div>
             <div onMouseDown="{{ noteCmd.strike }}" title="Strikethrough" style="{{ noteFmtStrikeStyle }}">S</div>
-            <div style="width:1px;height:20px;background:#BCC8D6;margin:0 4px;flex:none;"></div>
+            <div style="width:1px;height:20px;background:#8dd8d9;margin:0 4px;flex:none;"></div>
             <div onMouseDown="{{ noteCmd.ul }}" title="Bullet list" style="{{ noteFmtUlStyle }}">•</div>
             <div onMouseDown="{{ noteCmd.ol }}" title="Numbered list" style="{{ noteFmtOlStyle }}">1.</div>
-            <div style="width:1px;height:20px;background:#BCC8D6;margin:0 4px;flex:none;"></div>
-            <div onMouseDown="{{ noteCmd.hlYellow }}" title="Highlight yellow" style="width:22px;height:22px;border-radius:5px;background:#FFF59D;cursor:pointer;border:1px solid #BCC8D6;"></div>
-            <div onMouseDown="{{ noteCmd.hlGreen }}" title="Highlight green" style="width:22px;height:22px;border-radius:5px;background:#C8E6C9;cursor:pointer;border:1px solid #BCC8D6;"></div>
-            <div onMouseDown="{{ noteCmd.hlBlue }}" title="Highlight blue" style="width:22px;height:22px;border-radius:5px;background:#BBDEFB;cursor:pointer;border:1px solid #BCC8D6;"></div>
-            <div onMouseDown="{{ noteCmd.hlPink }}" title="Highlight pink" style="width:22px;height:22px;border-radius:5px;background:#F8BBD9;cursor:pointer;border:1px solid #BCC8D6;"></div>
-            <div onMouseDown="{{ noteCmd.hlOrange }}" title="Highlight orange" style="width:22px;height:22px;border-radius:5px;background:#FFE0B2;cursor:pointer;border:1px solid #BCC8D6;"></div>
-            <div style="width:1px;height:20px;background:#BCC8D6;margin:0 4px;flex:none;"></div>
-            <div onMouseDown="{{ noteCmd.removeFormat }}" title="Clear formatting" style="height:30px;padding:0 10px;display:flex;align-items:center;border-radius:7px;cursor:pointer;font-size:12px;color:#6A8099;">✕ clear</div>
+            <div style="width:1px;height:20px;background:#8dd8d9;margin:0 4px;flex:none;"></div>
+            <div onMouseDown="{{ noteCmd.hlYellow }}" title="Highlight yellow" style="width:22px;height:22px;border-radius:5px;background:#FFF59D;cursor:pointer;border:1px solid #8dd8d9;"></div>
+            <div onMouseDown="{{ noteCmd.hlGreen }}" title="Highlight green" style="width:22px;height:22px;border-radius:5px;background:#C8E6C9;cursor:pointer;border:1px solid #8dd8d9;"></div>
+            <div onMouseDown="{{ noteCmd.hlBlue }}" title="Highlight blue" style="width:22px;height:22px;border-radius:5px;background:#BBDEFB;cursor:pointer;border:1px solid #8dd8d9;"></div>
+            <div onMouseDown="{{ noteCmd.hlPink }}" title="Highlight pink" style="width:22px;height:22px;border-radius:5px;background:#F8BBD9;cursor:pointer;border:1px solid #8dd8d9;"></div>
+            <div onMouseDown="{{ noteCmd.hlOrange }}" title="Highlight orange" style="width:22px;height:22px;border-radius:5px;background:#FFE0B2;cursor:pointer;border:1px solid #8dd8d9;"></div>
+            <div style="width:1px;height:20px;background:#8dd8d9;margin:0 4px;flex:none;"></div>
+            <div onMouseDown="{{ noteCmd.removeFormat }}" title="Clear formatting" style="height:30px;padding:0 10px;display:flex;align-items:center;border-radius:7px;cursor:pointer;font-size:12px;color:#3a7a25;">✕ clear</div>
           </div>
           <!-- contenteditable body -->
-          <div data-note-editor contenteditable="true" onKeyDown="{{ noteCmd.keyDown }}" onBlur="{{ noteCmd.blur }}" placeholder="Write it all down…" style="min-height:280px;font-size:16px;line-height:1.65;color:#2C3646;background:#F2F5F9;border:1px solid #C8D4DE;border-radius:16px;padding:18px;outline:none;white-space:pre-wrap;word-break:break-word;"></div>
-          <div onClick="{{ openNote.del }}" style="margin-top:16px;display:inline-block;font-size:13px;color:#7090B8;cursor:pointer;">Delete note</div>
+          <div data-note-editor contenteditable="true" onKeyDown="{{ noteCmd.keyDown }}" onBlur="{{ noteCmd.blur }}" placeholder="Write it all down…" style="min-height:280px;font-size:16px;line-height:1.65;color:#343a1a;background:#edfffe;border:1px solid #9adede;border-radius:16px;padding:18px;outline:none;white-space:pre-wrap;word-break:break-word;"></div>
+          <div onClick="{{ openNote.del }}" style="margin-top:16px;display:inline-block;font-size:13px;color:#c04060;cursor:pointer;">Delete note</div>
           <div style="height:30px;"></div>
         </div>
       </sc-if>
@@ -757,7 +757,7 @@ class Component extends DCLogic {
 
   _coreVals({d,state,screen,w,days,dayFull,todayKey,isS}){
     const showSidebar=w>=900, isPhone=w<700;
-    const accents={home:'#4A6B8A',checklist:'#4A6B8A',schedule:'#7B8A66',dates:'#CA9A3E',recipes:'#6A8FAF',workout:'#6E8499',habits:'#4A6B8A',photos:'#5A7A9A',notes:'#3D6080',trash:'#6A8099'};
+    const accents={home:'#8b1e3f',checklist:'#8b1e3f',schedule:'#2b9720',dates:'#2b9720',recipes:'#b0304f',workout:'#3a7a25',habits:'#8b1e3f',photos:'#9b2848',notes:'#6b1530',trash:'#3a7a25'};
     const titles={checklist:'Move-in Checklist',schedule:'Class Schedule',dates:'Key Dates',recipes:'Recipes',workout:'Workout Planner',habits:'Habits',photos:'Photo Board',notes:'Notes',trash:'Trash'};
     const kickers={checklist:'pack it up',schedule:'this week',dates:'don’t forget',recipes:'food & drinks',workout:'get after it',habits:'one day at a time',photos:'good vibes',notes:'brain dump',trash:'gone but not forgotten'};
     const hr=new Date().getHours();
@@ -775,8 +775,8 @@ class Component extends DCLogic {
     const navItems=navDefs.map(([k,name])=>{
       const active=screen===k;
       return {name,go:()=>this.nav(k),badge:'',
-        style:`display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:${active?600:500};color:${active?'#2C3646':'#506070'};background:${active?'#EBF3FB':'transparent'};`,
-        dot:`width:8px;height:8px;border-radius:50%;flex:none;background:${active?accents[k]:'#8A9BB0'};`};
+        style:`display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:${active?600:500};color:${active?'#343a1a':'#3a5020'};background:${active?'#fdf0f3':'transparent'};`,
+        dot:`width:8px;height:8px;border-radius:50%;flex:none;background:${active?accents[k]:'#5a8a3a'};`};
     });
     return {
       showSidebar,isPhone,isMobile:!showSidebar,
@@ -786,7 +786,7 @@ class Component extends DCLogic {
       contentMax:showSidebar?'960px':'620px',contentPad:isPhone?'24px 18px':'40px 32px',
       tileCols:'repeat(2,1fr)',navItems,
       isHome:screen==='home',showHeader:screen!=='home',showBottomBar:false,
-      accent:accents[screen]||'#4A6B8A',headerTitle:titles[screen]||'',headerKicker:kickers[screen]||'',
+      accent:accents[screen]||'#8b1e3f',headerTitle:titles[screen]||'',headerKicker:kickers[screen]||'',
       greeting,todayLabel,nextLabel,nextTitle,nextSub,
       habitStat:habDone+' / '+d.habits.length,workoutStat:wToday.items.length?(wToday.label):('Rest'),
       subChecklist:packDone+' of '+d.checklist.length+' packed',

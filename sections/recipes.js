@@ -37,7 +37,7 @@ var RecipesSection = {
     var d=ctx.d, screen=ctx.screen, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
     var isS=(k)=>screen===k;
     var recipeTab=this.state.recipeTab;
-    var tabStyle=(on)=>`padding:9px 20px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;background:${on?'#b0304f':'transparent'};color:${on?'#fdf0f3':'#2b7a1a'};`;
+    var tabStyle=(on)=>`padding:9px 20px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;background:${on?'#d4845a':'transparent'};color:${on?'#fff5ef':'#a04530'};`;
     var recipesList=d.recipes.filter(r=>r.type===recipeTab).map(r=>({id:r.id,name:r.name,time:r.time,ingCount:r.ingredients.length+' ingredients',open:()=>this.setState({recipeOpen:r.id})}));
     var ro=d.recipes.find(r=>r.id===this.state.recipeOpen);
     var openRecipe=ro?{id:ro.id,name:ro.name,time:ro.time,img:ro.img||null,hasImg:!!ro.img,ingredients:ro.ingredients,steps:ro.steps.map((t,i)=>({num:i+1,text:t})),del:()=>this.delRecipe(ro.id),close:()=>this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}),edit:()=>this.startEditRecipe(ro.id)}:null;

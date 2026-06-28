@@ -26,12 +26,12 @@ var DatesSection = {
     var d=ctx.d, enter=ctx.enter, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
     var datesList=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).sort((a,b)=>a.n-b.n).map(x=>{
       const urgent=x.n>=0&&x.n<=3, past=x.n<0;
-      const bg=past?'#b8f5f8':urgent?'#8b1e3f':'#2b9720';
-      const fg=past?'#3a7a25':'#fdf0f3';
+      const bg=past?'#fcd0c4':urgent?'#c4622d':'#b85060';
+      const fg=past?'#8a5a4a':'#fff5ef';
       return {id:x.id,title:x.title,dateLabel:this.fmtDate(x.date),count:this.countLabel(x.n),
         del:()=>this.delDate(x.id),
         badgeStyle:`flex:none;min-width:88px;text-align:center;background:${bg};color:${fg};font-size:12px;font-weight:600;border-radius:10px;padding:9px 10px;`,
-        titleStyle:`flex:1;font-family:'Newsreader',serif;font-size:18px;color:${past?'#5a8a3a':'#343a1a'};`};
+        titleStyle:`flex:1;font-family:'Newsreader',serif;font-size:18px;color:${past?'#a07868':'#3d2314'};`};
     });
     var addDateNow=()=>{ const t=rv('dateTitle'); if(!t.trim()||!rv('dateWhen'))return; this.addDate(t,rv('dateWhen')); clr('dateTitle','dateWhen'); };
     return {

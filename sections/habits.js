@@ -24,8 +24,8 @@ var HabitsSection = {
     var habDone=d.habits.filter(h=>h.done).length;
     var habitsList=d.habits.map(h=>({id:h.id,name:h.name,done:h.done,streakLabel:(h.streak||0)+'-day streak',
       toggle:()=>this.toggleHabit(h.id),del:()=>this.delHabit(h.id),
-      boxStyle:`width:28px;height:28px;flex:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${h.done?'#8b1e3f':'#7dcece'};background:${h.done?'#8b1e3f':'transparent'};`,
-      nameStyle:`flex:1;font-size:15px;color:${h.done?'#5a8a3a':'#343a1a'};text-decoration:${h.done?'line-through':'none'};`}));
+      boxStyle:`width:28px;height:28px;flex:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${h.done?'#c4622d':'#c9a090'};background:${h.done?'#c4622d':'transparent'};`,
+      nameStyle:`flex:1;font-size:15px;color:${h.done?'#a07868':'#3d2314'};text-decoration:${h.done?'line-through':'none'};`}));
     var habitPct=Math.round(habDone/Math.max(1,d.habits.length)*100);
     var addHabitNow=()=>{ const n=rv('habit'); if(!n.trim())return; this.addHabit(n); clr('habit'); };
     return {

@@ -24,7 +24,7 @@ var NotesSection = {
     const openNote=no?{title:no.title,body:no.body,close:()=>this.setState({noteOpen:null}),del:()=>this.delNote(no.id),setTitle:(e)=>this.updateNote(no.id,'title',e.target.value),onInput:(e)=>this.updateNote(no.id,'body',e.currentTarget.innerHTML)}:null;
     const execCmd=(cmd,val)=>{document.execCommand(cmd,false,val||null);};
     const fmt=this.state.noteActiveFmt||{};
-    const fmtBg=(k)=>fmt[k]?'background:#8dd8d9;border-radius:7px;':'';
+    const fmtBg=(k)=>fmt[k]?'background:#ddb8a8;border-radius:7px;':'';
     const updateFmt=()=>{try{this.setState({noteActiveFmt:{bold:document.queryCommandState('bold'),italic:document.queryCommandState('italic'),underline:document.queryCommandState('underline'),strike:document.queryCommandState('strikeThrough'),ul:document.queryCommandState('insertUnorderedList'),ol:document.queryCommandState('insertOrderedList')}});}catch(ex){}};
     const saveBody=()=>{if(this.state.noteOpen&&this._noteBodyEl)this.updateNote(this.state.noteOpen,'body',this._noteBodyEl.innerHTML);};
     const noteCmd={
@@ -43,12 +43,12 @@ var NotesSection = {
       blur:()=>saveBody(),
       keyDown:(e)=>{const m=e.metaKey||e.ctrlKey;if(!m)return;if(e.key==='b'){e.preventDefault();execCmd('bold');updateFmt();}else if(e.key==='i'){e.preventDefault();execCmd('italic');updateFmt();}else if(e.key==='u'){e.preventDefault();execCmd('underline');updateFmt();}else if(e.key==='z'){e.preventDefault();execCmd(e.shiftKey?'redo':'undo');}else if(e.key==='y'){e.preventDefault();execCmd('redo');}},
     };
-    const noteFmtBoldStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-weight:700;font-size:14px;color:#343a1a;${fmtBg('bold')}`;
-    const noteFmtItalicStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-style:italic;font-size:14px;color:#343a1a;${fmtBg('italic')}`;
-    const noteFmtUnderlineStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#343a1a;text-decoration:underline;${fmtBg('underline')}`;
-    const noteFmtStrikeStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#343a1a;text-decoration:line-through;${fmtBg('strike')}`;
-    const noteFmtUlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:16px;color:#343a1a;${fmtBg('ul')}`;
-    const noteFmtOlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;color:#343a1a;font-weight:600;${fmtBg('ol')}`;
+    const noteFmtBoldStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-weight:700;font-size:14px;color:#3d2314;${fmtBg('bold')}`;
+    const noteFmtItalicStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-style:italic;font-size:14px;color:#3d2314;${fmtBg('italic')}`;
+    const noteFmtUnderlineStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#3d2314;text-decoration:underline;${fmtBg('underline')}`;
+    const noteFmtStrikeStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:14px;color:#3d2314;text-decoration:line-through;${fmtBg('strike')}`;
+    const noteFmtUlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:16px;color:#3d2314;${fmtBg('ul')}`;
+    const noteFmtOlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;color:#3d2314;font-weight:600;${fmtBg('ol')}`;
     return {
       notesList, openNote, noteCmd,
       notesListShown:isS('notes')&&!openNote, noteEditorShown:isS('notes')&&!!openNote,

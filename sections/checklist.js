@@ -96,8 +96,8 @@ var ChecklistSection = {
       return {cat:cat,catUpper:cat.toUpperCase(),items:d.checklist.filter(function(x){return x.cat===cat;}).map(function(it){
         return {id:it.id,label:it.label,done:it.done,
           toggle:()=>this.toggleItem(it.id),del:()=>this.delItem(it.id),
-          boxStyle:'width:22px;height:22px;flex:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid '+(it.done?'#8b1e3f':'#7dcece')+';background:'+(it.done?'#8b1e3f':'transparent')+';',
-          labelStyle:'flex:1;font-size:15px;color:'+(it.done?'#5a8a3a':'#343a1a')+';text-decoration:'+(it.done?'line-through':'none')+';'};
+          boxStyle:'width:22px;height:22px;flex:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid '+(it.done?'#c4622d':'#c9a090')+';background:'+(it.done?'#c4622d':'transparent')+';',
+          labelStyle:'flex:1;font-size:15px;color:'+(it.done?'#a07868':'#3d2314')+';text-decoration:'+(it.done?'line-through':'none')+';'};
       }.bind(this))};
     }.bind(this)).filter(function(g){return g.items.length;});
     var packDone=d.checklist.filter(function(x){return x.done;}).length;

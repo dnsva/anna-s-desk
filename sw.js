@@ -1,4 +1,4 @@
-const CACHE = 'annas-desk-v4';
+const CACHE = 'annas-desk-v5';
 const BASE = '/anna-s-desk';
 const PRECACHE = [
   BASE + '/', BASE + '/index.html', BASE + '/support.js',

@@ -25,6 +25,8 @@
   [contenteditable]:empty:before{content:attr(placeholder);color:#a07868;pointer-events:none;}
   [contenteditable] ul{margin:4px 0;padding-left:22px;} [contenteditable] ol{margin:4px 0;padding-left:22px;}
   [contenteditable] li{margin:2px 0;}
+  .photo-drag-bar{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;}
+  .photo-drag-bar:active{cursor:grabbing;}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <!-- PWA -->
@@ -407,7 +409,8 @@
           <sc-if value="{{ workoutHasItems }}" hint-placeholder-val="{{ true }}">
             <div style="display:flex;flex-direction:column;gap:9px;">
               <sc-for list="{{ workoutItems }}" as="ex" hint-placeholder-count="4">
-                <div style="display:flex;align-items:center;gap:13px;background:{{ ex.cardBg }};border:1px solid {{ ex.cardBorder }};border-radius:15px;padding:13px 15px;">
+                <div draggable="{{ ex.draggable }}" onDragStart="{{ ex.dragStart }}" onDragOver="{{ ex.dragOver }}" onDrop="{{ ex.drop }}" onDragEnd="{{ ex.dragEnd }}" style="display:flex;align-items:center;gap:13px;background:{{ ex.cardBg }};border:1px solid {{ ex.cardBorder }};border-radius:15px;padding:13px 15px;">
+                  <div style="color:#c9a090;cursor:grab;font-size:18px;padding:0 2px;line-height:1;user-select:none;flex:none;">⠿</div>
                   <div onClick="{{ ex.toggle }}" style="{{ ex.boxStyle }}">
                     <sc-if value="{{ ex.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #fff5ef;border-bottom:2px solid #fff5ef;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
                   </div>
@@ -435,10 +438,24 @@
           <sc-if value="{{ workoutEmpty }}" hint-placeholder-val="{{ false }}">
             <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:30px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-size:18px;font-style:italic;">Rest day. Stretch, hydrate, sleep.</div>
           </sc-if>
-          <div style="display:flex;gap:8px;align-items:center;background:#fff2ee;border:1px solid #e5c4b8;border-radius:16px;padding:10px;margin-top:14px;">
-            <input ref="{{ refExName }}" name="exercise-name" placeholder="Exercise name" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
-            <input ref="{{ refExScheme }}" name="exercise-scheme" placeholder="e.g. 3×10 (20lb)" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:120px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
-            <div onClick="{{ addExNow }}" style="font-weight:600;font-size:14px;color:#fff5ef;background:#8a5a4a;border-radius:11px;padding:10px 18px;cursor:pointer;white-space:nowrap;">Add</div>
+          <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:16px;padding:10px;margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:6px;">
+              <div onClick="{{ setAddExercise }}" style="{{ addExBtnStyle }}">Exercise</div>
+              <div onClick="{{ setAddClass }}" style="{{ addClsBtnStyle }}">Class</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <input ref="{{ refExName }}" name="exercise-name" placeholder="{{ addNamePlaceholder }}" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:100px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
+              <sc-if value="{{ isAddExercise }}" hint-placeholder-val="{{ true }}">
+                <input ref="{{ refExScheme }}" name="exercise-scheme" placeholder="e.g. 3×10 (20lb)" onKeyDown="{{ onAddExKey }}" style="flex:1;min-width:100px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
+              </sc-if>
+              <div onClick="{{ addExNow }}" style="{{ addBtnStyle }}">Add</div>
+            </div>
+            <sc-if value="{{ isAddClass }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:8px;">
+                <input ref="{{ refExInstructor }}" name="exercise-instructor" placeholder="Instructor" onKeyDown="{{ onAddExKey }}" style="flex:1;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #f5c4b8;border-radius:11px;padding:10px 12px;outline:none;">
+                <input ref="{{ refExClassTime }}" name="exercise-classtime" placeholder="Time (e.g. 5:30)" onKeyDown="{{ onAddExKey }}" style="width:130px;flex:none;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #f5c4b8;border-radius:11px;padding:10px 12px;outline:none;">
+              </div>
+            </sc-if>
           </div>
           <div style="height:30px;"></div>
         </div>
@@ -489,12 +506,18 @@
             </label>
           </sc-if>
           <sc-if value="{{ photosHas }}" hint-placeholder-val="{{ false }}">
-            <div style="{{ photoColStyle }}">
+            <div id="photo-board" style="{{ boardStyle }}">
               <sc-for list="{{ photosList }}" as="p" hint-placeholder-count="0">
-                <div style="break-inside:avoid;margin-bottom:14px;background:#fff2ee;border:1px solid #e5c4b8;border-radius:16px;padding:8px;position:relative;">
-                  <sc-if value="{{ p.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ p.src }}" loading="lazy" style="width:100%;display:block;border-radius:11px;"></sc-if>
-                  <div onClick="{{ p.del }}" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(61,35,20,.55);color:#fff5ef;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;line-height:1;">×</div>
-                  <input name="photo-caption" value="{{ p.caption }}" onChange="{{ p.setCap }}" placeholder="Add a caption…" style="width:100%;margin-top:8px;font-size:13px;color:#3d2314;background:transparent;border:none;outline:none;font-family:'Caveat',cursive;font-size:17px;">
+                <div style="{{ p.cardStyle }}">
+                  <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:#b05040;border:2px solid #fff5ef;z-index:2;pointer-events:none;"></div>
+                  <div className="photo-drag-bar" onPointerDown="{{ p.onDragStart }}" style="display:flex;align-items:center;gap:6px;padding:8px 10px 6px;border-radius:16px 16px 0 0;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;">
+                    <div style="color:#c9a090;font-size:15px;flex:none;line-height:1;">⠿</div>
+                    <div style="flex:1;"></div>
+                    <div onClick="{{ p.del }}" onPointerDown="{{ p.stopProp }}" style="width:24px;height:24px;border-radius:50%;background:rgba(61,35,20,.5);color:#fff5ef;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;line-height:1;flex:none;">×</div>
+                  </div>
+                  <sc-if value="{{ p.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ p.src }}" loading="lazy" style="width:100%;display:block;"></sc-if>
+                  <input name="photo-caption" value="{{ p.caption }}" onChange="{{ p.setCap }}" onPointerDown="{{ p.stopProp }}" placeholder="Add a caption…" style="width:100%;padding:6px 10px 2px;font-family:'Caveat',cursive;font-size:17px;color:#3d2314;background:transparent;border:none;outline:none;">
+                  <div onPointerDown="{{ p.onResizeStart }}" style="position:absolute;bottom:3px;right:3px;width:18px;height:18px;cursor:nwse-resize;touch-action:none;border-bottom:2px solid #c9a090;border-right:2px solid #c9a090;border-radius:0 0 8px 0;z-index:3;opacity:0.6;"></div>
                 </div>
               </sc-for>
             </div>
@@ -606,6 +629,8 @@ class Component extends DCLogic {
     let data = null;
     try { data = JSON.parse(localStorage.getItem('collegeApp_v4')); } catch(e){}
     if(!data) data = this.seed();
+    this._maybeResetWorkout(data);
+    try{localStorage.setItem('collegeApp_v4',JSON.stringify(data));}catch(e){}
     return {
       screen: 'home',
       width: typeof window!=='undefined' ? window.innerWidth : 1200,
@@ -621,6 +646,9 @@ class Component extends DCLogic {
       editingScheme: null,
       schemeDraft: '',
       workoutDay: null,
+      workoutAddType: 'exercise',
+      photoDragLive: {},
+      photoResizeLive: {},
       syncStatus: 'Syncing…',
       noteActiveFmt: {bold:false,italic:false,underline:false,strike:false,ul:false,ol:false}
     };
@@ -637,7 +665,21 @@ class Component extends DCLogic {
       photos:    PhotosSection.seed(),
       notes:     NotesSection.seed(),
       trash:     [],
+      workoutLastReset: new Date(0).toISOString(),
     };
+  }
+
+  _maybeResetWorkout(data){
+    const now=new Date();
+    const daysToMon=now.getDay()===0?6:now.getDay()-1;
+    const lastMon=new Date(now);
+    lastMon.setDate(now.getDate()-daysToMon);
+    lastMon.setHours(0,0,0,0);
+    const lastReset=data.workoutLastReset?new Date(data.workoutLastReset):new Date(0);
+    if(lastReset<lastMon){
+      Object.values(data.workout).forEach(day=>day.items.forEach(item=>{item.done=false;}));
+      data.workoutLastReset=lastMon.toISOString();
+    }
   }
 
   _purgeTrash(d){
@@ -690,8 +732,9 @@ class Component extends DCLogic {
     if(error&&error.code!=='PGRST116'){ console.warn('Cloud load:',error.message); this.setState({syncStatus:'Offline'}); return; }
     if(row&&row.data&&Object.keys(row.data).length>0){
       const d=row.data; if(!d.trash) d.trash=[]; this._purgeTrash(d);
+      this._maybeResetWorkout(d);
       try{localStorage.setItem('collegeApp_v4',JSON.stringify(d));}catch(e){}
-      this.setState({data:d,syncStatus:'Synced'});
+      this.setState({data:d,syncStatus:'Synced'},()=>this.pushToCloud(d));
     } else {
       this.pushToCloud(this.state.data);
     }

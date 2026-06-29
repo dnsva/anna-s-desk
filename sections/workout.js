@@ -1,5 +1,5 @@
 var WorkoutSection = {
-  refs: ['exName', 'exScheme'],
+  refs: ['exName', 'exScheme', 'exInstructor', 'exClassTime'],
 
   seed() {
     var id = function() { return Math.random().toString(36).slice(2,8); };
@@ -55,9 +55,11 @@ var WorkoutSection = {
 
   methods: {
     setWorkoutDay(k){ this.setState({workoutDay:k}); },
+    setWorkoutAddType(t){ this.setState({workoutAddType:t}); },
     toggleEx(day,id){ this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.done=!it.done; }); },
     addEx(day,name,scheme){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),scheme:(scheme||'').trim(),done:false}); }); },
     delEx(day,id){ this.save(d=>{ d.workout[day].items=d.workout[day].items.filter(x=>x.id!==id); }); },
+    reorderEx(day,fromId,toId){ if(fromId===toId)return; this.save(d=>{ const items=d.workout[day].items; const fi=items.findIndex(x=>x.id===fromId); const ti=items.findIndex(x=>x.id===toId); if(fi===-1||ti===-1)return; const [item]=items.splice(fi,1); items.splice(ti,0,item); }); },
     startScheme(day,id,cur){ this.setState({editingScheme:day+':'+id,schemeDraft:cur||''}); },
     commitScheme(day,id){ const v=this.state.schemeDraft.trim(); this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.scheme=v; }); this.setState({editingScheme:null,schemeDraft:''}); },
     setSchemeDraft(v){ this.setState({schemeDraft:v}); },
@@ -85,17 +87,42 @@ var WorkoutSection = {
         startS:()=>this.startScheme(wDay,it.id,schemeText),
         commitS:()=>this.commitScheme(wDay,it.id),
         onSchemeKey:enter(()=>this.commitScheme(wDay,it.id)),
+        draggable:true,
+        dragStart:()=>{ this._dragId=it.id; },
+        dragOver:(e)=>{ e.preventDefault(); },
+        drop:()=>{ if(this._dragId&&this._dragId!==it.id) this.reorderEx(wDay,this._dragId,it.id); this._dragId=null; },
+        dragEnd:()=>{ this._dragId=null; },
         cardBg:isClass?'#fff5f2':'#fff2ee',cardBorder:isClass?'#f5c4b8':'#e5c4b8',
         boxStyle:`width:26px;height:26px;flex:none;border-radius:${isClass?'50%':'8px'};cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid ${it.done?(isClass?'#b85060':'#8a5a4a'):(isClass?'#e8a090':'#c9a090')};background:${it.done?(isClass?'#b85060':'#8a5a4a'):'transparent'};`,
         nameStyle:`font-size:15px;font-weight:500;color:${it.done?'#a07868':'#3d2314'};text-decoration:${it.done?'line-through':'none'};`};
     });
-    var addExNow=()=>{ const n=rv('exName'); if(!n.trim())return; this.addEx(wDay,n,rv('exScheme')); clr('exName','exScheme'); };
+    var addType=state.workoutAddType||'exercise';
+    var isAddClass=addType==='class', isAddExercise=addType==='exercise';
+    var addExNow=()=>{
+      const n=rv('exName'); if(!n.trim())return;
+      if(isAddClass){
+        this.save(d=>{ d.workout[wDay].items.push({id:this.uid(),name:n.trim(),done:false,isClass:true,instructor:(rv('exInstructor')||'').trim(),classTime:(rv('exClassTime')||'').trim()}); });
+        clr('exName','exInstructor','exClassTime');
+      } else {
+        this.addEx(wDay,n,rv('exScheme')); clr('exName','exScheme');
+      }
+    };
+    var addExBtnStyle=`flex:1;text-align:center;padding:7px 0;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:${isAddExercise?'#8a5a4a':'#fff8f5'};color:${isAddExercise?'#fff5ef':'#8a5a4a'};border:1px solid ${isAddExercise?'#8a5a4a':'#ddb8a8'};`;
+    var addClsBtnStyle=`flex:1;text-align:center;padding:7px 0;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:${isAddClass?'#b85060':'#fff8f5'};color:${isAddClass?'#fff5ef':'#b85060'};border:1px solid ${isAddClass?'#b85060':'#f5c4b8'};`;
+    var addBtnStyle=`font-weight:600;font-size:14px;color:#fff5ef;background:${isAddClass?'#b85060':'#8a5a4a'};border-radius:11px;padding:10px 18px;cursor:pointer;white-space:nowrap;flex:none;`;
+    var addNamePlaceholder=isAddClass?'Class name':'Exercise name';
     return {
       workoutTabs, workoutLabel:wd.label, workoutDayLabel:dayFull[wDay],
       workoutItems, workoutHasItems:wd.items.length>0, workoutEmpty:wd.items.length===0,
       workoutDoneText:wd.items.length?(wDoneN+' of '+wd.items.length+' done'):'Recovery day — rest up',
       schemeDraft:state.schemeDraft, onSchemeDraft,
-      refExName:refs.exName, refExScheme:refs.exScheme, addExNow, onAddExKey:enter(addExNow),
+      refExName:refs.exName, refExScheme:refs.exScheme,
+      refExInstructor:refs.exInstructor, refExClassTime:refs.exClassTime,
+      addExNow, onAddExKey:enter(addExNow),
+      isAddClass, isAddExercise,
+      addExBtnStyle, addClsBtnStyle, addBtnStyle, addNamePlaceholder,
+      setAddExercise:()=>this.setWorkoutAddType('exercise'),
+      setAddClass:()=>this.setWorkoutAddType('class'),
     };
   },
 };

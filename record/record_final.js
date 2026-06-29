@@ -379,13 +379,13 @@ async function makeGif(name, fn, extraSetup) {
         el => el.textContent.trim() === '5×5 32.5lb/side' && el.getBoundingClientRect().y > 150
       );
       if (!chip) return null;
-      const r = chip.getBoundingClientRect();
+      const r = chip.getBoundingClientRect(); 
       return { x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2) };
     });
     if (schemePos) {
       await move(page, schemePos.x, schemePos.y); await sleep(300);
       await click(page, schemePos.x, schemePos.y); await sleep(600); // opens inline editor
-
+      
       // autofocus is unreliable in headless — explicitly click the input to focus it
       const inputLoc = page.locator('input[autofocus="true"]');
       const inputBox = await inputLoc.boundingBox({ timeout: 3000 }).catch(() => null);

@@ -1,3 +1,13 @@
+function scaleIngredient(line, factor) {
+  if(factor===1) return line;
+  return line.replace(/^(\d+(?:\/\d+)?(?:\.\d+)?)(\s*)/, function(_,n,sp){
+    var val=n.includes('/')?n.split('/').reduce(function(a,b){return +a/+b;}):parseFloat(n);
+    var s=val*factor;
+    var out=Number.isInteger(s)?s:parseFloat(s.toFixed(2));
+    return out+sp;
+  });
+}
+
 var RecipesSection = {
   refs: ['rType', 'rName', 'rTime', 'rIng', 'rSteps'],
 
@@ -31,34 +41,50 @@ var RecipesSection = {
     cancelEditRecipe(){ this.setState({editRecipe:null,editRecipeImgDraft:null}); },
     updateRecipeField(field,val){ this.setState({editRecipe:{...this.state.editRecipe,[field]:val}}); },
     saveEditRecipe(){ const er=this.state.editRecipe; if(!er)return; this.updateRecipeInData(er.id,{name:er.name.trim(),type:er.type,time:er.time,img:this.state.editRecipeImgDraft,ingredients:er.ingredients.split('\n').map(s=>s.trim()).filter(Boolean),steps:er.steps.split('\n').map(s=>s.trim()).filter(Boolean)}); this.setState({editRecipe:null,editRecipeImgDraft:null}); },
+    setRecipeSearch(v){ this.setState({recipeSearch:v}); },
+    setRecipeScale(n){ this.setState({recipeScale:n}); },
   },
 
   render(ctx) {
-    var d=ctx.d, screen=ctx.screen, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
+    var d=ctx.d, state=ctx.state, screen=ctx.screen, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
     var isS=(k)=>screen===k;
-    var recipeTab=this.state.recipeTab;
+    var recipeTab=state.recipeTab||'food';
+    var recipeSearch=(state.recipeSearch||'').toLowerCase().trim();
     var tabStyle=(on)=>`padding:9px 20px;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;background:${on?'#d4845a':'transparent'};color:${on?'#fff5ef':'#a04530'};`;
-    var recipesList=d.recipes.filter(r=>r.type===recipeTab).map(r=>({id:r.id,name:r.name,time:r.time,ingCount:r.ingredients.length+' ingredients',open:()=>this.setState({recipeOpen:r.id})}));
-    var ro=d.recipes.find(r=>r.id===this.state.recipeOpen);
-    var openRecipe=ro?{id:ro.id,name:ro.name,time:ro.time,img:ro.img||null,hasImg:!!ro.img,ingredients:ro.ingredients,steps:ro.steps.map((t,i)=>({num:i+1,text:t})),del:()=>this.delRecipe(ro.id),close:()=>this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}),edit:()=>this.startEditRecipe(ro.id)}:null;
-    var er=this.state.editRecipe;
-    var editRecipeData=er?{name:er.name,type:er.type,time:er.time,ingredients:er.ingredients,steps:er.steps,img:this.state.editRecipeImgDraft,hasImg:!!this.state.editRecipeImgDraft,setName:(e)=>this.updateRecipeField('name',e.target.value),setType:(e)=>this.updateRecipeField('type',e.target.value),setTime:(e)=>this.updateRecipeField('time',e.target.value),setIngredients:(e)=>this.updateRecipeField('ingredients',e.target.value),setSteps:(e)=>this.updateRecipeField('steps',e.target.value),save:()=>this.saveEditRecipe(),cancel:()=>this.cancelEditRecipe(),onImgChange:(e)=>{const f=e.target.files&&e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>this.setState({editRecipeImgDraft:ev.target.result});fr.readAsDataURL(f);e.target.value='';},clearImg:()=>this.setState({editRecipeImgDraft:null})}:null;
-    var addRecipeNow=()=>{ const n=rv('rName'); if(!n.trim())return; this.addRecipe({type:rv('rType')||'food',name:n,time:rv('rTime'),img:this.state.recipeImgDraft,ingredients:rv('rIng').split('\n').map(s=>s.trim()).filter(Boolean),steps:rv('rSteps').split('\n').map(s=>s.trim()).filter(Boolean)}); clr('rName','rTime','rIng','rSteps'); };
+    var tabFiltered=d.recipes.filter(r=>r.type===recipeTab);
+    var recipesList=tabFiltered.filter(r=>!recipeSearch||r.name.toLowerCase().includes(recipeSearch)).map(r=>({id:r.id,name:r.name,time:r.time,ingCount:r.ingredients.length+' ingredients',open:()=>this.setState({recipeOpen:r.id,recipeScale:1})}));
+    var recipeEmpty=recipesList.length===0;
+    var recipeEmptyMsg=recipeSearch?'No recipes match your search.':('No '+recipeTab+' recipes yet. Add one below.');
+    var ro=d.recipes.find(r=>r.id===state.recipeOpen);
+    var recipeScale=state.recipeScale||1;
+    var openRecipe=ro?{id:ro.id,name:ro.name,time:ro.time,img:ro.img||null,hasImg:!!ro.img,
+      scaledIngredients:ro.ingredients.map(line=>scaleIngredient(line,recipeScale)),
+      steps:ro.steps.map((t,i)=>({num:i+1,text:t})),
+      del:()=>this.delRecipe(ro.id),close:()=>this.setState({recipeOpen:null,editRecipe:null,editRecipeImgDraft:null}),edit:()=>this.startEditRecipe(ro.id)}:null;
+    var er=state.editRecipe;
+    var editRecipeData=er?{name:er.name,type:er.type,time:er.time,ingredients:er.ingredients,steps:er.steps,img:state.editRecipeImgDraft,hasImg:!!state.editRecipeImgDraft,setName:(e)=>this.updateRecipeField('name',e.target.value),setType:(e)=>this.updateRecipeField('type',e.target.value),setTime:(e)=>this.updateRecipeField('time',e.target.value),setIngredients:(e)=>this.updateRecipeField('ingredients',e.target.value),setSteps:(e)=>this.updateRecipeField('steps',e.target.value),save:()=>this.saveEditRecipe(),cancel:()=>this.cancelEditRecipe(),onImgChange:(e)=>{const f=e.target.files&&e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=ev=>this.setState({editRecipeImgDraft:ev.target.result});fr.readAsDataURL(f);e.target.value='';},clearImg:()=>this.setState({editRecipeImgDraft:null})}:null;
+    var addRecipeNow=()=>{ const n=rv('rName'); if(!n.trim())return; this.addRecipe({type:rv('rType')||'food',name:n,time:rv('rTime'),img:state.recipeImgDraft,ingredients:rv('rIng').split('\n').map(s=>s.trim()).filter(Boolean),steps:rv('rSteps').split('\n').map(s=>s.trim()).filter(Boolean)}); clr('rName','rTime','rIng','rSteps'); };
+    var scaleBtn=(n)=>({label:n===0.5?'½':String(n),active:recipeScale===n,set:()=>this.setRecipeScale(n),style:'padding:5px 12px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;background:'+(recipeScale===n?'#c4622d':'#fff2ee')+';color:'+(recipeScale===n?'#fff5ef':'#c4622d')+';border:1px solid '+(recipeScale===n?'#c4622d':'#e5c4b8')+';'});
     return {
       recipeTab,
       tabFoodStyle:tabStyle(recipeTab==='food'), tabDrinkStyle:tabStyle(recipeTab==='drink'),
-      recTabFood:()=>this.setState({recipeTab:'food',recipeOpen:null}),
-      recTabDrink:()=>this.setState({recipeTab:'drink',recipeOpen:null}),
+      recTabFood:()=>this.setState({recipeTab:'food',recipeOpen:null,recipeSearch:''}),
+      recTabDrink:()=>this.setState({recipeTab:'drink',recipeOpen:null,recipeSearch:''}),
       recipesList, openRecipe, editRecipeData,
+      recipeEmpty, recipeEmptyMsg,
+      recipeSearchVal:state.recipeSearch||'',
+      onRecipeSearch:(e)=>this.setRecipeSearch(e.target.value),
+      recipeScale,
+      scaleBtns:[scaleBtn(0.5),scaleBtn(1),scaleBtn(2),scaleBtn(3)],
       showRecipeList:isS('recipes')&&!openRecipe&&!er,
       recipeDetailShown:isS('recipes')&&!!openRecipe&&!er,
-      editingRecipeShown:isS('recipes')&&!!er&&!!this.state.recipeOpen,
-      addingRecipe:this.state.addingRecipe,
+      editingRecipeShown:isS('recipes')&&!!er&&!!state.recipeOpen,
+      addingRecipe:state.addingRecipe,
       showAddRecipe:()=>this.setState({addingRecipe:true}),
       hideAddRecipe:()=>this.setState({addingRecipe:false}),
       addRecipeNow,
       refRType:refs.rType, refRName:refs.rName, refRTime:refs.rTime, refRIng:refs.rIng, refRSteps:refs.rSteps,
-      recipeImgDraft:this.state.recipeImgDraft, hasRecipeImgDraft:!!this.state.recipeImgDraft,
+      recipeImgDraft:state.recipeImgDraft, hasRecipeImgDraft:!!state.recipeImgDraft,
       onRecipeImgChange:(e)=>{this.setRecipeImgDraft(e.target.files);e.target.value='';},
       clearRecipeImg:()=>this.setState({recipeImgDraft:null}),
     };

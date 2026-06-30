@@ -1,5 +1,5 @@
 var ChecklistSection = {
-  refs: ['clText', 'clCat'],
+  refs: ['clText'],
 
   seed() {
     var id = function() { return Math.random().toString(36).slice(2,8); };
@@ -84,28 +84,45 @@ var ChecklistSection = {
 
   methods: {
     toggleItem(id){ this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it) it.done=!it.done; }); },
-    addItem(cat,label){ if(!label||!label.trim())return; this.save(d=>{ d.checklist.push({id:this.uid(),cat,label:label.trim(),done:false}); }); },
+    addItem(cat,label){ if(!label||!label.trim())return; this.save(d=>{ d.checklist.push({id:this.uid(),cat,label:label.trim(),done:false}); }); this.setState({lastClCat:cat}); },
     delItem(id){ this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'checklist',name:it.label,item:it,deletedAt:Date.now()}); d.checklist=d.checklist.filter(x=>x.id!==id); } }); },
+    updateItem(id,label){ if(!label||!label.trim())return; this.save(d=>{ const it=d.checklist.find(x=>x.id===id); if(it) it.label=label.trim(); }); this.setState({editingCL:null,clLabelDraft:''}); },
+    startEditCL(id,label){ this.setState({editingCL:id,clLabelDraft:label}); },
+    setCLLabelDraft(v){ this.setState({clLabelDraft:v}); },
+    cancelEditCL(){ this.setState({editingCL:null,clLabelDraft:''}); },
   },
 
   render(ctx) {
-    var d=ctx.d, rv=ctx.rv, clr=ctx.clr, enter=ctx.enter, refs=ctx.refs;
+    var d=ctx.d, state=ctx.state, rv=ctx.rv, clr=ctx.clr, enter=ctx.enter, refs=ctx.refs;
     var catOrder=['Admin & Accounts','Residence','Clothing — Tops','Clothing — Bottoms & Undergarments','Clothing — Outerwear & Footwear','Sleepwear','Class Supplies','Electronics & Tech','Kitchen','Personal & Health'];
     var catOptions=[].concat(catOrder,d.checklist.map(function(x){return x.cat;})).filter(function(v,i,a){return a.indexOf(v)===i;});
+    var editingCL=state.editingCL;
+    var clLabelDraft=state.clLabelDraft||'';
+    var onCLLabelDraft=(e)=>this.setCLLabelDraft(e.target.value);
     var checklistGroups=catOptions.map(function(cat){
       return {cat:cat,catUpper:cat.toUpperCase(),items:d.checklist.filter(function(x){return x.cat===cat;}).map(function(it){
-        return {id:it.id,label:it.label,done:it.done,
+        var isEditing=editingCL===it.id;
+        return {id:it.id,label:it.label,done:it.done,isEditing,showNormal:!isEditing,
           toggle:()=>this.toggleItem(it.id),del:()=>this.delItem(it.id),
+          startEdit:()=>this.startEditCL(it.id,it.label),
+          commitEdit:()=>this.updateItem(it.id,state.clLabelDraft),
+          cancelEdit:()=>this.cancelEditCL(),
+          onEditKey:enter(()=>this.updateItem(it.id,state.clLabelDraft)),
           boxStyle:'width:22px;height:22px;flex:none;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;border:2px solid '+(it.done?'#c4622d':'#c9a090')+';background:'+(it.done?'#c4622d':'transparent')+';',
           labelStyle:'flex:1;font-size:15px;color:'+(it.done?'#a07868':'#3d2314')+';text-decoration:'+(it.done?'line-through':'none')+';'};
       }.bind(this))};
     }.bind(this)).filter(function(g){return g.items.length;});
     var packDone=d.checklist.filter(function(x){return x.done;}).length;
     var packPct=Math.round(packDone/Math.max(1,d.checklist.length)*100);
-    var addCLnow=()=>{ var t=rv('clText'); if(!t.trim())return; this.addItem(rv('clCat')||catOptions[0],t); clr('clText'); };
+    var lastClCat=state.lastClCat||catOptions[0];
+    var onClCatChange=(e)=>this.setState({lastClCat:e.target.value});
+    var addCLnow=()=>{ var t=rv('clText'); if(!t.trim())return; this.addItem(lastClCat,t); clr('clText'); };
     return {
       checklistGroups, packPct, packText:packDone+' of '+d.checklist.length+' packed', catOptions,
-      refClText:refs.clText, refClCat:refs.clCat, addCLnow, onAddCLKey:enter(addCLnow),
+      checklistEmpty:d.checklist.length===0,
+      refClText:refs.clText, addCLnow, onAddCLKey:enter(addCLnow),
+      lastClCat, onClCatChange,
+      clLabelDraft, onCLLabelDraft,
     };
   },
 };

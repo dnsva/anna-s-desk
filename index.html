@@ -182,24 +182,39 @@
             </div>
             <div style="height:9px;border-radius:6px;background:#e5c4b8;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ packPct }}%;background:#c4622d;border-radius:6px;transition:width .35s;"></div></div>
           </div>
+          <sc-if value="{{ checklistEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:40px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;margin-bottom:18px;">Nothing packed yet. Add your first item below.</div>
+          </sc-if>
           <sc-for list="{{ checklistGroups }}" as="g" hint-placeholder-count="4">
             <div style="margin-bottom:20px;">
               <div style="font-size:11px;letter-spacing:.14em;color:#a07868;font-weight:600;margin:0 2px 9px;">{{ g.catUpper }}</div>
               <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;overflow:hidden;">
                 <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
-                  <div style="display:flex;align-items:center;gap:13px;padding:13px 16px;border-top:1px solid #fcd8cc;">
-                    <div onClick="{{ it.toggle }}" style="{{ it.boxStyle }}">
-                      <sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><div style="width:9px;height:5px;border-left:2px solid #fff5ef;border-bottom:2px solid #fff5ef;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
-                    </div>
-                    <div style="{{ it.labelStyle }}">{{ it.label }}</div>
-                    <div onClick="{{ it.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                  <div style="border-top:1px solid #fcd8cc;">
+                    <sc-if value="{{ it.showNormal }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;align-items:center;gap:13px;padding:13px 16px;">
+                        <div onClick="{{ it.toggle }}" style="{{ it.boxStyle }}">
+                          <sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><div style="width:9px;height:5px;border-left:2px solid #fff5ef;border-bottom:2px solid #fff5ef;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                        </div>
+                        <div style="{{ it.labelStyle }}">{{ it.label }}</div>
+                        <div onClick="{{ it.startEdit }}" style="color:#c09080;cursor:pointer;font-size:14px;padding:0 4px;line-height:1;opacity:.7;">✎</div>
+                        <div onClick="{{ it.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ it.isEditing }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:center;gap:9px;padding:10px 14px;">
+                        <input value="{{ clLabelDraft }}" onChange="{{ onCLLabelDraft }}" onKeyDown="{{ it.onEditKey }}" autofocus="true" style="flex:1;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #c4622d;border-radius:9px;padding:8px 11px;outline:none;">
+                        <div onClick="{{ it.commitEdit }}" style="font-size:13px;font-weight:600;color:#fff5ef;background:#c4622d;border-radius:9px;padding:7px 14px;cursor:pointer;">Save</div>
+                        <div onClick="{{ it.cancelEdit }}" style="color:#a07868;cursor:pointer;font-size:18px;line-height:1;">✕</div>
+                      </div>
+                    </sc-if>
                   </div>
                 </sc-for>
               </div>
             </div>
           </sc-for>
           <div style="display:flex;gap:8px;align-items:center;background:#fff2ee;border:1px solid #e5c4b8;border-radius:16px;padding:10px;flex-wrap:wrap;">
-            <select ref="{{ refClCat }}" name="cl-category" style="font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px;outline:none;">
+            <select value="{{ lastClCat }}" onChange="{{ onClCatChange }}" name="cl-category" style="font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px;outline:none;">
               <sc-for list="{{ catOptions }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for>
             </select>
             <input ref="{{ refClText }}" name="cl-item" placeholder="Add an item…" onKeyDown="{{ onAddCLKey }}" style="flex:1;min-width:130px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
@@ -226,6 +241,16 @@
                 <input ref="{{ refCEnd }}" name="class-end" type="time" style="font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:9px 10px;outline:none;">
               </div>
               <input ref="{{ refCLoc }}" name="class-location" placeholder="Location" style="font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
+              <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <input ref="{{ refCCode }}" name="class-code" placeholder="Course code (optional)" style="flex:1;min-width:120px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
+                <input ref="{{ refCInstructor }}" name="class-instructor" placeholder="Instructor (optional)" style="flex:1;min-width:120px;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 12px;outline:none;">
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <div style="font-size:12px;color:#8a5a4a;flex:none;">Colour:</div>
+                <sc-for list="{{ colorSwatches }}" as="sw" hint-placeholder-count="8">
+                  <div onClick="{{ sw.select }}" style="{{ sw.style }}"></div>
+                </sc-for>
+              </div>
               <div onClick="{{ addClassNow }}" style="align-self:flex-start;font-weight:600;font-size:14px;color:#fff5ef;background:#b85060;border-radius:11px;padding:10px 20px;cursor:pointer;">Save class</div>
             </div>
           </sc-if>
@@ -238,11 +263,49 @@
               <sc-if value="{{ day.hasClasses }}" hint-placeholder-val="{{ true }}">
                 <div style="display:flex;flex-direction:column;gap:9px;">
                   <sc-for list="{{ day.classes }}" as="c" hint-placeholder-count="2">
-                    <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;border:1px solid #e5c4b8;border-radius:15px;padding:14px 16px;">
-                      <div style="width:4px;align-self:stretch;border-radius:4px;background:{{ c.color }};"></div>
-                      <div style="font-size:13px;color:#a04530;font-variant-numeric:tabular-nums;width:104px;flex:none;">{{ c.range }}</div>
-                      <div style="flex:1;min-width:0;"><div style="font-family:'Newsreader',serif;font-size:18px;">{{ c.name }}</div><div style="font-size:12px;color:#8a5a4a;">{{ c.loc }}</div></div>
-                      <div onClick="{{ c.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                    <div style="border-radius:15px;overflow:hidden;border:1px solid {{ c.cardBorder }};">
+                      <sc-if value="{{ c.showNormal }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;padding:14px 16px;">
+                          <div style="width:4px;align-self:stretch;border-radius:4px;background:{{ c.color }};"></div>
+                          <div style="font-size:13px;color:#a04530;font-variant-numeric:tabular-nums;width:104px;flex:none;">{{ c.range }}</div>
+                          <div style="flex:1;min-width:0;">
+                            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                              <div style="font-family:'Newsreader',serif;font-size:18px;">{{ c.name }}</div>
+                              <sc-if value="{{ c.hasCode }}" hint-placeholder-val="{{ false }}"><div style="font-size:10px;font-weight:700;letter-spacing:.06em;padding:2px 7px;border-radius:5px;background:#b8506022;color:#b85060;">{{ c.code }}</div></sc-if>
+                            </div>
+                            <div style="font-size:12px;color:#8a5a4a;">{{ c.loc }}<sc-if value="{{ c.hasInstructor }}" hint-placeholder-val="{{ false }}"><span style="margin-left:8px;">· {{ c.instructor }}</span></sc-if></div>
+                          </div>
+                          <div onClick="{{ c.startEdit }}" style="color:#c09080;cursor:pointer;font-size:14px;padding:0 4px;line-height:1;opacity:.7;">✎</div>
+                          <div onClick="{{ c.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 4px;line-height:1;">×</div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ c.isEditing }}" hint-placeholder-val="{{ false }}">
+                        <div style="background:#fff8f5;padding:14px 16px;display:flex;flex-direction:column;gap:9px;">
+                          <input value="{{ editClassDraft.name }}" onChange="{{ onEditName }}" placeholder="Class name" style="font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #c4622d;border-radius:9px;padding:8px 11px;outline:none;">
+                          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <select value="{{ editClassDraft.day }}" onChange="{{ onEditDay }}" style="flex:1;min-width:80px;font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 10px;outline:none;">
+                              <sc-for list="{{ dayOptions }}" as="dy" hint-placeholder-count="7"><option value="{{ dy }}">{{ dy }}</option></sc-for>
+                            </select>
+                            <input value="{{ editClassDraft.start }}" onChange="{{ onEditStart }}" type="time" style="font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 9px;outline:none;">
+                            <input value="{{ editClassDraft.end }}" onChange="{{ onEditEnd }}" type="time" style="font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 9px;outline:none;">
+                          </div>
+                          <input value="{{ editClassDraft.loc }}" onChange="{{ onEditLoc }}" placeholder="Location" style="font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 11px;outline:none;">
+                          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <input value="{{ editClassDraft.code }}" onChange="{{ onEditCode }}" placeholder="Course code" style="flex:1;min-width:100px;font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 11px;outline:none;">
+                            <input value="{{ editClassDraft.instructor }}" onChange="{{ onEditInstructor }}" placeholder="Instructor" style="flex:1;min-width:100px;font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 11px;outline:none;">
+                          </div>
+                          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <div style="font-size:12px;color:#8a5a4a;flex:none;">Colour:</div>
+                            <sc-for list="{{ editColorSwatches }}" as="sw" hint-placeholder-count="8">
+                              <div onClick="{{ sw.select }}" style="{{ sw.style }}"></div>
+                            </sc-for>
+                          </div>
+                          <div style="display:flex;gap:9px;">
+                            <div onClick="{{ c.commitEdit }}" style="font-size:13px;font-weight:600;color:#fff5ef;background:#b85060;border-radius:9px;padding:8px 16px;cursor:pointer;">Save</div>
+                            <div onClick="{{ c.cancelEdit }}" style="font-size:13px;color:#a07868;cursor:pointer;padding:8px 4px;">Cancel</div>
+                          </div>
+                        </div>
+                      </sc-if>
                     </div>
                   </sc-for>
                 </div>
@@ -262,16 +325,58 @@
             <input ref="{{ refDateWhen }}" name="date-when" type="date" style="font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:9px 10px;outline:none;">
             <div onClick="{{ addDateNow }}" style="font-weight:600;font-size:14px;color:#fff5ef;background:#b85060;border-radius:11px;padding:10px 18px;cursor:pointer;">Add</div>
           </div>
+          <sc-if value="{{ datesEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:40px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;margin-bottom:18px;">No key dates yet. Add move-in, exams, or deadlines.</div>
+          </sc-if>
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <sc-for list="{{ datesList }}" as="x" hint-placeholder-count="6">
-              <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;border:1px solid #e5c4b8;border-radius:15px;padding:13px 16px;">
-                <div style="{{ x.badgeStyle }}">{{ x.count }}</div>
-                <div style="{{ x.titleStyle }}">{{ x.title }}</div>
-                <div style="font-size:13px;color:#8a5a4a;">{{ x.dateLabel }}</div>
-                <div onClick="{{ x.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+            <sc-for list="{{ upcomingDates }}" as="x" hint-placeholder-count="6">
+              <div style="border-radius:15px;overflow:hidden;border:1px solid #e5c4b8;">
+                <sc-if value="{{ x.showNormal }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;padding:13px 16px;">
+                    <div style="{{ x.badgeStyle }}">{{ x.count }}</div>
+                    <div style="{{ x.titleStyle }}">{{ x.title }}</div>
+                    <div style="font-size:13px;color:#8a5a4a;">{{ x.dateLabel }}</div>
+                    <div onClick="{{ x.startEdit }}" style="color:#c09080;cursor:pointer;font-size:14px;padding:0 4px;line-height:1;opacity:.7;">✎</div>
+                    <div onClick="{{ x.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ x.isEditing }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:9px;padding:10px 14px;background:#fff8f5;flex-wrap:wrap;">
+                    <input value="{{ dateDraft.title }}" onChange="{{ x.onEditTitle }}" onKeyDown="{{ x.onEditTitleKey }}" autofocus="true" style="flex:1;min-width:140px;font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #b85060;border-radius:9px;padding:8px 11px;outline:none;">
+                    <input value="{{ dateDraft.date }}" onChange="{{ x.onEditWhen }}" type="date" style="font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 10px;outline:none;">
+                    <div onClick="{{ x.commitEdit }}" style="font-size:13px;font-weight:600;color:#fff5ef;background:#b85060;border-radius:9px;padding:7px 14px;cursor:pointer;">Save</div>
+                    <div onClick="{{ x.cancelEdit }}" style="color:#a07868;cursor:pointer;font-size:18px;line-height:1;">✕</div>
+                  </div>
+                </sc-if>
               </div>
             </sc-for>
           </div>
+          <sc-if value="{{ hasPastDates }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:11px;letter-spacing:.14em;color:#a07868;font-weight:600;margin:20px 2px 9px;">PAST</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ pastDates }}" as="x" hint-placeholder-count="2">
+                <div style="border-radius:15px;overflow:hidden;border:1px solid #e5c4b8;">
+                  <sc-if value="{{ x.showNormal }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;padding:13px 16px;">
+                      <div style="{{ x.badgeStyle }}">{{ x.count }}</div>
+                      <div style="{{ x.titleStyle }}">{{ x.title }}</div>
+                      <div style="font-size:13px;color:#8a5a4a;">{{ x.dateLabel }}</div>
+                      <div onClick="{{ x.startEdit }}" style="color:#c09080;cursor:pointer;font-size:14px;padding:0 4px;line-height:1;opacity:.7;">✎</div>
+                      <div onClick="{{ x.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ x.isEditing }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;gap:9px;padding:10px 14px;background:#fff8f5;flex-wrap:wrap;">
+                      <input value="{{ dateDraft.title }}" onChange="{{ x.onEditTitle }}" onKeyDown="{{ x.onEditTitleKey }}" autofocus="true" style="flex:1;min-width:140px;font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #b85060;border-radius:9px;padding:8px 11px;outline:none;">
+                      <input value="{{ dateDraft.date }}" onChange="{{ x.onEditWhen }}" type="date" style="font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #ddb8a8;border-radius:9px;padding:8px 10px;outline:none;">
+                      <div onClick="{{ x.commitEdit }}" style="font-size:13px;font-weight:600;color:#fff5ef;background:#b85060;border-radius:9px;padding:7px 14px;cursor:pointer;">Save</div>
+                      <div onClick="{{ x.cancelEdit }}" style="color:#a07868;cursor:pointer;font-size:18px;line-height:1;">✕</div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
           <div style="height:30px;"></div>
         </div>
       </sc-if>
@@ -314,6 +419,10 @@
               </div>
             </div>
           </sc-if>
+          <input value="{{ recipeSearchVal }}" onChange="{{ onRecipeSearch }}" placeholder="Search recipes…" style="width:100%;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 14px;outline:none;margin-bottom:14px;">
+          <sc-if value="{{ recipeEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:40px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">{{ recipeEmptyMsg }}</div>
+          </sc-if>
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;">
             <sc-for list="{{ recipesList }}" as="r" hint-placeholder-count="4">
               <div onClick="{{ r.open }}" style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:18px;cursor:pointer;">
@@ -334,12 +443,20 @@
             <img src="{{ openRecipe.img }}" loading="lazy" style="width:100%;max-height:260px;object-fit:cover;border-radius:18px;margin-bottom:16px;display:block;">
           </sc-if>
           <div style="font-family:'Newsreader',serif;font-size:30px;line-height:1.1;">{{ openRecipe.name }}</div>
-          <div style="font-size:13px;color:#d4845a;font-weight:600;margin-top:4px;">{{ openRecipe.time }}</div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:6px;flex-wrap:wrap;">
+            <div style="font-size:13px;color:#d4845a;font-weight:600;">{{ openRecipe.time }}</div>
+            <div style="display:flex;gap:5px;align-items:center;">
+              <div style="font-size:12px;color:#8a5a4a;margin-right:3px;">Scale:</div>
+              <sc-for list="{{ scaleBtns }}" as="sb" hint-placeholder-count="4">
+                <div onClick="{{ sb.set }}" style="{{ sb.style }}">{{ sb.label }}</div>
+              </sc-for>
+            </div>
+          </div>
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:16px;margin-top:22px;align-items:start;">
             <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:18px;">
               <div style="font-size:11px;letter-spacing:.14em;color:#a07868;font-weight:600;margin-bottom:12px;">INGREDIENTS</div>
               <div style="display:flex;flex-direction:column;gap:9px;">
-                <sc-for list="{{ openRecipe.ingredients }}" as="ing" hint-placeholder-count="4">
+                <sc-for list="{{ openRecipe.scaledIngredients }}" as="ing" hint-placeholder-count="4">
                   <div style="display:flex;gap:10px;align-items:flex-start;font-size:15px;"><div style="width:6px;height:6px;border-radius:50%;background:#d4845a;margin-top:7px;flex:none;"></div><div>{{ ing }}</div></div>
                 </sc-for>
               </div>
@@ -430,6 +547,15 @@
                       <input value="{{ schemeDraft }}" onChange="{{ onSchemeDraft }}" onKeyDown="{{ ex.onSchemeKey }}" onBlur="{{ ex.commitS }}" autofocus="true" style="width:100%;font-size:13px;color:#3d2314;background:#fff8f5;border:1px solid #8a5a4a;border-radius:8px;padding:5px 9px;margin-top:4px;outline:none;box-sizing:border-box;">
                     </sc-if>
                   </div>
+                  <sc-if value="{{ ex.showWeight }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex:none;">
+                      <div style="display:flex;align-items:center;gap:4px;">
+                        <input type="number" value="{{ ex.weight }}" onChange="{{ ex.setWeight }}" placeholder="0" min="0" style="width:58px;font-size:13px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:8px;padding:5px 7px;outline:none;text-align:right;">
+                        <div style="font-size:12px;color:#8a5a4a;">lb</div>
+                      </div>
+                      <sc-if value="{{ ex.prevStr }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;color:#a07868;">{{ ex.prevStr }}</div></sc-if>
+                    </div>
+                  </sc-if>
                   <div onClick="{{ ex.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
                 </div>
               </sc-for>
@@ -471,15 +597,30 @@
             </div>
             <div style="height:9px;border-radius:6px;background:#e5c4b8;margin-top:11px;overflow:hidden;"><div style="height:100%;width:{{ habitPct }}%;background:#c4622d;border-radius:6px;transition:width .35s;"></div></div>
           </div>
+          <sc-if value="{{ habitsEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:40px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;margin-bottom:14px;">No habits yet. Add one to start tracking your streak.</div>
+          </sc-if>
           <div style="display:flex;flex-direction:column;gap:9px;">
             <sc-for list="{{ habitsList }}" as="h" hint-placeholder-count="6">
-              <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;border:1px solid #e5c4b8;border-radius:15px;padding:14px 16px;">
-                <div onClick="{{ h.toggle }}" style="{{ h.boxStyle }}">
-                  <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #fff5ef;border-bottom:2px solid #fff5ef;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
-                </div>
-                <div style="{{ h.nameStyle }}">{{ h.name }}</div>
-                <div style="font-size:12px;color:#c4622d;font-weight:600;white-space:nowrap;">{{ h.streakLabel }}</div>
-                <div onClick="{{ h.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+              <div style="border-radius:15px;overflow:hidden;border:1px solid #e5c4b8;">
+                <sc-if value="{{ h.showNormal }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;align-items:center;gap:14px;background:#fff2ee;padding:14px 16px;">
+                    <div onClick="{{ h.toggle }}" style="{{ h.boxStyle }}">
+                      <sc-if value="{{ h.done }}" hint-placeholder-val="{{ false }}"><div style="width:11px;height:6px;border-left:2px solid #fff5ef;border-bottom:2px solid #fff5ef;transform:rotate(-45deg) translate(0,-1px);"></div></sc-if>
+                    </div>
+                    <div style="{{ h.nameStyle }}">{{ h.name }}</div>
+                    <div style="font-size:12px;color:#c4622d;font-weight:600;white-space:nowrap;">{{ h.streakLabel }}</div>
+                    <div onClick="{{ h.startEdit }}" style="color:#c09080;cursor:pointer;font-size:14px;padding:0 4px;line-height:1;opacity:.7;">✎</div>
+                    <div onClick="{{ h.del }}" style="color:#c09080;cursor:pointer;font-size:19px;padding:0 2px;line-height:1;">×</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ h.isEditing }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:9px;padding:10px 14px;background:#fff8f5;">
+                    <input value="{{ habitNameDraft }}" onChange="{{ onHabitNameDraft }}" onKeyDown="{{ h.onEditKey }}" autofocus="true" style="flex:1;font-size:14px;color:#3d2314;background:#fff2ee;border:1px solid #c4622d;border-radius:9px;padding:8px 11px;outline:none;">
+                    <div onClick="{{ h.commitEdit }}" style="font-size:13px;font-weight:600;color:#fff5ef;background:#c4622d;border-radius:9px;padding:7px 14px;cursor:pointer;">Save</div>
+                    <div onClick="{{ h.cancelEdit }}" style="color:#a07868;cursor:pointer;font-size:18px;line-height:1;">✕</div>
+                  </div>
+                </sc-if>
               </div>
             </sc-for>
           </div>
@@ -513,6 +654,8 @@
                   <div className="photo-drag-bar" onPointerDown="{{ p.onDragStart }}" style="display:flex;align-items:center;gap:6px;padding:8px 10px 6px;border-radius:16px 16px 0 0;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;">
                     <div style="color:#c9a090;font-size:15px;flex:none;line-height:1;">⠿</div>
                     <div style="flex:1;"></div>
+                    <div onClick="{{ p.rotCCW }}" onPointerDown="{{ p.stopProp }}" style="width:24px;height:24px;border-radius:50%;background:rgba(61,35,20,.35);color:#fff5ef;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;line-height:1;flex:none;">↺</div>
+                    <div onClick="{{ p.rotCW }}" onPointerDown="{{ p.stopProp }}" style="width:24px;height:24px;border-radius:50%;background:rgba(61,35,20,.35);color:#fff5ef;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;line-height:1;flex:none;">↻</div>
                     <div onClick="{{ p.del }}" onPointerDown="{{ p.stopProp }}" style="width:24px;height:24px;border-radius:50%;background:rgba(61,35,20,.5);color:#fff5ef;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;line-height:1;flex:none;">×</div>
                   </div>
                   <sc-if value="{{ p.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ p.src }}" loading="lazy" style="width:100%;display:block;"></sc-if>
@@ -529,17 +672,22 @@
       <!-- ===== NOTES (list) ===== -->
       <sc-if value="{{ notesListShown }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
-          <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
-            <div onClick="{{ goNewNote }}" style="font-weight:600;font-size:14px;color:#fff5ef;background:#8b3020;border-radius:11px;padding:10px 18px;cursor:pointer;">+ New note</div>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;">
+            <input value="{{ noteSearch }}" onChange="{{ onNoteSearch }}" placeholder="Search notes…" style="flex:1;font-size:14px;color:#3d2314;background:#fff8f5;border:1px solid #ddb8a8;border-radius:11px;padding:10px 14px;outline:none;">
+            <div onClick="{{ goNewNote }}" style="font-weight:600;font-size:14px;color:#fff5ef;background:#8b3020;border-radius:11px;padding:10px 18px;cursor:pointer;white-space:nowrap;">+ New note</div>
           </div>
           <sc-if value="{{ notesEmpty }}" hint-placeholder-val="{{ false }}">
             <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:50px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Nothing on your mind yet. Start a note.</div>
+          </sc-if>
+          <sc-if value="{{ notesSearchEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:40px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">No notes match your search.</div>
           </sc-if>
           <div style="display:grid;grid-template-columns:{{ tileCols }};gap:13px;">
             <sc-for list="{{ notesList }}" as="n" hint-placeholder-count="2">
               <div onClick="{{ n.open }}" style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:18px;cursor:pointer;position:relative;">
                 <div style="font-family:'Newsreader',serif;font-size:19px;line-height:1.2;padding-right:18px;">{{ n.title }}</div>
                 <div style="font-size:13px;color:#8a5a4a;margin-top:7px;line-height:1.5;white-space:pre-wrap;">{{ n.snippet }}</div>
+                <div style="font-size:11px;color:#a07868;margin-top:8px;">{{ n.timeStr }}</div>
                 <div onClick="{{ n.del }}" style="position:absolute;top:14px;right:14px;color:#c09080;cursor:pointer;font-size:18px;line-height:1;">×</div>
               </div>
             </sc-for>
@@ -552,7 +700,7 @@
       <sc-if value="{{ isTrash }}" hint-placeholder-val="{{ false }}">
         <div style="animation:scfade .35s ease both;">
           <sc-if value="{{ trashEmpty }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:50px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Your trash is empty. Items deleted from Notes, Recipes, Checklist, Key Dates, and Habits land here.</div>
+            <div style="background:#fff2ee;border:1px solid #e5c4b8;border-radius:18px;padding:50px 20px;text-align:center;color:#8a5a4a;font-family:'Newsreader',serif;font-style:italic;font-size:18px;">Your trash is empty. Deleted Notes, Recipes, Checklist items, Key Dates, Habits, Exercises, and Classes land here.</div>
           </sc-if>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <sc-for list="{{ trashList }}" as="t" hint-placeholder-count="0">
@@ -650,7 +798,20 @@ class Component extends DCLogic {
       photoDragLive: {},
       photoResizeLive: {},
       syncStatus: 'Syncing…',
-      noteActiveFmt: {bold:false,italic:false,underline:false,strike:false,ul:false,ol:false}
+      noteActiveFmt: {bold:false,italic:false,underline:false,strike:false,ul:false,ol:false},
+      scheduleColor: '#b85060',
+      editingClass: null,
+      editClassDraft: null,
+      editingHabit: null,
+      habitNameDraft: '',
+      editingCL: null,
+      clLabelDraft: '',
+      lastClCat: null,
+      editingDate: null,
+      dateDraft: null,
+      noteSearch: '',
+      recipeSearch: '',
+      recipeScale: 1,
     };
   }
 
@@ -677,7 +838,7 @@ class Component extends DCLogic {
     lastMon.setHours(0,0,0,0);
     const lastReset=data.workoutLastReset?new Date(data.workoutLastReset):new Date(0);
     if(lastReset<lastMon){
-      Object.values(data.workout).forEach(day=>day.items.forEach(item=>{item.done=false;}));
+      Object.values(data.workout).forEach(day=>day.items.forEach(item=>{item.done=false;if(item.weight){item.prev=item.weight;}}));
       data.workoutLastReset=lastMon.toISOString();
     }
   }

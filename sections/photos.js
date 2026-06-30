@@ -42,6 +42,10 @@ var PhotosSection = {
       });
     },
 
+    rotatePhoto(id, delta) {
+      this.save(d => { const p = d.photos.find(x => x.id === id); if (p) p.rot = ((p.rot || 0) + delta + 360) % 360; });
+    },
+
     startPhotoDrag(id, e) {
       e.preventDefault();
       const board = document.getElementById('photo-board');
@@ -136,6 +140,7 @@ var PhotosSection = {
       var z = p.z || (i + 1);
       var isDragging = !!lp;
       var isResizing = resizeLive[p.id] != null;
+      var rot = p.rot || 0;
       return {
         id: p.id, src: p.src,
         hasSrc: !!(p.src && p.src.length > 4),
@@ -144,12 +149,15 @@ var PhotosSection = {
         setCap: (e) => this.setCaption(p.id, e.target.value),
         onDragStart: (e) => this.startPhotoDrag(p.id, e),
         onResizeStart: (e) => this.startPhotoResize(p.id, e),
+        rotCCW: (e) => { e.stopPropagation(); this.rotatePhoto(p.id, -90); },
+        rotCW: (e) => { e.stopPropagation(); this.rotatePhoto(p.id, 90); },
         stopProp,
         cardStyle: 'position:absolute;left:' + x + '%;top:' + y + '%;width:' + pw + '%;' +
           'z-index:' + z + ';' +
+          'transform:rotate(' + rot + 'deg);' +
           'background:#fff2ee;border:1px solid #e5c4b8;border-radius:16px;padding:0 0 8px;' +
           'box-shadow:' + ((isDragging || isResizing) ? '0 16px 40px rgba(61,35,20,.35)' : '0 4px 18px rgba(61,35,20,.18)') + ';' +
-          'transition:' + ((isDragging || isResizing) ? 'none' : 'box-shadow .2s') + ';',
+          'transition:' + ((isDragging || isResizing) ? 'none' : 'box-shadow .2s,transform .15s') + ';',
       };
     });
     var addPhotosNow = (e) => { this.addPhotos(e.target.files); e.target.value = ''; };

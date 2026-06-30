@@ -57,12 +57,19 @@ var WorkoutSection = {
     setWorkoutDay(k){ this.setState({workoutDay:k}); },
     setWorkoutAddType(t){ this.setState({workoutAddType:t}); },
     toggleEx(day,id){ this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.done=!it.done; }); },
-    addEx(day,name,scheme){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),scheme:(scheme||'').trim(),done:false}); }); },
-    delEx(day,id){ this.save(d=>{ d.workout[day].items=d.workout[day].items.filter(x=>x.id!==id); }); },
+    addEx(day,name,scheme){ if(!name||!name.trim())return; this.save(d=>{ d.workout[day].items.push({id:this.uid(),name:name.trim(),scheme:(scheme||'').trim(),weight:0,prev:0,done:false}); }); },
+    delEx(day,id){
+      this.save(d=>{
+        const item=d.workout[day].items.find(x=>x.id===id);
+        if(item) d.trash.push({id:this.uid(),type:'workout',name:item.name,day,item,deletedAt:Date.now()});
+        d.workout[day].items=d.workout[day].items.filter(x=>x.id!==id);
+      });
+    },
     reorderEx(day,fromId,toId){ if(fromId===toId)return; this.save(d=>{ const items=d.workout[day].items; const fi=items.findIndex(x=>x.id===fromId); const ti=items.findIndex(x=>x.id===toId); if(fi===-1||ti===-1)return; const [item]=items.splice(fi,1); items.splice(ti,0,item); }); },
     startScheme(day,id,cur){ this.setState({editingScheme:day+':'+id,schemeDraft:cur||''}); },
     commitScheme(day,id){ const v=this.state.schemeDraft.trim(); this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.scheme=v; }); this.setState({editingScheme:null,schemeDraft:''}); },
     setSchemeDraft(v){ this.setState({schemeDraft:v}); },
+    setWeight(day,id,w){ this.save(d=>{ const it=d.workout[day].items.find(x=>x.id===id); if(it) it.weight=parseFloat(w)||0; }); },
   },
 
   render(ctx) {
@@ -81,12 +88,17 @@ var WorkoutSection = {
       const editingS=!isClass&&editingScheme===wDay+':'+it.id;
       const subtitle=isClass?((it.instructor||'')+(it.classTime?' · '+it.classTime:'')):'';
       const schemeChips=schemeText?schemeText.split(' · ').map(s=>({text:s.trim()})):[{text:'tap to set scheme'}];
-      return {id:it.id,name:it.name,isClass,subtitle,schemeText,schemeChips,done:it.done,
+      const weight=it.weight||0;
+      const prev=it.prev||0;
+      return {id:it.id,name:it.name,isClass,subtitle,schemeText,schemeChips,done:it.done,weight,prev,
+        prevStr:prev>0?'prev: '+prev+'lb':'',
+        showWeight:!isClass,
         editingS,schemeTagShow:!isClass&&!editingS,schemeInputShow:!isClass&&editingS,
         toggle:()=>this.toggleEx(wDay,it.id),del:()=>this.delEx(wDay,it.id),
         startS:()=>this.startScheme(wDay,it.id,schemeText),
         commitS:()=>this.commitScheme(wDay,it.id),
         onSchemeKey:enter(()=>this.commitScheme(wDay,it.id)),
+        setWeight:(e)=>this.setWeight(wDay,it.id,e.target.value),
         draggable:true,
         dragStart:()=>{ this._dragId=it.id; },
         dragOver:(e)=>{ e.preventDefault(); },
@@ -101,7 +113,7 @@ var WorkoutSection = {
     var addExNow=()=>{
       const n=rv('exName'); if(!n.trim())return;
       if(isAddClass){
-        this.save(d=>{ d.workout[wDay].items.push({id:this.uid(),name:n.trim(),done:false,isClass:true,instructor:(rv('exInstructor')||'').trim(),classTime:(rv('exClassTime')||'').trim()}); });
+        this.save(d=>{ d.workout[wDay].items.push({id:this.uid(),name:n.trim(),done:false,isClass:true,weight:0,prev:0,instructor:(rv('exInstructor')||'').trim(),classTime:(rv('exClassTime')||'').trim()}); });
         clr('exName','exInstructor','exClassTime');
       } else {
         this.addEx(wDay,n,rv('exScheme')); clr('exName','exScheme');

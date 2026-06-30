@@ -1,3 +1,17 @@
+function timeAgo(ts) {
+  if(!ts) return '';
+  var diff=Date.now()-ts;
+  var m=Math.floor(diff/60000);
+  if(m<1) return 'just now';
+  if(m<60) return m+'m ago';
+  var h=Math.floor(m/60);
+  if(h<24) return h+'h ago';
+  var days=Math.floor(h/24);
+  if(days<7) return days+'d ago';
+  var d=new Date(ts);
+  return d.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+}
+
 var NotesSection = {
   refs: [],
 
@@ -13,20 +27,23 @@ var NotesSection = {
     newNote(){ const nid=this.uid(); this.save(d=>{ d.notes.unshift({id:nid,title:'',body:'',ts:Date.now()}); }); this.setState({noteOpen:nid}); },
     updateNote(id,field,v){ this.save(d=>{ const n=d.notes.find(x=>x.id===id); if(n){ n[field]=v; n.ts=Date.now(); } }); },
     delNote(id){ const note=this.state.data.notes.find(x=>x.id===id); this.save(d=>{ if(note){ d.trash.push({id:this.uid(),type:'note',name:(note.title||'').trim()||'Untitled',item:note,deletedAt:Date.now()}); } d.notes=d.notes.filter(x=>x.id!==id); }); this.setState({noteOpen:null}); },
+    setNoteSearch(v){ this.setState({noteSearch:v}); },
   },
 
   render(ctx) {
-    var d=ctx.d, screen=ctx.screen;
+    var d=ctx.d, state=ctx.state, screen=ctx.screen;
     var isS=(k)=>screen===k;
+    var noteSearch=(state.noteSearch||'').toLowerCase().trim();
     const stripHtml=(h)=>(h||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').trim();
-    const notesList=d.notes.map(n=>({id:n.id,title:(n.title||'').trim()||'Untitled',snippet:(stripHtml(n.body).slice(0,100))||'Empty note',open:()=>this.setState({noteOpen:n.id}),del:()=>this.delNote(n.id)}));
-    const no=d.notes.find(n=>n.id===this.state.noteOpen);
+    var allNotes=d.notes.map(n=>({id:n.id,title:(n.title||'').trim()||'Untitled',snippet:(stripHtml(n.body).slice(0,100))||'Empty note',timeStr:timeAgo(n.ts),open:()=>this.setState({noteOpen:n.id}),del:()=>this.delNote(n.id)}));
+    var notesList=noteSearch?allNotes.filter(n=>n.title.toLowerCase().includes(noteSearch)||n.snippet.toLowerCase().includes(noteSearch)):allNotes;
+    const no=d.notes.find(n=>n.id===state.noteOpen);
     const openNote=no?{title:no.title,body:no.body,close:()=>this.setState({noteOpen:null}),del:()=>this.delNote(no.id),setTitle:(e)=>this.updateNote(no.id,'title',e.target.value),onInput:(e)=>this.updateNote(no.id,'body',e.currentTarget.innerHTML)}:null;
     const execCmd=(cmd,val)=>{document.execCommand(cmd,false,val||null);};
-    const fmt=this.state.noteActiveFmt||{};
+    const fmt=state.noteActiveFmt||{};
     const fmtBg=(k)=>fmt[k]?'background:#ddb8a8;border-radius:7px;':'';
     const updateFmt=()=>{try{this.setState({noteActiveFmt:{bold:document.queryCommandState('bold'),italic:document.queryCommandState('italic'),underline:document.queryCommandState('underline'),strike:document.queryCommandState('strikeThrough'),ul:document.queryCommandState('insertUnorderedList'),ol:document.queryCommandState('insertOrderedList')}});}catch(ex){}};
-    const saveBody=()=>{if(this.state.noteOpen&&this._noteBodyEl)this.updateNote(this.state.noteOpen,'body',this._noteBodyEl.innerHTML);};
+    const saveBody=()=>{if(state.noteOpen&&this._noteBodyEl)this.updateNote(state.noteOpen,'body',this._noteBodyEl.innerHTML);};
     const noteCmd={
       bold:(e)=>{e.preventDefault();execCmd('bold');updateFmt();saveBody();},
       italic:(e)=>{e.preventDefault();execCmd('italic');updateFmt();saveBody();},
@@ -51,6 +68,9 @@ var NotesSection = {
     const noteFmtOlStyle=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;cursor:pointer;font-size:12px;color:#3d2314;font-weight:600;${fmtBg('ol')}`;
     return {
       notesList, openNote, noteCmd,
+      noteSearch:state.noteSearch||'',
+      onNoteSearch:(e)=>this.setNoteSearch(e.target.value),
+      notesSearchEmpty:noteSearch.length>0&&notesList.length===0,
       notesListShown:isS('notes')&&!openNote, noteEditorShown:isS('notes')&&!!openNote,
       noteFmtBoldStyle, noteFmtItalicStyle, noteFmtUnderlineStyle,
       noteFmtStrikeStyle, noteFmtUlStyle, noteFmtOlStyle,

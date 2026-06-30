@@ -20,22 +20,42 @@ var DatesSection = {
   methods: {
     addDate(title,date){ if(!title||!title.trim()||!date)return; this.save(d=>{ d.dates.push({id:this.uid(),title:title.trim(),date}); }); },
     delDate(id){ this.save(d=>{ const it=d.dates.find(x=>x.id===id); if(it){ d.trash.push({id:this.uid(),type:'date',name:it.title,item:it,deletedAt:Date.now()}); d.dates=d.dates.filter(x=>x.id!==id); } }); },
+    startEditDate(id,title,date){ this.setState({editingDate:id,dateDraft:{title,date}}); },
+    setDateDraft(field,val){ this.setState({dateDraft:{...this.state.dateDraft,[field]:val}}); },
+    commitEditDate(id){ const dr=this.state.dateDraft; if(!dr||!dr.title.trim()||!dr.date)return; this.save(d=>{ const it=d.dates.find(x=>x.id===id); if(it){ it.title=dr.title.trim(); it.date=dr.date; } }); this.setState({editingDate:null,dateDraft:null}); },
+    cancelEditDate(){ this.setState({editingDate:null,dateDraft:null}); },
   },
 
   render(ctx) {
-    var d=ctx.d, enter=ctx.enter, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
-    var datesList=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).sort((a,b)=>a.n-b.n).map(x=>{
-      const urgent=x.n>=0&&x.n<=3, past=x.n<0;
-      const bg=past?'#fcd0c4':urgent?'#c4622d':'#b85060';
-      const fg=past?'#8a5a4a':'#fff5ef';
+    var d=ctx.d, state=ctx.state, enter=ctx.enter, rv=ctx.rv, clr=ctx.clr, refs=ctx.refs;
+    var editingDate=state.editingDate;
+    var dateDraft=state.dateDraft||{title:'',date:''};
+    var sorted=d.dates.map(x=>({...x,n:this.daysUntil(x.date)})).sort((a,b)=>a.n-b.n);
+    var makeItem=function(x){
+      var urgent=x.n>=0&&x.n<=3, past=x.n<0;
+      var bg=past?'#fcd0c4':urgent?'#c4622d':'#b85060';
+      var fg=past?'#8a5a4a':'#fff5ef';
+      var isEditing=editingDate===x.id;
       return {id:x.id,title:x.title,dateLabel:this.fmtDate(x.date),count:this.countLabel(x.n),
+        isEditing,showNormal:!isEditing,
         del:()=>this.delDate(x.id),
-        badgeStyle:`flex:none;min-width:88px;text-align:center;background:${bg};color:${fg};font-size:12px;font-weight:600;border-radius:10px;padding:9px 10px;`,
-        titleStyle:`flex:1;font-family:'Newsreader',serif;font-size:18px;color:${past?'#a07868':'#3d2314'};`};
-    });
+        startEdit:()=>this.startEditDate(x.id,x.title,x.date),
+        commitEdit:()=>this.commitEditDate(x.id),
+        cancelEdit:()=>this.cancelEditDate(),
+        onEditTitleKey:enter(()=>this.commitEditDate(x.id)),
+        onEditTitle:(e)=>this.setDateDraft('title',e.target.value),
+        onEditWhen:(e)=>this.setDateDraft('date',e.target.value),
+        badgeStyle:'flex:none;min-width:88px;text-align:center;background:'+bg+';color:'+fg+';font-size:12px;font-weight:600;border-radius:10px;padding:9px 10px;',
+        titleStyle:'flex:1;font-family:\'Newsreader\',serif;font-size:18px;color:'+(past?'#a07868':'#3d2314')+';'};
+    }.bind(this);
+    var upcomingDates=sorted.filter(x=>x.n>=0).map(makeItem);
+    var pastDates=sorted.filter(x=>x.n<0).map(makeItem);
     var addDateNow=()=>{ const t=rv('dateTitle'); if(!t.trim()||!rv('dateWhen'))return; this.addDate(t,rv('dateWhen')); clr('dateTitle','dateWhen'); };
     return {
-      datesList, refDateTitle:refs.dateTitle, refDateWhen:refs.dateWhen,
+      upcomingDates, pastDates, hasPastDates:pastDates.length>0,
+      datesEmpty:d.dates.length===0,
+      dateDraft,
+      refDateTitle:refs.dateTitle, refDateWhen:refs.dateWhen,
       addDateNow, onAddDateKey:enter(addDateNow),
     };
   },
